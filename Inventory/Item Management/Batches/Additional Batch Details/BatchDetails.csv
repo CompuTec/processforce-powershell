@@ -1,0 +1,2 @@
+BatchCode;ItemCode;BatchAttribute1;BatchAttribute2;SupplierBatch;;Status;AddminsionDate;VendorManufacturingDate;ExpiryDate;ExpiryTime;ConsumeByDate;BestBeforeDate;LastInspectionDate;InspectionDate;NextInspectionDate;WarningDatePriorExpiry;WarningDatePriorConsume;Origin;QCStatusDate;QCActionDate;Remarks
+2012-04-18-8;Product-A;X;Y;Z;;A;21.01.2015;21.01.2015;21.01.2015;12:00;21.01.2015;22.01.2015;21.01.2015;21.01.2015;21.01.2015;21.01.2015;21.01.2015;US;25.01.2015;26.01.2015;These are example remarks for Product-A

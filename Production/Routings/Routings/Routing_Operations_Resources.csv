@@ -1,0 +1,3 @@
+RoutingCode;Sequence;ResourceCode;IssueType;Default;QueTime;QueTimeUoM;SetupTime;SetupTimeUoM;RunTime;RunTimeUoM;StockTime;StockTimeUoM;HasCycles;CycleCapacity;Remarks;OcrCode;OcrCode2;OcrCode3;OcrCode4;OcrCode5;Project
+01;10;01;B;Y;10;2;30;2;100;2;10;2;Y;300;Some remarks;01;;;;;P
+01;20;02;M;Y;10;2;30;2;120;2;10;2;;;;;;;;;

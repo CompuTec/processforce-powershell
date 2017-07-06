@@ -1,0 +1,3 @@
+BOM_Header;Revision;RoutingCode;Sequence;OperationCode;ResourceCode;Default;IssueType;QueTime;QueTimeUoM;SetupTime;SetupTimeUoM;RunTime;RunTimeUoM;StockTime;StockTimeUoM;NumberOfResources;HasCycles;CycleCapacity;Remarks;Project
+LM4029;code00;01;10;01;01;Y;B;10;2;30;2;100;9;10;2;15;N;300;Some remarks;P
+LM4029;code00;01;20;01;02;Y;M;10;2;30;2;120;2;10;2;1;N;;;

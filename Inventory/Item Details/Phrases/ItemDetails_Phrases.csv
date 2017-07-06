@@ -1,0 +1,8 @@
+ItemCode;PhraseCode;ProductionOrders;ShipmentDocuments;PickLists;MSDS;PurchaseOrders;Returns;Other
+A00001;R23;1;1;1;0;0;0;0
+A00001;R24;0;0;0;1;1;1;1
+A00002;R25;1;1;1;1;1;1;1
+A00002;S23;0;0;0;0;0;0;0
+A00002;S30;0;0;0;0;0;0;0
+A00002;S36;0;0;0;0;0;0;0
+A00002;R23;0;0;0;0;0;0;0

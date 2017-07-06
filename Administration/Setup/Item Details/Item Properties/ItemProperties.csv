@@ -1,0 +1,2 @@
+PropertyCode;PropertyName;UoM;Group;Subgroup;QualityControlTesting;ProductionOrders;ShipmentsDocumentation;PickLists;MSDS;PurchaseOrders;Returns;Other
+01;Test Property Name;G;02;04;Y;Y;N;;;;;

@@ -1,0 +1,3 @@
+TestProtocolCode;ResourceCode;Quantity;ValidFrom;ValidTo;Remarks
+TP1;Microscope;1;2015-01-01;2015-06-25;A
+TP2;Microscope;1;;;B

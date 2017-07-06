@@ -1,0 +1,8 @@
+TestProtocolCode;PropertyCode;Expression;RangeFrom;RangeTo;ReferenceCode
+TP1;1;Between;12.1;43;
+TP1;2;Equal;;;13
+TP1;1;NotEqual;;31;
+TP1;2;GratherThan;;12;
+TP2;3;GratherThanOrEqual;;4;
+TP2;4;LessThan;;11;
+TP2;5;LessThanOrEqual;;13;

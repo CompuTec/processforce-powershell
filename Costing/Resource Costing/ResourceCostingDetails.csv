@@ -1,0 +1,2 @@
+ResourceCode;Category;CostType;HourlyRate;FixedOH;FixedOHPrct;FixedOHOther;VariableOH;VariableOHPrct;VariableOHOther;Remarks
+Resource1;001;RT;12;1;2;3;4;5;6;Remarks

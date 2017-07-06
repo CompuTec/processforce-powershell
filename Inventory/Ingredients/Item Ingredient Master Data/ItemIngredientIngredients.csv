@@ -1,0 +1,4 @@
+ItemCode;Revision;Code;Condition;Value
+Product-A;code02;02;eq;12
+Product-A;code02;03;gt;13
+Product-A;code02;05;lt;14

@@ -1,0 +1,4 @@
+JobName;Type;CostCategory;CostCategoryTo;ItemFrom;ItemTo;Warehouse;IntervalType;Interval;Time;W_DaysOfWeek;Database
+CostRollUp1;RollUp;"001";;;;"01,02,03,04,05";D;1;00:00:00;;PFDemo915
+CostRollOver2;RollOver;001;002;FG;FG;"01,02,03";W;1;2:00:00;"Mo,Fr";PFDemo915
+CostRollOver3;RollOver;003;002;;;"01,02,03";O;;2014-06-27 15:58:00;;PFDemo915

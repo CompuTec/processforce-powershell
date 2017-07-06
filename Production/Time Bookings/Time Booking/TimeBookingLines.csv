@@ -1,0 +1,5 @@
+Key;BaseEntry;BaseDocNum;ResourceCode;BaseLineNum;OperationCode;TimeType;NumberOfResources;StartDate;StartTime;EndDate;EndTime;WorkingHours
+1;132;30019;01;1;01;Q;1;2014-09-25;10:11;2014-09-25;12:15;3:00:00
+1;132;30019;01;1;01;S;1;2014-09-25;10:11;2014-09-25;12:15;3:00:00
+1;132;30019;01;1;01;R;1;2014-09-25;00:11;2014-09-25;12:15;3:00:00
+1;132;30019;01;1;01;L;1;2014-09-25;11:00;2014-09-25;12:15;3:00:00

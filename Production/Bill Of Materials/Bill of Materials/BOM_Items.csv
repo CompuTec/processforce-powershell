@@ -1,0 +1,6 @@
+BOM_ItemCode;Revision;Sequence;ItemCode;Item_Revision;Warehouse;Factor;FactorDesc;Quantity;ScrapPercent;IssueType;OcrCode;OcrCode2;OcrCode3;OcrCode4;OcrCode5;Project;SubcontractingItem;Remarks;Formula
+LM4029;code00;10;LM4029MC;code00;01;10;FDesc1;120;5;M;1;;;;;IT;N;Remarks1;=U_Quantity()*U_Factor()*Items.U_Factor(10)*Items.U_Quantity(10)*100/(100 - Items.U_ScrapPercentage(10))
+LM4029;code00;20;LM4029D;code00;01;10;FDesc1;121;5;M;1;;;;;IT;N;Remarks2;
+LM4029;code00;30;LM4029PH;code00;01;10;FDesc1;122;5;M;1;;;;;IT;N;Remarks3;
+SubFG;code00;10;NS;code00;01;10;FDesc1;120;5;B;1;;;;;IT;Y;Remarks1;
+SubFG;code00;20;LM4029PH;code00;01;10;FDesc1;121;5;M;1;;;;;IT;N;Remarks2;

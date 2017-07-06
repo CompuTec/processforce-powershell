@@ -1,0 +1,3 @@
+ItemCode;BatchInherit;SerialIncherit;BatchTemplate;SerialTemplate;ExpiryInherit;Expiry;ExpiryWarning;Consume;ConsWarn;ShelfLife;InspectionInterval;InheritBatchQueue;BatchQueue;ExpTyp;ExpTempl;InheritStatus;U_SapDfBS;U_SapDfQCS;U_PFDfBS;U_PFDfQCS
+Product-A;0;1;3;;1;1;2;1;10;112d;3;0;M;Q;ExprTemplate;1;L;I;R;H
+B;0;1;6;;1;0;;;;;;0;;S;;0;;;;

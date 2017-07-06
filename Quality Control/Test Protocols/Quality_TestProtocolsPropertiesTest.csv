@@ -1,0 +1,8 @@
+TestProtocolCode;PropertyCode;Expresion;RangeFrom;RangeTo;UoM;ReferenceCode;ValidFrom;ValidTo;Remarks
+TP1;1;Between;12.1;43;PCE;;2015-01-01;2015-06-25;Remarks
+TP1;2;Equal;;;;13;;;;;
+TP1;3;NotEqual;;31;;;;;
+TP1;4;GratherThan;;12;;;;;
+TP2;5;GratherThanOrEqual;;4;;;;;
+TP2;6;LessThan;;11;;;;;
+TP2;7;LessThanOrEqual;;13;;;;;
