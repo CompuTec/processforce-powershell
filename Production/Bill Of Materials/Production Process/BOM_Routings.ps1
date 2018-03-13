@@ -1,4 +1,4 @@
-clear
+Celar-Host
 [System.Reflection.Assembly]::LoadWithPartialName("CompuTec.ProcessForce.API")
 
 
@@ -257,7 +257,8 @@ if($code -eq 1)
                 }
 
                 $overlayDict.Add($rtgOper.Sequence,$bom.RoutingOperations.U_LineNum);
-                $drivers.Add($bom.RoutingOperations.U_OprSequence,$bom.RoutingOperations.U_RtgOprCode);
+                $drivers_key = $rtgOper.RoutingCode + '@#@' + $bom.RoutingOperations.U_OprSequence;
+                $drivers.Add($drivers_key,$bom.RoutingOperations.U_RtgOprCode);
                 $dummy = $bom.RoutingOperations.Add()
             }
 			
@@ -276,7 +277,8 @@ if($code -eq 1)
 		        #Adding the new data       
 		        foreach($prop in $bomRoutingsOperationsProperties) 
 		        {
-					$bom.RoutingOperationProperties.U_RtgOprCode = $drivers[$prop.Sequence]
+                    $drivers_key = $prop.RoutingCode + '@#@' + $prop.Sequence;
+					$bom.RoutingOperationProperties.U_RtgOprCode = $drivers[$drivers_key];
 					$bom.RoutingOperationProperties.U_RtgCode = $prop.RoutingCode
 					$bom.RoutingOperationProperties.U_OprCode = $prop.OperationCode
 				    $bom.RoutingOperationProperties.U_PrpCode = $prop.PropertiesCode
@@ -313,9 +315,10 @@ if($code -eq 1)
             {
                 foreach($rtgOperResc in $bomRoutingsOperationsResources) 
                 {
+                    $drivers_key = $rtgOperResc.RoutingCode + '@#@' + $rtgOperResc.Sequence;
                     $bom.RoutingOperationResources.U_RtgCode = $rtgOperResc.RoutingCode
 	                $bom.RoutingOperationResources.U_OprCode = $rtgOperResc.OperationCode
-                    $bom.RoutingOperationResources.U_RtgOprCode =$drivers[$rtgOperResc.Sequence];
+                    $bom.RoutingOperationResources.U_RtgOprCode =$drivers[$drivers_key];
                     $bom.RoutingOperationResources.U_RscCode = $rtgOperResc.ResourceCode
                     $bom.RoutingOperationResources.U_IsDefault = $rtgOperResc.Default
                     $bom.RoutingOperationResources.U_IssueType = $rtgOperResc.IssueType;
@@ -424,8 +427,9 @@ if($code -eq 1)
 			        {
 			      
 				  	    $key = $opResProp.Sequence + '@#@' + $opResProp.RoutingCode
+					    $drivers_key = $opResProp.RoutingCode + '@#@' + $opResProp.Sequence;
 					
-					    $bom.RoutingsOperationResourceProperties.U_RtgOprCode = $drivers[$opResProp.Sequence]
+					    $bom.RoutingsOperationResourceProperties.U_RtgOprCode = $drivers[$drivers_key]
 					    $bom.RoutingsOperationResourceProperties.U_RtOpRscCode = $driversRtgOprRsc[$key]
 					    $bom.RoutingsOperationResourceProperties.U_RtgCode = $opResProp.RoutingCode
 					    $bom.RoutingsOperationResourceProperties.U_OprCode = $opResProp.OperationCode
