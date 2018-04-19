@@ -1,2 +1,2 @@
 BOM_Header;Revision;RoutingCode;Sequence;OperationCode;ResourceCode;PropertiesCode;Condition;Value;ToValue;UoM
-LM4029;code00;01;10;01;01;01;7;10;100;m/s
+Product-A;code00;01;10;01;01;01;7;10;100;m/s
