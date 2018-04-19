@@ -11,16 +11,15 @@ $pfcCompany.SQLServer = "localhost"
 $pfcCompany.SQLUserName = "sa"
 $pfcCompany.Databasename = "PFDemo"
 $pfcCompany.DbServerType = [SAPbobsCOM.BoDataServerTypes]"dst_MSSQL2012"
-       
-$code = $pfcCompany.Connect()
+
 if ($code -eq 1) {
     #Data loading from a csv file
-    [array]$csvItems = Import-Csv -Delimiter ';' -Path "C:\BOM_Header.csv"
-    [array]$bomRoutings = Import-Csv -Delimiter ';' -Path "C:\BOM_Routings.csv" 
-    [array]$bomRoutingsOperations = Import-Csv -Delimiter ';' -Path "C:\BOM_Routings_Operations.csv" 
-    [array]$bomRoutingsOperationsProperties = Import-Csv -Delimiter ';' -Path "C:\BOM_Routings_Operations_Properties.csv" 
-    [array]$bomRoutingsOperationsResources = Import-Csv -Delimiter ';' -Path "C:\BOM_Routings_Operations_Resources.csv" 
-    [array]$opResourceProperties = Import-Csv -Delimiter ';' -Path "C:\BOM_Routings_Operations_Resources_Properties.csv" 
+    [array]$csvItems = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Header.csv")
+    [array]$bomRoutings = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings.csv")
+    [array]$bomRoutingsOperations = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings_Operations.csv")
+    [array]$bomRoutingsOperationsProperties = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings_Operations_Properties.csv")
+    [array]$bomRoutingsOperationsResources = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings_Operations_Resources.csv")
+    [array]$opResourceProperties = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings_Operations_Resources_Properties.csv")
 
     #region preparing data
     write-Host 'Preparing data: '
@@ -308,7 +307,13 @@ if ($code -eq 1) {
                         $bom.RoutingOperationResources.U_RscCode = $rtgOperResc.ResourceCode
                         $bom.RoutingOperationResources.U_IsDefault = $rtgOperResc.Default
                         $bom.RoutingOperationResources.U_IssueType = $rtgOperResc.IssueType;
+                        $bom.RoutingOperationResources.U_OcrCode = $rtgOperResc.DistRule
+                        $bom.RoutingOperationResources.U_OcrCode2 = $rtgOperResc.DistRule2
+                        $bom.RoutingOperationResources.U_OcrCode3 = $rtgOperResc.DistRule3
+                        $bom.RoutingOperationResources.U_OcrCode4 = $rtgOperResc.DistRule4
+                        $bom.RoutingOperationResources.U_OcrCode5 = $rtgOperResc.DistRule5
                         $bom.RoutingOperationResources.U_QueueTime = $rtgOperResc.QueTime
+                        
                         $queTimeUoM = $rtgOperResc.QueTimeUoM #enum RateType; FixedSeconds = 1, FixedMinutes = 2, FixedHours = 3
                         switch ($queTimeUoM) {
                             "1" { $bom.RoutingOperationResources.U_QueueRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedSeconds }
