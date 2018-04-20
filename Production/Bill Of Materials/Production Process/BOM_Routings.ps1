@@ -10,8 +10,9 @@ $pfcCompany.SQLPassword = "sa"
 $pfcCompany.SQLServer = "localhost"
 $pfcCompany.SQLUserName = "sa"
 $pfcCompany.Databasename = "PFDemo"
-$pfcCompany.DbServerType = [SAPbobsCOM.BoDataServerTypes]"dst_MSSQL2012"
+$pfcCompany.DbServerType = [SAPbobsCOM.BoDataServerTypes]"dst_MSSQL2016"
 
+$code = $pfcCompany.Connect()
 if ($code -eq 1) {
     #Data loading from a csv file
     [array]$csvItems = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Header.csv")
