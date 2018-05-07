@@ -1,2 +1,2 @@
 ItemCode;Type;PriceListCode;Revision;Category;WhsCode;WhenZero;ItemCost;FixedOH;FixedOHPrct;FixedOHOther;VariableOH;VariableOHPrct;VariableOHOther;Remarks
-ProductA;AC;;code00;001;01;;13;1;2;3;4;5;6;Remarks
+Product-A;PL;2;code00;001;01;;13;1;2;3;4;5;6;Remarks
