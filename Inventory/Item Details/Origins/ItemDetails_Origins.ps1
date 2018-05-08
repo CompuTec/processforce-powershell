@@ -3,10 +3,10 @@
 
 #Database connection
 $pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::CreateCompany()
-$pfcCompany.LicenseServer = "10.0.0.203:40000";
-$pfcCompany.SQLServer = "10.0.0.202:30115";
-$pfcCompany.Databasename = 'PFDEMOGB_MACIEJP';
-$pfcCompany.UserName = "maciejp";
+$pfcCompany.LicenseServer = "10.0.0.2:40000";
+$pfcCompany.SQLServer = "10.0.0.1:30115";
+$pfcCompany.Databasename = 'PFDEMO';
+$pfcCompany.UserName = "manager";
 $pfcCompany.Password = "1234";
 $pfcCompany.DbServerType = [SAPbobsCOM.BoDataServerTypes]::"dst_HANADB"; 
         
