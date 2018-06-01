@@ -1,0 +1,4 @@
+ItemCode;VendorCode;IsDefault;Percentage;StartDate;EndDate
+Top-02;00001;Y;60;2018-06-01;2018-12-31
+Top-02;00003;N;20;2018-06-01;2018-12-31
+Top-02;00004;N;20;2018-06-01;2018-12-31
