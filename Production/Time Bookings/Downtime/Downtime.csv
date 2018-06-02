@@ -1,0 +1,3 @@
+Key;DocEntry;RscCode;ManufacturingOrderDocEntry;OperationCode;DocDate;StartDate;StartTime;EndDate;EndTime;ReporterId;TechnicanId;ClosedById;Status
+1;;01;12;02;2018-06-01;2018-06-03;13:00;2018-06-13;18:00;1;2;1;R;
+2;13;02;13;;2018-06-01;2018-06-05;;2018-06-15;;;;;W;
