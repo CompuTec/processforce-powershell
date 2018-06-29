@@ -5,13 +5,11 @@ Clear-Host
 #region #Datbase/Company connection settings
  
 $pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::CreateCompany()
-$pfcCompany.LicenseServer = "PLPO014:40000"
-$pfcCompany.SQLServer = "PLPO014"
-$pfcCompany.SQLUserName = "sa"
-$pfcCompany.SQLPassword = "Ct*2009sa"
+$pfcCompany.LicenseServer = "10.0.0.xx:40000"
+$pfcCompany.SQLServer = "10.0.0.xx:30015"
 $pfcCompany.DbServerType = [SAPbobsCOM.BoDataServerTypes]::"dst_HANADB"
-$pfcCompany.Databasename = "PFDemoGB"
-$pfcCompany.UserName = "manager"
+$pfcCompany.Databasename = "MICHALB_PFDEMOGB"
+$pfcCompany.UserName = "michalb"
 $pfcCompany.Password = "1234"
  
 # where:
