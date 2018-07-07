@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CT_CONFIG>
+    <MasterData>
+        <ItemMasterData Prefix="CTPF_" NumberOfItems="7" NumberOfMakeItems="5" WarehouseCode="01"/>
+        <ItemDetails NumberOfRevisions="3"/>
+        <BOM NumberOfBoms="1" NumberOfItems="2" WarehouseCode="01" ItemsWarehouseCode="01"/>
+        <Resource Prefix="CTPF_" NumberOfResources="1"/>
+        <Operation Prefix="CTPF_" NumberOfOperations="1" NumberOfResources="1"/>
+        <Routing Prefix="CTPF_" NumberOfRoutings="1" NumberOfOperations="1"/>
+        <ProductionProcess NumberOfBoms="1" NumberOfRoutings="1"/>
+    </MasterData>
+    <UI></UI>
+</CT_CONFIG>
