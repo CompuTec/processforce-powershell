@@ -9,5 +9,8 @@
         <Routing Prefix="CTPF_" NumberOfRoutings="1" NumberOfOperations="1"/>
         <ProductionProcess NumberOfBoms="1" NumberOfRoutings="1"/>
     </MasterData>
-    <UI></UI>
+    <UI>
+        <ItemDetails recordsToGoThrough="10" repeatOpenForm="10"/>
+        <BOM recordsToGoThrough="10" repeatOpenForm="10"/>
+    </UI>
 </CT_CONFIG>

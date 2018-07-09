@@ -773,17 +773,173 @@ function UITests() {
     }
     $logJobs.endSubtask('Connection', 'S', '');
 
-    $x = $app.Menus.Item('CT_PF_SIDT')
-    $next = $app.Menus.Item('1288');
-    
 
-    #10 x 
-    $x.Activate();
-    
-    $next.Activate();
+    function openItemDetailsForm ($app) {
+        [CTLogger] $log = New-Object CTLogger ('UI', 'Open Item Details', $RESULT_FILE)
+        Write-Host '';
+        Write-Host 'Open Item Details:' -NoNewline;
+        $xmlOpenItemDetails = $UIConfigXml.SelectSingleNode([string]::Format("ItemDetails"));
+        $repeatOpenForm = [int] $xmlOpenItemDetails.repeatOpenForm;
+        
+        [CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
+        for($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++){
+            try {
+                $progress.next();
+                $log.startSubtask('Open Item Details Form');
+                $formOpenMenu = $app.Menus.Item('CT_PF_1'); 
+                $formOpenMenu.Activate();        
+                $log.endSubtask('Open Item Details Form', 'S', '');
+                $form = $app.Forms.ActiveForm()
+                $form.Close();       
+            }
+            catch {
+                $err = $_.Exception.Message;
+                $log.endSubtask('Open Item Details Form', 'F', $err);
+                continue;
+            }
+        }
+    }
 
+    function loadItemDetails ($app) {
+        [CTLogger] $log = New-Object CTLogger ('UI', 'Open Item Details', $RESULT_FILE)
+        Write-Host '';
+        Write-Host 'Load Item Details:' -NoNewline;
+        $xmlOpenItemDetails = $UIConfigXml.SelectSingleNode([string]::Format("ItemDetails"));
+        $recordsToGoThrough = [int] $xmlOpenItemDetails.recordsToGoThrough;
+        $next = $app.Menus.Item('1288');
+        [CTProgress] $progress = New-Object CTProgress ($recordsToGoThrough);
+        try {
+            $firstItemCode = 'CTPF_0' # $ItemsDictionary['MAKE'][0].ItemCode;
+            $log.startSubtask('Open Item Details Form');
+            $formOpenMenu = $app.Menus.Item('CT_PF_1'); 
+            $formOpenMenu.Activate();        
+            $form = $app.Forms.ActiveForm       
+            $log.endSubtask('Open Item Details Form', 'S', '');
+        }
+        catch {
+            $err = $_.Exception.Message;
+            $log.endSubtask('Open Item Details Form', 'F', $err);
+            continue;
+        }
+        for($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++){
+            try {
+                $progress.next();
+                $log.startSubtask('Item Details Load Data');
+                if($iRecord -eq 0){
 
+                    $ItemCodeInputField = $form.Items('idtItCTbx');
+                    $ItemCodeInputField.Specific.String = [string]$firstItemCode;
+                    $app.SendKeys('{ENTER}');
+                } else {
+                    $next.Activate();
+                }
+                $log.endSubtask('Item Details Load Data', 'S', '');
+            }
+            catch {
+                $log.endSubtask('Item Details Load Data', 'F', $err);
+                continue;
+            }
+        }
+        $form.Close();
+        
+    }
 
+    function openBOMForm ($app) {
+        [CTLogger] $log = New-Object CTLogger ('UI', 'Open BOM', $RESULT_FILE)
+        Write-Host '';
+        Write-Host 'Open BOM:' -NoNewline;
+        $xmlOpenBOM = $UIConfigXml.SelectSingleNode([string]::Format("BOM"));
+        $repeatOpenForm = [int] $xmlOpenBOM.repeatOpenForm;
+        
+        [CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
+        for($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++){
+            try {
+                $progress.next();
+                $log.startSubtask('Open BOM Form');
+                $formOpenMenu = $app.Menus.Item('CT_PF_2'); 
+                $formOpenMenu.Activate();        
+                $log.endSubtask('Open BOM Form', 'S', '');
+                $form = $app.Forms.ActiveForm()
+                $form.Close();       
+            }
+            catch {
+                $err = $_.Exception.Message;
+                $log.endSubtask('Open BOM Form', 'F', $err);
+                continue;
+            }
+        }
+    }
+
+    function loadBOM ($app) {
+        [CTLogger] $log = New-Object CTLogger ('UI', 'Load BOMs', $RESULT_FILE)
+        Write-Host '';
+        Write-Host 'Load BOM:' -NoNewline;
+        $xmlOpenBOM = $UIConfigXml.SelectSingleNode([string]::Format("ItemDetails"));
+        $recordsToGoThrough = [int] $xmlOpenBOM.recordsToGoThrough;
+        $next = $app.Menus.Item('1288');
+        $find = $app.Menus.Item('1281');
+
+        [CTProgress] $progress = New-Object CTProgress ($recordsToGoThrough);
+        try {
+            $firstItemCode = 'CTPF_0' # $ItemsDictionary['MAKE'][0].ItemCode;
+            $firstRevision = 'code0' # $ItemsDictionary['MAKE'][0].Revisions[0]
+            $log.startSubtask('Open BOM Form');
+            $formOpenMenu = $app.Menus.Item('CT_PF_2'); 
+            $formOpenMenu.Activate();      
+            if($find.Enabled -eq $true) {
+                $find.Activate();
+            }
+            $form = $app.Forms.ActiveForm       
+            $log.endSubtask('Open BOM Form', 'S', '');
+        }
+        catch {
+            $err = $_.Exception.Message;
+            $log.endSubtask('Open BOM Form', 'F', $err);
+            continue;
+        }
+        for($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++){
+            try {
+                $progress.next();
+                $log.startSubtask('Load BOM Data');
+                if($iRecord -eq 0){
+
+                    $ItemCodeInputField = $form.Items('7');
+                    $RevisionInputField = $form.Items('13');
+                    $ItemCodeInputField.Specific.String = [string]$firstItemCode;
+                    $RevisionInputField.Specific.String = [string]$firstRevision;
+
+                    $app.SendKeys('{ENTER}');
+                } else {
+                    $next.Activate();
+                }
+                $log.endSubtask('Load BOM Data', 'S', '');
+            }
+            catch {
+                $log.endSubtask('Load BOM Data', 'F', $err);
+                continue;
+            }
+        }
+        $form.Close();
+        
+    }
+
+    openItemDetailsForm $app;
+
+    loadItemDetails $app;
+
+    openBOMForm $app;
+
+    loadBOM $app;
+
+    #BOMStructure
+
+    #ProductionProcess
+
+    #Routings
+
+    #Operations
+
+    #Resources
 
     $logJobs.endSubtask('Get', 'S', '');
 }
