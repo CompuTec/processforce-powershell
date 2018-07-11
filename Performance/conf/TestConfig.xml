@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CT_CONFIG>
+    <MasterData>
+        <ItemMasterData Prefix="ACTPF_" NumberOfItems="30" NumberOfMakeItems="10" WarehouseCode="01"/>
+        <ItemDetails NumberOfRevisions="10"/>
+        <BOM NumberOfBoms="10" NumberOfItems="20" WarehouseCode="01" ItemsWarehouseCode="01"/>
+        <Resource Prefix="ACTPF_" NumberOfResources="10"/>
+        <Operation Prefix="ACTPF_" NumberOfOperations="10" NumberOfResources="5"/>
+        <Routing Prefix="ACTPF_" NumberOfRoutings="10" NumberOfOperations="5"/>
+        <ProductionProcess NumberOfBoms="10" NumberOfRoutings="2"/>
+    </MasterData>
+    <UI>
+        <ItemDetails recordsToGoThrough="10" repeatOpenForm="10"/>
+        <BOM recordsToGoThrough="10" repeatOpenForm="10"/>
+        <ProductionProcess recordsToGoThrough="10" repeatOpenForm="10"/>
+        <Resource recordsToGoThrough="10" repeatOpenForm="10"/>
+        <Operation recordsToGoThrough="10" repeatOpenForm="10"/>
+        <Routing recordsToGoThrough="10" repeatOpenForm="10"/>
+    </UI>
+</CT_CONFIG>
