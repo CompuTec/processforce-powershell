@@ -3,8 +3,8 @@ using module .\lib\CTProgress.psm1;
 
 Clear-Host
 [System.Reflection.Assembly]::LoadWithPartialName("CompuTec.ProcessForce.API")
-add-type -Path "C:\PS_MP\MP_PS\SAP\DLL\Interop.SAPbobsCOM.dll"
-add-type -Path "C:\PS_MP\MP_PS\SAP\DLL\Interop.SAPbouiCOM.dll"
+#add-type -Path "C:\PS_MP\MP_PS\SAP\DLL\Interop.SAPbobsCOM.dll"
+#add-type -Path "C:\PS_MP\MP_PS\SAP\DLL\Interop.SAPbouiCOM.dll"
 
 $ItemsDictionary = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[psobject]]';
 $ResourcesList = New-Object 'System.Collections.Generic.List[string]';
@@ -540,11 +540,11 @@ function Imports() {
                 if ($routingExists) {
                     $log.startSubtask('Update Routing');
                     $count = $routing.Operations.Count
-                    for ($i = 0; $i -lt $count; $i++) {
+                    for ($j = 0; $j -lt $count; $j++) {
                         $dummy = $routing.Operations.DelRowAtPos(0);
                     }
                     $count = $routing.OperationResources.Count
-                    for ($i = 0; $i -lt $count; $i++) {
+                    for ($k = 0; $k -lt $count; $k++) {
                         $dummy = $routing.OperationResources.DelRowAtPos(0);
                     }   
                 }
@@ -773,7 +773,7 @@ function UITests() {
         return 
     }
     #If company is connected to wrong database - stops the script
-    if ($pfcCompany.Databasename -ne $xmlConnection.Database) {
+    if ($pfcCompany.SapCompany.CompanyDB -ne $xmlConnection.Database) {
         write-host -backgroundcolor yellow -foregroundcolor black "Company is connected to wrong database";
         $logJobs.endSubtask('Connection', 'F', 'Company is connected to wrong database');
         return;
@@ -1335,3 +1335,4 @@ write-host '';
 UITests ;
 
 
+ 

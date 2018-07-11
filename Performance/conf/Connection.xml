@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <CT_CONFIG>
-    <Connection Database="PFDEMOGB_MACIEJP" SQLServer="10.0.0.202:30115" LicenseServer="10.0.0.203:40000" DbServerType="dst_HANADB" UserName="maciejp" Password="1234"/>
+    <Connection Database="MB" 
+    SQLServer="192.168.230.2:30015" 
+    LicenseServer="192.168.230.2:40000" 
+    DbServerType="dst_HANADB" 
+    UserName="manager" Password="1234"/>
 </CT_CONFIG>
