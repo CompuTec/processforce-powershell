@@ -1,15 +1,35 @@
+#region #PF API library usage
 Clear-Host
+# You need to check in what architecture PowerShell ISE is running (x64 or x86),
+# you need run PowerShell ISE in the same architecture like PF API is installed (check in Windows -> Programs & Features)
+# Examples:
+#     SAP Client x64 + PF x64 installed on DB/Company => PF API x64 => Windows PowerShell ISE
+#     SAP Client x86 + PF x86 installed on DB/Company => PF API x86 => Windows PowerShell ISE x86
+
 [System.Reflection.Assembly]::LoadWithPartialName("CompuTec.ProcessForce.API")
+
+#endregion
+ 
+$csvImportCatalog = $PSScriptRoot + "\";
+ 
+$opResourceProperties = -join ($csvImportCatalog, "BOM_Header.csv")
+$csvBOMRoutingsFilePath = -join ($csvImportCatalog, "BOM_Routings.csv")
+$csvBOMRoutingsOperationsFilePath = -join ($csvImportCatalog, "BOM_Routings_Operations.csv")
+$csvBOMRoutingsOperationsPropertiesFilePath = -join ($csvImportCatalog, "BOM_Routings_Operations_Properties.csv")
+$csvBOMRoutingsOperationsResources = -join ($csvImportCatalog, "BOM_Routings_Operations_Resources.csv")
+$csvopResourcePropertiesFilePath = -join ($csvImportCatalog, "BOM_Routings_Operations_Resources_Properties.csv")
+
+#endregion
 
 
 #region #Datbase/Company connection settings
  
 $pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::CreateCompany()
-$pfcCompany.LicenseServer = "10.0.0.xx:40000"
-$pfcCompany.SQLServer = "10.0.0.xx:30015"
+$pfcCompany.LicenseServer = "10.0.0.203:40000"
+$pfcCompany.SQLServer = "10.0.0.202:30115"
 $pfcCompany.DbServerType = [SAPbobsCOM.BoDataServerTypes]::"dst_HANADB"
-$pfcCompany.Databasename = "MICHALB_PFDEMOGB"
-$pfcCompany.UserName = "michalb"
+$pfcCompany.Databasename = "PFDEMOGB_MACIEJP"
+$pfcCompany.UserName = "maciejp"
 $pfcCompany.Password = "1234"
  
 # where:
@@ -63,12 +83,12 @@ write-host ""
 
 
 #Data loading from a csv file
-[array]$csvItems = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Header.csv")
-[array]$bomRoutings = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings.csv")
-[array]$bomRoutingsOperations = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings_Operations.csv")
-[array]$bomRoutingsOperationsProperties = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings_Operations_Properties.csv")
-[array]$bomRoutingsOperationsResources = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings_Operations_Resources.csv")
-[array]$opResourceProperties = Import-Csv -Delimiter ';' -Path ($PSScriptRoot + "\" + "BOM_Routings_Operations_Resources_Properties.csv")
+[array]$csvItems = Import-Csv -Delimiter ';' -Path $opResourceProperties
+[array]$bomRoutings = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsFilePath
+[array]$bomRoutingsOperations = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsOperationsFilePath
+[array]$bomRoutingsOperationsProperties = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsOperationsPropertiesFilePath
+[array]$bomRoutingsOperationsResources = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsOperationsResources
+[array]$opResourceProperties = Import-Csv -Delimiter ';' -Path $csvopResourcePropertiesFilePath
 
 #region preparing data
 write-Host 'Preparing data: '
@@ -324,12 +344,10 @@ foreach ($csvItem in $bomList) {
          
             #Deleting default resources copied from operations for given routing code
             $count = $bom.RoutingOperationResources.Count
-            for ($i = 0; $i -lt $count; $i++) {
+            for ($i = $count-1; $i -ge 0; $i--) {
                 $bom.RoutingOperationResources.SetCurrentLine($i);
                 if ($bom.RoutingOperationResources.U_RtgCode -eq $rtg.RoutingCode) {
                     $dummy = $bom.RoutingOperationResources.DelRowAtPos($i);
-                    $i--;
-                    $count = $bom.RoutingOperationResources.Count;
                 }
             }    
             $count = $bom.RoutingsOperationResourceProperties.Count
@@ -354,6 +372,13 @@ foreach ($csvItem in $bomList) {
                     $bom.RoutingOperationResources.U_OprCode = $rtgOperResc.OperationCode
                     $bom.RoutingOperationResources.U_RtgOprCode = $drivers[$drivers_key];
                     $bom.RoutingOperationResources.U_RscCode = $rtgOperResc.ResourceCode
+
+                    if($rtgOperResc.MachineCode -ne ''){
+                        if($bom.RoutingOperationResources.U_RscType -eq [CompuTec.ProcessForce.API.Enumerators.ResourceType]::Tool){
+                            $bom.RoutingOperationResources.U_MachineCode = $rtgOperResc.MachineCode;
+                        }
+                    }
+
                     $bom.RoutingOperationResources.U_IsDefault = $rtgOperResc.Default
                     $bom.RoutingOperationResources.U_IssueType = $rtgOperResc.IssueType;
                     $bom.RoutingOperationResources.U_OcrCode = $rtgOperResc.DistRule
