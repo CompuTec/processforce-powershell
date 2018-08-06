@@ -1,3 +1,4 @@
 OperationCode;ResourceCode;Default;QueTime;QueTimeUoM;SetupTime;SetupTimeUoM;RunTime;RunTimeUoM;StockTime;StockTimeUoM;MachineCode;Cycles;CycleCapacity;Project;Dimension1;Dimension2;Dimension3;Dimension4;Dimension5;Remarks
 01;01;Y;10;2;20;2;100;9;10;2;;;;P2;;;;;;Remarks1
 01;02;N;10;2;30;2;100;3;20;2;;Y;100;;;;;;;Remarks2
+01;12;N;10;2;30;2;100;3;20;2;02;Y;100;;;;;;;Remarks2
