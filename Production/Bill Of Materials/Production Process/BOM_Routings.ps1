@@ -351,12 +351,10 @@ foreach ($csvItem in $bomList) {
                 }
             }    
             $count = $bom.RoutingsOperationResourceProperties.Count
-            for ($i = 0; $i -lt $count; $i++) {
+            for ($i = $count-1; $i -ge 0; $i--) {
                 $bom.RoutingsOperationResourceProperties.SetCurrentLine($i);
                 if ($bom.RoutingsOperationResourceProperties.U_RtgCode -eq $rtg.RoutingCode) {
                     $dummy = $bom.RoutingsOperationResourceProperties.DelRowAtPos($i);  
-                    $i--;
-                    $count = $bom.RoutingOperationResources.Count;    
                 }
             }
             $driversRtgOprRsc = New-Object 'System.Collections.Generic.Dictionary[String,int]'
