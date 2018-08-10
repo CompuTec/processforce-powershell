@@ -264,14 +264,12 @@ foreach ($csvItem in $routingsList) {
 		
         #Deleting default resources copied from operations   
         $count = $routing.OperationResources.Count
-        for ($i = 0; $i -lt $count; $i++) {
-            $dummy = $routing.OperationResources.DelRowAtPos(0);
+        for ($i = $count-1; $i -ge 0; $i--) {
+            $dummy = $routing.OperationResources.DelRowAtPos($i);
         }    
-        $count = $routing.OperationResourceProperties.Count
-        for ($i = 0; $i -lt $count; $i++) {
-        
-            $dummy = $routing.OperationResourceProperties.DelRowAtPos(0);      
-            
+        $count = $routing.OperationResourceProperties.Count-1
+        for ($i = $count-1; $i -ge 0; $i--) {
+            $dummy = $routing.OperationResourceProperties.DelRowAtPos($i);      
         }
         $driversOprRsc = New-Object 'System.Collections.Generic.Dictionary[String,int]'
         #Adding resources for operations   
@@ -340,13 +338,11 @@ foreach ($csvItem in $routingsList) {
             if ($opResourceProperties.count -gt 0) {
                 #Deleting all existing resources
                 $count = $routing.OperationResourceProperties.Count - 1
-                if ($count -gt 1) {
-                    for ($i = 0; $i -lt $count; $i++) {
-			   
-			           
-                        $dummy = $routing.OperationResourceProperties.DelRowAtPos(0); 
-                    }
+                for ($i = $count-1; $i -ge 0; $i--) {
+                    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
+                    $dummy = $routing.OperationResourceProperties.DelRowAtPos($i); 
                 }
+
 			        
                 #Adding the new data
                 foreach ($opResProp in $opResourceProperties) {
