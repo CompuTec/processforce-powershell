@@ -247,6 +247,7 @@ foreach ($csvItem in $bomList) {
         
         $count = $bom.Routings.Count
         for ($i = 0; $i -lt $count; $i++) {
+            [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
             $dummy = $bom.Routings.DelRowAtPos(0);
         }
         
@@ -349,7 +350,8 @@ foreach ($csvItem in $bomList) {
                 if ($bom.RoutingOperationResources.U_RtgCode -eq $rtg.RoutingCode) {
                     $dummy = $bom.RoutingOperationResources.DelRowAtPos($i);
                 }
-            }    
+            }
+            $bom.RoutingOperationResources.SetCurrentLine(($bom.RoutingOperationResources.Count-1));
             $count = $bom.RoutingsOperationResourceProperties.Count
             for ($i = $count-1; $i -ge 0; $i--) {
                 $bom.RoutingsOperationResourceProperties.SetCurrentLine($i);
@@ -357,6 +359,7 @@ foreach ($csvItem in $bomList) {
                     $dummy = $bom.RoutingsOperationResourceProperties.DelRowAtPos($i);  
                 }
             }
+            $bom.RoutingsOperationResourceProperties.SetCurrentLine(($bom.RoutingsOperationResourceProperties.Count-1));
             $driversRtgOprRsc = New-Object 'System.Collections.Generic.Dictionary[String,int]'
             #Adding resources for operations   
         
