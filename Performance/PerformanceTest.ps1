@@ -13,13 +13,41 @@ $OperationsList = New-Object 'System.Collections.Generic.List[string]';
 $RoutingsList = New-Object 'System.Collections.Generic.List[string]';
 $ItemsDictionary.Add('MAKE', (New-Object 'System.Collections.Generic.List[psobject]'));
 $ItemsDictionary.Add('BUY', (New-Object 'System.Collections.Generic.List[psobject]'));
-[xml] $connectionConfigXml = Get-Content -Encoding UTF8 .\conf\Connection.xml
+
+
+
+$connectionXMLFilePath = $PSScriptRoot + "\conf\Connection.xml";
+
+
+if(!(Test-Path $connectionXMLFilePath -PathType Leaf)){
+    Write-Host -BackgroundColor Red ([string]::Format("File: {0} don't exists.",$connectionXMLFilePath));
+    return;
+}
+[xml] $connectionConfigXml = Get-Content -Encoding UTF8 $connectionXMLFilePath
 $xmlConnection = $connectionConfigXml.SelectSingleNode("/CT_CONFIG/Connection");
-[xml] $TestConfigXml = Get-Content -Encoding UTF8 .\conf\TestConfig.xml
+$xmlTestInfo = $connectionConfigXml.SelectSingleNode("/CT_CONFIG/Test");
+$testType = $xmlTestInfo.Type;
+
+if($testType -eq '3'){
+    $testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfigLong.xml";
+} elseif($testType -eq '2'){
+    $testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfigMedium.xml";
+} else {
+    $testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfig.xml";
+}
+
+if(!(Test-Path $testConfigXMLFilePath -PathType Leaf)){
+    Write-Host -BackgroundColor Red ([string]::Format("File: {0} don't exists.",$testConfigXMLFilePath));
+    return;
+}
+
+[xml] $TestConfigXml = Get-Content -Encoding UTF8 $testConfigXMLFilePath
 $MDConfigXml = $TestConfigXml.SelectSingleNode("/CT_CONFIG/MasterData");
 $UIConfigXML = $TestConfigXml.SelectSingleNode("/CT_CONFIG/UI");
-$RESULT_FILE = $PSScriptRoot + "\Results.csv";
-$RESULT_FILE_CONF = $PSScriptRoot + "\Results_conf.csv";
+$currentDate = Get-Date
+$dateTimeStringForFileName = [string]::Format("{0}_{1}",$currentDate.ToShortDateString().Replace('.','-'),$currentDate.ToLongTimeString().Replace(':',''));
+$RESULT_FILE = $PSScriptRoot + ("\Results_" + $dateTimeStringForFileName + ".csv");
+$RESULT_FILE_CONF = $PSScriptRoot + "\Results_conf_"+$dateTimeStringForFileName+".csv";
 function Imports() {
     [CTLogger] $logJobs = New-Object CTLogger ('DI', 'Import', $RESULT_FILE)
 
@@ -1301,29 +1329,27 @@ function saveTestConfiguration() {
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
 
-    $pingToDbServer = Test-Connection $sqlServer -Count 20
+    $pingToDbServer = (Test-Connection $sqlServer -Count 20)
     $progress.next();
-    $pingToDbServer += Test-Connection $sqlServer -Count 20
+    $pingToDbServer += (Test-Connection $sqlServer -Count 20)
     $progress.next();
-    $pingToDbServer += Test-Connection $sqlServer -Count 20
+    $pingToDbServer += (Test-Connection $sqlServer -Count 20)
 
     Add-Content -Path $RESULT_FILE_CONF 'Ping Database Server:'
     foreach ($pingResponse in  $pingToDbServer) {
-        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, IPV4Address:{2}, IPV6Address{3}, ResponseTime: {4}",
-                $pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.IPV4Address, $pingResponse.IPV6Address, $pingResponse.ResponseTime ))
+        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, ResponseTime [ms]: {2}",$pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.ResponseTime ))
     }
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
 
-    $pingToDbLicenseServer = Test-Connection $licenseServer -Count 20
+    $pingToDbLicenseServer = (Test-Connection $licenseServer -Count 20)
     $progress.next();
-    $pingToDbLicenseServer += Test-Connection $licenseServer -Count 20
+    $pingToDbLicenseServer += (Test-Connection $licenseServer -Count 20)
     $progress.next();
-    $pingToDbLicenseServer += Test-Connection $licenseServer -Count 20
+    $pingToDbLicenseServer += (Test-Connection $licenseServer -Count 20)
     Add-Content -Path $RESULT_FILE_CONF 'Ping License Server:'
     foreach ($pingResponse in  $pingToDbLicenseServer) {
-        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, IPV4Address:{2}, IPV6Address{3}, ResponseTime: {4}",
-                $pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.IPV4Address, $pingResponse.IPV6Address, $pingResponse.ResponseTime ))
+        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, ResponseTime [ms]: {2}",$pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.ResponseTime ))
     }
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <CT_CONFIG>
-    <Connection Database="MB" 
-    SQLServer="192.168.230.2:30015" 
-    LicenseServer="192.168.230.2:40000" 
+    <Connection Database="PFDEMOGB_MICHALB" 
+    SQLServer="10.0.0.240:30015" 
+    LicenseServer="10.0.0.240:40000" 
     DbServerType="dst_HANADB" 
     UserName="manager" Password="1234"/>
+    <!-- Type: 1 - Short, 2 - Medium, 3 - Long -->
+    <Test Type="1"/>
 </CT_CONFIG>
