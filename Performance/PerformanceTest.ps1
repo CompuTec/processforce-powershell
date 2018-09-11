@@ -14,12 +14,26 @@ $RoutingsList = New-Object 'System.Collections.Generic.List[string]';
 $ItemsDictionary.Add('MAKE', (New-Object 'System.Collections.Generic.List[psobject]'));
 $ItemsDictionary.Add('BUY', (New-Object 'System.Collections.Generic.List[psobject]'));
 
+
+
 $connectionXMLFilePath = $PSScriptRoot + "\conf\Connection.xml";
-$testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfig.xml";
+
 
 if(!(Test-Path $connectionXMLFilePath -PathType Leaf)){
     Write-Host -BackgroundColor Red ([string]::Format("File: {0} don't exists.",$connectionXMLFilePath));
     return;
+}
+[xml] $connectionConfigXml = Get-Content -Encoding UTF8 $connectionXMLFilePath
+$xmlConnection = $connectionConfigXml.SelectSingleNode("/CT_CONFIG/Connection");
+$xmlTestInfo = $connectionConfigXml.SelectSingleNode("/CT_CONFIG/Test");
+$testType = $xmlTestInfo.Type;
+
+if($testType -eq '3'){
+    $testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfigLong.xml";
+} elseif($testType -eq '2'){
+    $testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfigMedium.xml";
+} else {
+    $testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfig.xml";
 }
 
 if(!(Test-Path $testConfigXMLFilePath -PathType Leaf)){
@@ -27,9 +41,6 @@ if(!(Test-Path $testConfigXMLFilePath -PathType Leaf)){
     return;
 }
 
-
-[xml] $connectionConfigXml = Get-Content -Encoding UTF8 $connectionXMLFilePath
-$xmlConnection = $connectionConfigXml.SelectSingleNode("/CT_CONFIG/Connection");
 [xml] $TestConfigXml = Get-Content -Encoding UTF8 $testConfigXMLFilePath
 $MDConfigXml = $TestConfigXml.SelectSingleNode("/CT_CONFIG/MasterData");
 $UIConfigXML = $TestConfigXml.SelectSingleNode("/CT_CONFIG/UI");
