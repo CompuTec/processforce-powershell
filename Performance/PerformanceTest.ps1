@@ -1318,7 +1318,7 @@ function saveTestConfiguration() {
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
 
-    $pingToDbServer = (Test-Connection $sqlServer -Count 60)
+    $pingToDbServer = (Test-Connection $sqlServer -Count 20)
     $progress.next();
     $pingToDbServer += (Test-Connection $sqlServer -Count 20)
     $progress.next();
@@ -1331,7 +1331,7 @@ function saveTestConfiguration() {
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
 
-    $pingToDbLicenseServer = (Test-Connection $licenseServer -Count 60)
+    $pingToDbLicenseServer = (Test-Connection $licenseServer -Count 20)
     $progress.next();
     $pingToDbLicenseServer += (Test-Connection $licenseServer -Count 20)
     $progress.next();
