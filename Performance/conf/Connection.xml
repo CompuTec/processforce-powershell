@@ -5,4 +5,6 @@
     LicenseServer="10.0.0.240:40000" 
     DbServerType="dst_HANADB" 
     UserName="manager" Password="1234"/>
+    <!-- Type: 1 - Short, 2 - Medium, 3 - Long -->
+    <Test Type="1"/>
 </CT_CONFIG>
