@@ -1326,7 +1326,7 @@ function saveTestConfiguration() {
 
     Add-Content -Path $RESULT_FILE_CONF 'Ping Database Server:'
     foreach ($pingResponse in  $pingToDbServer) {
-        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, ResponseTime: {2}",$pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.ResponseTime ))
+        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, ResponseTime [ms]: {2}",$pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.ResponseTime ))
     }
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
@@ -1338,7 +1338,7 @@ function saveTestConfiguration() {
     $pingToDbLicenseServer += (Test-Connection $licenseServer -Count 20)
     Add-Content -Path $RESULT_FILE_CONF 'Ping License Server:'
     foreach ($pingResponse in  $pingToDbLicenseServer) {
-        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, ResponseTime: {2}",$pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.ResponseTime ))
+        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, ResponseTime [ms]: {2}",$pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.ResponseTime ))
     }
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
