@@ -1,8 +1,8 @@
 TestProtocolCode;PropertyCode;Expression;RangeFrom;RangeTo;UoM;ReferenceCode;ValidFrom;ValidTo;Remarks
-TP1;1;BT;12.1;43;PCE;;2015-01-01;2015-06-25;Remarks
-TP1;2;EQ;;;;13;;;;;
-TP1;3;NE;;31;;;;;
-TP1;4;GT;;12;;;;;
-TP2;5;GE;;4;;;;;
-TP2;6;LT;;11;;;;;
-TP2;7;LE;;13;;;;;
+TP1;01;BT;12.1;43;PCE;;2015-01-01;2015-06-25;Remarks
+TP1;02;EQ;;;;13;;;;;
+TP1;03;NE;;31;;;;;
+TP1;04;GT;;12;;;;;
+TP2;05;GE;;4;;;;;
+TP2;06;LT;;11;;;;;
+TP2;07;LE;;13;;;;;
