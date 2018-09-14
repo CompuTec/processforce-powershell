@@ -5,12 +5,11 @@
 $SCRIPT_VERSION = "3.0"
 # Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
 # Description:
-#      Import Test Protocol. Script add new or will update existing data.   
-#      You need to have all requred files for import. 
+#      Import Test Protocol. Script add new or will update existing data.
+#      You need to have all requred files for import.
 #      Sctipt check that Test Properies exists in the system during importing Test Protocol.
 #      By default script is using his location/startup path as root path for csv files.
 # Warning:
-#   Make sure that item & item details was imported before use this script.
 #   It's recommended run script when all users all disconnected.
 #   Before running this script please do database backup.
 # Troubleshooting:
@@ -284,7 +283,7 @@ foreach ($csvTest in $csvTests) {
     $exists = 0;
     if ($rs.RecordCount -gt 0) {
         $exists = 1
-        $rs.MoveFirst();
+        $dummy = $rs.MoveFirst();
     }
     
        
@@ -293,16 +292,13 @@ foreach ($csvTest in $csvTests) {
     
     
     if ($exists -eq 1) {
-        $test.getByKey($rs.Fields.Item('Code').Value);
+        $dummy = $test.getByKey($rs.Fields.Item('Code').Value);
     }
     else {
         $test.U_TestPrclCode = $csvTest.TestProtocolCode;
         $test.U_TestPrclName = $csvTest.TestProtocolName;
     }
 		
-        
-
-
     $test.U_ItemCode = $csvTest.ItemCode;
     $test.U_TemplateCode = $csvTest.TemplateCode;
 		
@@ -490,9 +486,6 @@ foreach ($csvTest in $csvTests) {
             else {
                 $test.Resources.U_ValidTo = [DateTime]::MinValue;
             }
-				
-				
-				
             $dummy = $test.Resources.Add()
         }
     }
