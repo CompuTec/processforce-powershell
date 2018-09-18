@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Item Details Revisions
 ########################################################################
-$SCRIPT_VERSION = "3.0"
+$SCRIPT_VERSION = "3.1"
 # Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
 # Description:
 #      Import Item Details Revisions. Script add new or will update existing revisions.
@@ -42,28 +42,29 @@ $csvItemsRevisionsPath = -join ($csvImportCatalog, "ItemDetails_Revisions.csv")
 #endregion
 
 #region #Datbase/Company connection settings
- 
-$pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::CreateCompany()
-$pfcCompany.LicenseServer = "10.0.0.240:40000"
-$pfcCompany.SQLServer = "10.0.0.240:30015"
-$pfcCompany.DbServerType = [SAPbobsCOM.BoDataServerTypes]::"dst_HANADB"
-$pfcCompany.Databasename = "PFDEMOGB_MACIEJP"
-$pfcCompany.UserName = "maciejp"
-$pfcCompany.Password = "1234"
+#configuration xml
+$configurationXMLFilePath = -join ($csvImportCatalog, "configuration.xml");
+if (!(Test-Path $configurationXMLFilePath -PathType Leaf)) {
+    Write-Host -BackgroundColor Red ([string]::Format("File: {0} don't exists.", $configurationXMLFilePath));
+    return;
+}
+[xml] $configurationXml = Get-Content -Encoding UTF8 $configurationXMLFilePath
+$xmlConnection = $configurationXml.SelectSingleNode("/configuration/connection");
 
-# where:
- 
-# LicenseServer = SAP LicenceServer name or IP Address with port number (see in SAP Client -> Administration -> Licence -> Licence Administration -> Licence Server)
-# SQLServer     = Server name or IP Address with port number, should be the same like in System Landscape Dirctory (see https://<Server>:<Port>/ControlCenter) - sometimes best is use IP Address for resolve connection problems.
-#
-# DbServerType = [SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2016"     # For MsSQL Server 2016
-#                [SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2014"     # For MsSQL Server 2014
-#                [SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2012"     # For MsSQL Server 2012
-#                [SAPbobsCOM.BoDataServerTypes]::"dst_HANADB"        # For HANA
-#
-# Databasename = Database / schema name (check in SAP Company select form/window, or in MsSQL Management Studio or in HANA Studio)
-# UserName     = SAP user name ex. manager
-# Password     = SAP user password
+$connectionConfirmation = [string]::Format('You are connecting to Database: {0} on Server: {1} as User: {2}. Do you want to continue [y/n]?:', $xmlConnection.Database, $xmlConnection.SQLServer, $xmlConnection.UserName);
+Write-Host $connectionConfirmation -backgroundcolor Yellow -foregroundcolor DarkBlue -NoNewline
+$confirmation = Read-Host
+if (($confirmation -ne 'y') -and ($confirmation -ne 'Y')) {
+    return;
+}
+
+$pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::CreateCompany()
+$pfcCompany.LicenseServer = $xmlConnection.LicenseServer;
+$pfcCompany.SQLServer = $xmlConnection.SQLServer;
+$pfcCompany.DbServerType = [SAPbobsCOM.BoDataServerTypes]::[string]$xmlConnection.DbServerType;
+$pfcCompany.Databasename = $xmlConnection.Database;
+$pfcCompany.UserName = $xmlConnection.UserName;
+$pfcCompany.Password = $xmlConnection.Password;
  
 #endregion
 
@@ -281,8 +282,6 @@ Finally {
     
     if ($pfcCompany.IsConnected) {
         $pfcCompany.Disconnect()
-        
-        write-host " "
         write-host  –backgroundcolor green –foregroundcolor black "Disconnected from the company"
     }
     
