@@ -15,7 +15,7 @@ $SCRIPT_VERSION = "3.1"
 #   https://connect.computec.pl/display/PF930EN/FAQ+PowerShell
 #   https://connect.computec.pl/display/PF920EN/FAQ+PowerShell
 # Script source:
-#   https://connect.computec.pl/display/PF930EN/Quality+Control+scripts
+#   https://connect.computec.pl/display/PF930EN/Item+details+script
 ########################################################################
 Write-Host -backgroundcolor Yellow -foregroundcolor DarkBlue ("Script Version:" + $SCRIPT_VERSION)
 #endregion
