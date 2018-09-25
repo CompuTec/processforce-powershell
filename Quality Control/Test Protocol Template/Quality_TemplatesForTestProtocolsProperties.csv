@@ -1,8 +1,0 @@
-TemplateCode;PropertyCode;Expression;RangeFrom;RangeTo;UoM;ReferenceCode;ValidFrom;ValidTo
-T1;1;BT;12.1;43;PCE;51;2015-01-01;2015-06-25
-T1;2;EQ;;;;13;;;
-T2;3;NE;;31;;;;;
-T2;4;GT;;12;;;;;
-T2;5;GE;;4;;;;;
-T2;6;LT;;11;;;;;
-T3;7;LE;;13;;;;;2015-07-31

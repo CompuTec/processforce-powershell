@@ -1,0 +1,8 @@
+Key;PropertyCode;Expresion;RangeFrom;RangeTo;UoM;TestedValue;ReferenceCode;TestedRefCode;Pass_Fail;ReasonCode;Remarks
+1;01;BT;12.1;43;PCE;;;;;;
+1;02;EQ;;;;;13;;;;
+1;03;NE;;31;;;;;;;
+1;04;GT;;12;;;;;;;
+2;05;GE;;4;;;;;;;
+2;06;LE;;11;;;;;;;
+2;07;LT;;13;;;;;;;
