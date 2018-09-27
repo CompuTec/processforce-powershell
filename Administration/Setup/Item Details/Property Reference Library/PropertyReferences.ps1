@@ -202,24 +202,7 @@ try {
 }
 Catch {
     $err = $_.Exception.Message;
-    $ms = [string]::Format("Exception occured:", $err);
-    Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
-    if ($pfcCompany.InTransaction) {
-        $pfcCompany.EndTransaction([CompuTec.ProcessForce.API.StopTransactionType]::Rollback);
-    } 
-}
-Finally {
-    #region Close connection
-    if ($pfcCompany.IsConnected) {
-        $pfcCompany.Disconnect()
-        Write-Host '';
-        write-host  –backgroundcolor green –foregroundcolor black "Disconnected from the company"
-    }
-    #endregion
-}
-Catch {
-    $err = $_.Exception.Message;
-    $ms = [string]::Format("Exception occured:", $err);
+    $ms = [string]::Format("Exception occured: {0}", $err);
     Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
     if ($pfcCompany.InTransaction) {
         $pfcCompany.EndTransaction([CompuTec.ProcessForce.API.StopTransactionType]::Rollback);

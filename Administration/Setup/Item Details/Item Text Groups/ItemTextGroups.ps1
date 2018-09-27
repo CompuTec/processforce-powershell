@@ -168,7 +168,7 @@ try {
 }
 Catch {
     $err = $_.Exception.Message;
-    $ms = [string]::Format("Exception occured:", $err);
+    $ms = [string]::Format("Exception occured: {0}", $err);
     Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
     if ($pfcCompany.InTransaction) {
         $pfcCompany.EndTransaction([CompuTec.ProcessForce.API.StopTransactionType]::Rollback);
