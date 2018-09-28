@@ -330,7 +330,7 @@ try {
     #endregion
     
     Write-Host '';
-    Write-Host 'Adding/updating data:' -NoNewline;
+    Write-Host 'Adding/updating data: ' -NoNewline;
     $progressItterator = 0;
     $progres = 0;
     $beforeProgress = 0;

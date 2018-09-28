@@ -215,7 +215,7 @@ try {
 
 
     write-host ""
-    Write-Host 'Adding/updating data:' -NoNewline;
+    Write-Host 'Adding/updating data: ' -NoNewline;
 
     $totalRows = $operationsList.Count;
     $progressItterator = 0;

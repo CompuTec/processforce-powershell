@@ -299,8 +299,7 @@ try {
     }
 	
     Write-Host '';
-    Write-Host 'Adding/updating data:';
-
+    Write-Host 'Adding/updating data: ' -NoNewLine;
 
     if ($qcTestsList.Count -gt 1) {
         $total = $qcTestsList.Count

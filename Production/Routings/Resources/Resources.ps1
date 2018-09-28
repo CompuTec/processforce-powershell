@@ -189,7 +189,7 @@ try {
         $list.Add([array]$row);
     }
     Write-Host '';
-    Write-Host 'Adding/updating data:' -NoNewline;
+    Write-Host 'Adding/updating data: ' -NoNewline;
     #endregion
 
     $progressItterator = 0;

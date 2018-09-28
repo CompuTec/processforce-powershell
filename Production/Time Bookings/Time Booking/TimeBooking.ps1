@@ -146,7 +146,7 @@ try {
     }
 
     Write-Host '';
-    Write-Host 'Adding/updating data:' -NoNewline;
+    Write-Host 'Adding/updating data: ' -NoNewline;
     if ($downtimeList.Count -gt 1) {
         $total = $downtimeList.Count
     }

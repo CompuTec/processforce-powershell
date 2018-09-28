@@ -236,7 +236,7 @@ try {
     }
 
     Write-Host '';
-    Write-Host 'Adding/updating data:' -NoNewline;
+    Write-Host 'Adding/updating data: ' -NoNewline;
     if ($routingsList.Count -gt 1) {
         $total = $routingsList.Count
     }

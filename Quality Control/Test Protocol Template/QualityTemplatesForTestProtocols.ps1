@@ -153,7 +153,7 @@ try {
     }
 
     Write-Host '';
-    Write-Host 'Adding/updating data:';
+    Write-Host 'Adding/updating data: ' -NoNewLine;
 
     if ($protocolsList.Count -gt 1) {
         $total = $protocolsList.Count

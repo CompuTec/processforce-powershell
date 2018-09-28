@@ -152,7 +152,7 @@ try {
     }
 
     Write-Host '';
-    Write-Host 'Adding/updating data:';
+    Write-Host 'Adding/updating data: ' -NoNewLine;
 
 
     $rs = $pfcCompany.CreateSapObject([SAPbobsCOM.BoObjectTypes]"BoRecordset")

@@ -268,7 +268,7 @@ try {
 
 
     Write-Host '';
-    Write-Host 'Adding/updating data:';
+    Write-Host 'Adding/updating data: ' -NoNewLine;
 
     #Data loading from a csv file - Header information for Test Protocol
     $csvTests = $protocolsList;

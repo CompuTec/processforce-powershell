@@ -278,7 +278,7 @@ try {
     }
 
     Write-Host '';
-    Write-Host 'Adding/updating data:' -NoNewline;
+    Write-Host 'Adding/updating data: ' -NoNewline;
 
     if ($itemIngredientsList.Count -gt 1) {
         $total = $itemIngredientsList.Count

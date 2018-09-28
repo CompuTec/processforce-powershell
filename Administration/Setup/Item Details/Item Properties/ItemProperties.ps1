@@ -153,7 +153,7 @@ try {
 	}
 
 	Write-Host '';
-	Write-Host 'Adding/updating data:';
+	Write-Host 'Adding/updating data: ' -NoNewline;
 
     $rs = $pfcCompany.CreateSapObject([SAPbobsCOM.BoObjectTypes]"BoRecordset")
     if ($itemProplist.Count -gt 1) {

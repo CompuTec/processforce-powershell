@@ -152,7 +152,7 @@ try {
     }
 
     Write-Host '';
-    Write-Host 'Adding/updating data:';
+    Write-Host 'Adding/updating data: ' -NoNewLine;
 
     if ($testProplist.Count -gt 1) {
         $total = $testProplist.Count
