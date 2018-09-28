@@ -1,3 +1,3 @@
 BOM_ItemCode;Revision;Quantity;Factor;Warehouse;DistRule;DistRule2;DistRule3;DistRule4;DistRule5;Project;BatchSize;ProdType
-LM4029;code00;1;1;01;01;;;;;;1;I
-SubFG;code00;1;1;01;01;;;;;;1;E
+Product-A;code00;1;1;01;01;;;;;;1;I
+Product-B;code00;1;1;01;01;;;;;;1;E

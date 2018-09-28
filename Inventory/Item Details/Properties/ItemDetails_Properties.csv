@@ -1,8 +1,0 @@
-ItemCode;PropertyCode;Expression;RangeFrom;RangeTo;ReferenceCode;Remarks
-A00001;01;Between;12.1;43;;Remarks1
-A00001;02;Equal;;13;;Remarks2
-A00002;01;NotEqual;;31;;Remarks1
-A00002;02;GratherThan;;12;;Remarks2
-A00002;03;GratherThanOrEqual;;;4;Remarks3
-A00002;04;LessThan;;11;;Remarks4
-A00002;05;LessThanOrEqual;;;13;Remarks5	

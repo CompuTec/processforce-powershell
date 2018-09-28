@@ -1,2 +1,2 @@
 BOM_ItemCode;Revision;Sequence;ItemCode;Item_Revision;Warehouse;Factor;FactorDesc;Quantity;IssueType;OcrCode;OcrCode2;OcrCode3;OcrCode4;OcrCode5;Project;Remarks;Formula
-LM4029;code00;10;LM4029SB;code00;01;10;FDesc1;124;M;1;;;;;IT;Remark5;=U_Quantity()*U_Factor()*CoProducts.U_Factor(10)*CoProducts.U_Quantity(10)
+Product-A;code00;10;Coproduct-01;code00;01;10;FDesc1;124;M;01;;;;;IT;Remark5;=U_Quantity()*U_Factor()*CoProducts.U_Factor(10)*CoProducts.U_Quantity(10)

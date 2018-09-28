@@ -1,8 +1,0 @@
-Key;PropertyCode;Expresion;RangeFrom;RangeTo;UoM;TestedValue;ReferenceCode;TestedRefCode;Pass_Fail;ReasonCode;Remarks
-1;1;Between;12.1;43;PCE;;;;;;
-1;2;Equal;;;;;13;;;;
-1;3;NotEqual;;31;;;;;;;
-1;4;GratherThan;;12;;;;;;;
-2;5;GratherThanOrEqual;;4;;;;;;;
-2;6;LessThan;;11;;;;;;;
-2;7;LessThanOrEqual;;13;;;;;;;

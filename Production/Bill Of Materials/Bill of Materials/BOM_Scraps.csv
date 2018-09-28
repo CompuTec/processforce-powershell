@@ -1,2 +1,2 @@
 BOM_ItemCode;Revision;Sequence;ItemCode;Item_Revision;Warehouse;Factor;FactorDesc;Quantity;Type;IssueType;OcrCode;OcrCode2;OcrCode3;OcrCode4;OcrCode5;Project;Remarks;Formula
-LM4029;code00;10;LM4029PS;code00;01;10;FDesc1;1.1;2;M;1;;;;;IT;Remark4;=Scraps.U_Quantity(10)
+Product-A;code00;10;Scrap-01;code00;01;10;FDesc1;1.1;2;M;01;;;;;IT;Remark4;=Scraps.U_Quantity(10)

@@ -1,0 +1,4 @@
+ItemCode;TextCode;ProductionOrders;ShipmentDocuments;PickLists;MSDS;PurchaseOrders;Returns;Other
+Product-A;01;1;1;1;0;0;0;0
+Product-A;02;0;0;0;1;1;1;1
+Product-B;01;1;1;1;1;1;1;1

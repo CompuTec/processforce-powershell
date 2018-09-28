@@ -1,0 +1,8 @@
+Key;TestProtocolCode;PropertyCode;Expression;RangeFrom;RangeTo;ReferenceCode;TestedRefCode;Pass_Fail;ReasonCode;Remarks
+1;TP1;1;BT;12.1;43;;;;;
+1;TP1;2;EQ;;;13;;;;
+1;TP1;1;NE;;31;;;;;
+1;TP1;2;GT;;12;;;;;
+2;TP2;3;GE;;4;;;;;
+2;TP2;4;LT;;11;;;;;
+2;TP2;5;LE;;13;;;;;

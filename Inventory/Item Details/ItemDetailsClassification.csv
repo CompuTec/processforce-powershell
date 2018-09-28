@@ -1,0 +1,8 @@
+ItemCode;ClassificationCode;ProductionOrders;ShipmentDocuments;PickLists;MSDS;PurchaseOrders;Returns;Other
+Product-A;1;1;1;1;0;0;0;0
+Product-A;2;0;0;0;1;1;1;1
+Product-B;1;1;1;1;1;1;1;1
+Product-B;2;0;0;0;0;0;0;0
+Product-B;3;0;0;0;0;0;0;0
+Product-B;4;0;0;0;0;0;0;0
+Product-B;5;0;0;0;0;0;0;0
