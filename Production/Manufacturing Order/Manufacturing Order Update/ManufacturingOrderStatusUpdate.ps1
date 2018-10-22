@@ -161,7 +161,7 @@ try {
         Write-Host -BackgroundColor Yellow -ForegroundColor Blue ([string]::Format("{0} Manufacturing Orders updated. Operation completed", [string]$recordCount));
     }
     else {
-        Write-Host -BackgroundColor Yellow -ForegroundColor Blue "SQL Query didn't return any errors"
+        Write-Host -BackgroundColor Yellow -ForegroundColor Blue "SQL Query didn't return any records"
     }
 }
 Catch {
