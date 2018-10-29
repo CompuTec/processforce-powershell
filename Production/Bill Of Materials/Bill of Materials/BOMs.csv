@@ -1,3 +1,3 @@
-BOM_ItemCode;Revision;Quantity;Factor;Warehouse;DistRule;DistRule2;DistRule3;DistRule4;DistRule5;Project;BatchSize;ProdType
-Product-A;code00;1;1;01;01;;;;;;1;I
+BOM_ItemCode;Revision;Quantity;Factor;Warehouse;DistRule;DistRule2;DistRule3;DistRule4;DistRule5;Project;BatchSize;ProdType;Instructions
+Product-A;code00;1;1;01;01;;;;;;1;I;Some Instructions
 Product-B;code00;1;1;01;01;;;;;;1;E
