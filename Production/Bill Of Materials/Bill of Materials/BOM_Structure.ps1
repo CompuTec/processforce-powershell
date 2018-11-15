@@ -2,8 +2,8 @@
 ########################################################################
 # CompuTec PowerShell Script - Import Bill of Materials Structures
 ########################################################################
-$SCRIPT_VERSION = "3.1"
-# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
+$SCRIPT_VERSION = "3.2"
+# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 05 R1 HF1 (64-bit)
 # Description:
 #      Import Bill of Materials Structures. Script add new BOMs or will update existing BOMs.    
 #      You need to have all requred files for import. The BOM_Coproducts.csv & BOM_Scraps.csv can be empty except first header line)
@@ -104,7 +104,7 @@ try {
     #Data loading from a csv file
     write-host ""
 
-    $csvItems = Import-Csv -Delimiter ';' -Path $csvBomFilePath
+    [array]$csvItems = Import-Csv -Delimiter ';' -Path $csvBomFilePath
     [array]$bomItems = Import-Csv -Delimiter ';' -Path $csvBomItemsFilePath 
     [array]$bomScraps = $null;
     if ((Test-Path -Path $csvBomscrapsFilePath -PathType leaf) -eq $true) {
@@ -281,13 +281,12 @@ try {
 
             $bomItems = $dictionaryItems[$dictionaryKey]
 
+            #Deleting all existing items
+            $count = $bom.Items.Count
+            for ($i = 0; $i -lt $count; $i++) {
+                $dummy = $bom.Items.DelRowAtPos(0);
+            }
             if ($bomItems.count -gt 0) {
-                #Deleting all existing items
-                $count = $bom.Items.Count
-                for ($i = 0; $i -lt $count; $i++) {
-                    $dummy = $bom.Items.DelRowAtPos(0);
-                }
-         
                 #Adding the new data       
                 foreach ($item in $bomItems) {
                     $bom.Items.U_Sequence = $item.Sequence
@@ -324,14 +323,12 @@ try {
             #Data loading from a csv file - BOM Coproducts
             [array]$bomCoproducts = @();
             $bomCoproducts = $dictionaryCoproducts[$dictionaryKey];
-
+            #Deleting all existing items
+            $count = $bom.Coproducts.Count
+            for ($i = 0; $i -lt $count; $i++) {
+                $dummy = $bom.Coproducts.DelRowAtPos(0);
+            }
             if ($bomCoproducts.Count -gt 0) {
-                #Deleting all existing items
-                $count = $bom.Coproducts.Count
-                for ($i = 0; $i -lt $count; $i++) {
-                    $dummy = $bom.Coproducts.DelRowAtPos(0);
-                }
-         
                 #Adding the new data       
                 foreach ($coproducts in $bomCoproducts) {
                     $bom.Coproducts.U_Sequence = $coproducts.Sequence
@@ -359,14 +356,12 @@ try {
             #Data loading from a csv file - BOM Scraps
             [array]$bomScraps = @();
             $bomScraps = $dictionaryScraps[$dictionaryKey];
-
+            #Deleting all existing items
+            $count = $bom.Scraps.Count
+            for ($i = 0; $i -lt $count; $i++) {
+                $dummy = $bom.Scraps.DelRowAtPos(0);
+            }
             if ($bomScraps.count -gt 0) {
-                #Deleting all existing items
-                $count = $bom.Scraps.Count
-                for ($i = 0; $i -lt $count; $i++) {
-                    $dummy = $bom.Scraps.DelRowAtPos(0);
-                }
-         
                 #Adding the new data       
                 foreach ($scraps in $bomScraps) {
                     $bom.Scraps.U_Sequence = $scraps.Sequence
