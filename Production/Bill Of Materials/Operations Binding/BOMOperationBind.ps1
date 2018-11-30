@@ -3,8 +3,8 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import BOM Bindings
 ########################################################################
-$SCRIPT_VERSION = "3.0"
-# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
+$SCRIPT_VERSION = "3.1"
+# Last tested PF version: ProcessForce 9.3 (9.30.150) PL: 05 R1 HF1 (64-bit)
 # Description:
 #      Import BOM Bindings. Script will update existing BOM Bindings.
 #      You need to have all requred files for import.
