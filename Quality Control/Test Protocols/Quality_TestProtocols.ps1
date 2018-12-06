@@ -2,8 +2,8 @@
 ########################################################################
 # CompuTec PowerShell Script - Import Quality Control Test Protocols
 ########################################################################
-$SCRIPT_VERSION = "3.2"
-# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
+$SCRIPT_VERSION = "3.3"
+# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 05 R1 HF1 (64-bit)
 # Description:
 #      Import Test Protocol. Script add new or will update existing data.
 #      You need to have all requred files for import.
@@ -281,6 +281,11 @@ try {
     $progressItterator = 0;
     $progress = 0;
     $beforeProgress = 0;
+
+    $qmTP = New-Object 'CompuTec.Core.DI.Database.QueryManager';
+    $qmTP.CommandText = "SELECT ""U_TestPrclCode"", ""Code"" FROM ""@CT_PF_OTCL"" WHERE ""U_TestPrclCode"" = @TestPrclCode";
+    $qmTestPrp = New-Object 'CompuTec.Core.DI.Database.QueryManager'
+    $qmTestPrp.CommandText = "SELECT ""U_TestPrpCode"" FROM ""@CT_PF_OTPR"" WHERE ""U_TestPrpCode"" = @TestPrpCode;";
     #Checking that Test Protocol already exist 
     foreach ($csvTest in $csvTests) {
         try {
@@ -290,9 +295,10 @@ try {
                 Write-Host $progress"% " -NoNewline
                 $beforeProgress = $progress
             }
-            $rs = $pfcCompany.CreateSapObject([SAPbobsCOM.BoObjectTypes]"BoRecordset")
-     
-            $rs.DoQuery([string]::Format( "SELECT ""U_TestPrclCode"", ""Code"" FROM ""@CT_PF_OTCL"" WHERE ""U_TestPrclCode"" = N'{0}'", $csvTest.TestProtocolCode))
+            
+            $qmTP.ClearParameters();
+            $qmTP.AddParameter("TestPrclCode",$csvTest.TestProtocolCode);
+            $rs = $qmTP.Execute($pfcCompany.Token);   
             $exists = $false;
             if ($rs.RecordCount -gt 0) {
                 $exists = $true;
@@ -376,11 +382,11 @@ try {
                 #Adding Properties
                 foreach ($prop in $Properties) {
                     #Check that TestProperty exist in the system
-                    $rs = $pfcCompany.CreateSapObject([SAPbobsCOM.BoObjectTypes]"BoRecordset")
-                    $query = [string]::Format("select ""U_TestPrpCode"" from ""@CT_PF_OTPR"" where ""U_TestPrpCode"" = '{0}';", $prop.PropertyCode);
-                    $rs.DoQuery($query)
+                    $qmTestPrp.ClearParameters();
+                    $qmTestPrp.AddParameter("TestPrpCode",$prop.PropertyCode);
+                    $rsProp = $qmTestPrp.Execute($pfcCompany.Token);
      
-                    if ($rs.RecordCount -eq 0) {
+                    if ($rsProp.RecordCount -eq 0) {
                         write-host "   Test Protocol:" $test.U_TestPrclCode "-> Test Property code:" $prop.PropertyCode " can't be found (Pleas add it in Test Properties or check your import data for importing: Test Properties -> file: TestProperties.csv)" -backgroundcolor red -foregroundcolor white $_.Exception.Message
                         continue;
                     }
