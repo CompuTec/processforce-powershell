@@ -3,8 +3,8 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Production Processes
 ########################################################################
-$SCRIPT_VERSION = "3.0"
-# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
+$SCRIPT_VERSION = "3.1"
+# Last tested PF version: ProcessForce 9.3 (9.30.170) PL: 07 R1 Pre-Release (64-bit)
 # Description:
 #      Import Production Processes. Script add new or will update existing Production Processes.
 #      You need to have all requred files for import.
@@ -380,10 +380,13 @@ try {
                     if ($bomRoutingsOperationsProperties.count -gt 0) {
                         #Deleting all existing properties
                         $count = $bom.RoutingOperationProperties.Count
-                        for ($i = 0; $i -lt $count; $i++) {
-                            $dummy = $bom.RoutingOperationProperties.DelRowAtPos(0);
+                        for ($i = $count - 1; $i -ge 0; $i--) {
+                            $bom.RoutingOperationProperties.SetCurrentLine($i);
+                            if ($bom.RoutingOperationProperties.U_RtgCode -eq $rtg.RoutingCode) {
+                                $dummy = $bom.RoutingOperationProperties.DelRowAtPos($i);
+                            }
                         }
-		        
+                        $bom.RoutingOperationProperties.SetCurrentLine(($bom.RoutingOperationProperties.Count - 1));
                         #Adding the new data       
                         foreach ($prop in $bomRoutingsOperationsProperties) {
                             $drivers_key = $prop.RoutingCode + '@#@' + $prop.Sequence;
@@ -524,14 +527,14 @@ try {
                         $opResourceProperties = $dictionaryResourceProperties[$dictionaryKeyRt];
                         if ($opResourceProperties.count -gt 0) {
                             #Deleting all existing resources
-                            $count = $bom.RoutingsOperationResourceProperties.Count - 1
-                            if ($count -gt 1) {
-                                for ($i = 0; $i -lt $count; $i++) {
-			   
-			           
-                                    $dummy = $bom.RoutingsOperationResourceProperties.DelRowAtPos(0); 
+                            $count = $bom.RoutingsOperationResourceProperties.Count
+                            for ($i = $count-1; $i -ge 0; $i--) {
+                                $bom.RoutingsOperationResourceProperties.SetCurrentLine($i);
+                                if ($bom.RoutingsOperationResourceProperties.U_RtgCode -eq $rtg.RoutingCode) {
+                                    $dummy = $bom.RoutingsOperationResourceProperties.DelRowAtPos($i); 
                                 }
                             }
+                            $bom.RoutingsOperationResourceProperties.SetCurrentLine(($bom.RoutingsOperationResourceProperties.Count - 1));
 			        
                             #Adding the new data
                             foreach ($opResProp in $opResourceProperties) {
