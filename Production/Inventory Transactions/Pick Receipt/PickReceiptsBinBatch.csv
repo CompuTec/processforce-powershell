@@ -1,0 +1,5 @@
+MORDocEntry;MORLineNum;MORBaseType;BinAbsEntry;Batch;Quantity;Status;QCStatus;BatchAttribute1;BatchAttribute2;ExpiryDate;ExpiryTime;MnfDate;AdmDate;Location;Details;ConsDate;WCoDate;WExDate;InDate;LstInDate;NxtInDate;SupNumber;Origin;BestBefDate;Remarks
+22;0;HR;;B2;0.5;R;P;BA1;BA2;2130-12-31;11:00;;;;;;;;;;;;;;Some Remarks
+22;0;HR;;B3;1.5;;;;;;;;;;;;;;;;;;;;
+22;1;SC;;S1;2;;;;;;;;;;;;;;;;;;;;
+22;1;CP;;C1;3;;;;;;;;;;;;;;;;;;;;

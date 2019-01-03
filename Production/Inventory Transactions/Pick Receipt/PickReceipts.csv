@@ -1,2 +1,2 @@
-MORDocEntry;PickDocEntry;Status;Series;Date;Ref2;CreateGoodsReceipt
-37;;;;2018-12-31;Test;Y
+MORDocEntry;PickDocEntry;Status;Date;Ref2;Remarks;Employee;CreateGoodsReceipt
+22;;;2018-12-31;Test;;;Y
