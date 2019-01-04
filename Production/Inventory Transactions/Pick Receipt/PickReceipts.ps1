@@ -241,10 +241,10 @@ try {
             
             if ($newPickReceipt) {
                 $pickReceiptAction = $pfcCompany.CreatePFAction([CompuTec.ProcessForce.API.Core.ActionType]::CreatePickReceiptForProductionReceipt);
-                $pickReceiptAction.AddManufacturingOrderDocEntry($csvItem.MORDocEntry);
+                $dummy = $pickReceiptAction.AddManufacturingOrderDocEntry($csvItem.MORDocEntry);
                 $pickReceiptAction.ReceiptType = [CompuTec.ProcessForce.API.Actions.CreatePickReceiptForProductionReceipt.PickOrderdReceiptType]::All
                 $docentryPickReceipt = 0;
-                $pickReceiptAction.DoAction([ref] $docentryPickReceipt);
+                $dummy = $pickReceiptAction.DoAction([ref] $docentryPickReceipt);
             }
 
             try {
@@ -461,7 +461,7 @@ try {
 
                         $pickReceipt.PickedItems.U_Quantity = $batch.Quantity;
                         $pickReceipt.PickedItems.U_ReqItmLn = $pickReceiptLineNum;
-                        $batch.BatchLineNum = $pickReceiptLineNum;
+                        $batch.BatchLineNum = $pickReceipt.PickedItems.U_LineNum;
                         $dummy = $pickReceipt.PickedItems.Add();
 
                         #Specify relation Beetween picked and Required Line 

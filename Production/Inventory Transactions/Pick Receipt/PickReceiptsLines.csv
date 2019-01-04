@@ -1,4 +1,4 @@
 MORDocEntry;MORLineNum;MORBaseType;ItemCode;Revision;PickLineNum;PickedQty;DstWhsCode;Price;Project;OcrCode;OcrCode2;OcrCode3;OcrCode4;OcrCode5
-22;0;HR;Recipe-02;code00;;2;;;;;;;;
+22;0;HR;Recipe-02;code00;;2;02;;;;;;;
 22;1;SC;Scrap-01;code00;;2;;;;;;;;
 22;1;CP;ByProduct-01;code00;;3;;;;;;;;
