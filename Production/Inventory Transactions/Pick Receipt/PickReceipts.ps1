@@ -6,7 +6,7 @@ Clear-Host
 $SCRIPT_VERSION = "3.0"
 # Last tested PF version: ProcessForce 9.3 (9.30.170) PL: 07 R1 Pre-Release (64-bit)
 # Description:
-#      Import Time Bookings. Script add new Time Bookings.
+#      Import Pick Receipt documents. Script add or update Pick Receipts.
 #      You need to have all requred files for import.
 # Warning:
 #   It's recommended run script when all users all disconnected.
