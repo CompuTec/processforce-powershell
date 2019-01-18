@@ -198,76 +198,79 @@ try {
                 Throw [System.Exception]($err);
             }
        
-            $key = [string] $csvItem.BOM_Header + "___" + [string] $csvItem.Routing;
+            $key = [string] $csvItem.BOM_Header + "___" + [string] $csvItem.Revision;
             [array]$bomBindings = $BOMsBindingsDict[$key];
-            if ($bomBindings.count -gt 0) {
-                #Deleting all existing routings, operations, resources
-                $count = $bom.RoutingsOperationInputOutput.Count;
-                for ($i = 0; $i -lt $count; $i++) {
-                    $dummy = $bom.RoutingsOperationInputOutput.DelRowAtPos(0);
-                }            
-                $bom.RoutingsOperationInputOutput.SetCurrentLine($bom.RoutingsOperationInputOutput.Count - 1);
+            if ($bomBindings.count -eq 0) {
+                $err = [string]::Format("Missing bindings positions for Item Code: {0} and Revision: {1}", $csvItem.BOM_Header, $csvItem.Revision);
+                Throw [System.Exception]($err);
+            }
+
+            #Deleting all existing routings, operations, resources
+            $count = $bom.RoutingsOperationInputOutput.Count;
+            for ($i = 0; $i -lt $count; $i++) {
+                $dummy = $bom.RoutingsOperationInputOutput.DelRowAtPos(0);
+            }            
+            $dummy = $bom.RoutingsOperationInputOutput.SetCurrentLine($bom.RoutingsOperationInputOutput.Count - 1);
          
-                #Adding a new data - Bind
-                foreach ($bb in $bomBindings) { 
-                    $rs.DoQuery([string]::Format($SQL_QUERY_RTGCODE, $bb.RoutingCode, $bb.OperationCode, $bb.OperationSequence, $bb.BOM_Header, $bb.Revision));
+            #Adding a new data - Bind
+            foreach ($bb in $bomBindings) { 
+                $rs.DoQuery([string]::Format($SQL_QUERY_RTGCODE, $bb.RoutingCode, $bb.OperationCode, $bb.OperationSequence, $bb.BOM_Header, $bb.Revision));
 
-                    if ($rs.RecordCount -gt 0) {
+                if ($rs.RecordCount -gt 0) {
                 
-                        $bom.RoutingsOperationInputOutput.U_RtgOprCode = $rs.Fields.Item(0).Value
-                    }
-                    else {
-                        $err = [System.String]::Format("Error adding binding Routing: {0}, Operation: {1}, OperationSequence: {2}
-                 - RECORD NOT FOUND", $bb.RoutingCode, $bb.OperationCode, $bb.OperationSequence);
-                        Throw [System.Exception]($err);
-                    }
-
-                    $rs.DoQuery([string]::Format($SQL_QUERY_BASELINE, $bb.BOM_Header, $bb.Revision, $bb.ItemCode, $bb.ItemType , $bb.ItemSequence));
-
-                    $bom.RoutingsOperationInputOutput.U_RtgCode = $bb.RoutingCode
-                    $bom.RoutingsOperationInputOutput.U_OprCode = $bb.OperationCode
-                    $bom.RoutingsOperationInputOutput.U_ItemCode = $bb.ItemCode
-                    $bom.RoutingsOperationInputOutput.U_Direction = $bb.Direction
-
-                    if ($bb.ItemType -eq 'IT') {
-                        $bom.RoutingsOperationInputOutput.U_ItemType = [CompuTec.ProcessForce.API.Enumerators.ManufacturingComponentType]::Item
-                    }
-                    if ($bb.ItemType -eq 'CP') {
-                        $bom.RoutingsOperationInputOutput.U_ItemType = [CompuTec.ProcessForce.API.Enumerators.ManufacturingComponentType]::Cooproduct
-                    }
-                    if ($bb.ItemType -eq 'SC') {
-                        $bom.RoutingsOperationInputOutput.U_ItemType = [CompuTec.ProcessForce.API.Enumerators.ManufacturingComponentType]::Scrap
-                    }
-
-                    if ($bb.TimeCalc -eq 'Y') {
-                        $bom.RoutingsOperationInputOutput.U_InTimeCalc = 'Y'
-                    }
-                    else {
-                        $bom.RoutingsOperationInputOutput.U_InTimeCalc = 'N'
-                    }
-
-                    if ($rs.RecordCount -gt 0) {
-                
-                        $bom.RoutingsOperationInputOutput.U_BaseLine = $rs.Fields.Item(0).Value
-                    }
-                    else {
-                        $err = [System.String]::Format("Error adding binding BOM: {0}, Revision: {1}, ItemCode: {2},
-                IemType: {3}, Sequence: {4} - RECORD NOT FOUND", $bb.BOM_Header, $bb.Revision, $bb.ItemCode, $bb.ItemType , $bb.ItemSequence);
-                        Throw [System.Exception]($err);
-                    }
-
-                    $bom.RoutingsOperationInputOutput.Add();
+                    $bom.RoutingsOperationInputOutput.U_RtgOprCode = $rs.Fields.Item(0).Value
                 }
-        
-                $message = 0
+                else {
+                    $err = [System.String]::Format("Error adding binding Routing: {0}, Operation: {1}, OperationSequence: {2}
+                 - RECORD NOT FOUND", $bb.RoutingCode, $bb.OperationCode, $bb.OperationSequence);
+                    Throw [System.Exception]($err);
+                }
 
-                $message = $bom.Update()
+                $dummy = $rs.DoQuery([string]::Format($SQL_QUERY_BASELINE, $bb.BOM_Header, $bb.Revision, $bb.ItemCode, $bb.ItemType , $bb.ItemSequence));
+
+                $bom.RoutingsOperationInputOutput.U_RtgCode = $bb.RoutingCode
+                $bom.RoutingsOperationInputOutput.U_OprCode = $bb.OperationCode
+                $bom.RoutingsOperationInputOutput.U_ItemCode = $bb.ItemCode
+                $bom.RoutingsOperationInputOutput.U_Direction = $bb.Direction
+
+                if ($bb.ItemType -eq 'IT') {
+                    $bom.RoutingsOperationInputOutput.U_ItemType = [CompuTec.ProcessForce.API.Enumerators.ManufacturingComponentType]::Item
+                }
+                if ($bb.ItemType -eq 'CP') {
+                    $bom.RoutingsOperationInputOutput.U_ItemType = [CompuTec.ProcessForce.API.Enumerators.ManufacturingComponentType]::Cooproduct
+                }
+                if ($bb.ItemType -eq 'SC') {
+                    $bom.RoutingsOperationInputOutput.U_ItemType = [CompuTec.ProcessForce.API.Enumerators.ManufacturingComponentType]::Scrap
+                }
+
+                if ($bb.TimeCalc -eq 'Y') {
+                    $bom.RoutingsOperationInputOutput.U_InTimeCalc = 'Y'
+                }
+                else {
+                    $bom.RoutingsOperationInputOutput.U_InTimeCalc = 'N'
+                }
+
+                if ($rs.RecordCount -gt 0) {
+                
+                    $bom.RoutingsOperationInputOutput.U_BaseLine = $rs.Fields.Item(0).Value
+                }
+                else {
+                    $err = [System.String]::Format("Error adding binding BOM: {0}, Revision: {1}, ItemCode: {2},
+                IemType: {3}, Sequence: {4} - RECORD NOT FOUND", $bb.BOM_Header, $bb.Revision, $bb.ItemCode, $bb.ItemType , $bb.ItemSequence);
+                    Throw [System.Exception]($err);
+                }
+
+                $dummy = $bom.RoutingsOperationInputOutput.Add();
+            }
+        
+            $message = 0
+
+            $message = $bom.Update()
                       
      
-                if ($message -lt 0) {    
-                    $err = $pfcCompany.GetLastErrorDescription()
-                    Throw [System.Exception] ($err)
-                }
+            if ($message -lt 0) {    
+                $err = $pfcCompany.GetLastErrorDescription()
+                Throw [System.Exception] ($err)
             }
         }
         Catch {
