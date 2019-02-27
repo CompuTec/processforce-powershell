@@ -1,0 +1,2 @@
+TemplateCode;TemplateName;DateFormat;Counter;SuppDateFormat;SuppCounter;Formula;SuppFormula
+Tmpl1;Test Template;yyyy-MM-dd;;yyyy-MM-dd;;%Date%||'-'||%Counter%;%Date%||'-'||%Counter%
