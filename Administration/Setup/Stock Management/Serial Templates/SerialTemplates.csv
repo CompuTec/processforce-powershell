@@ -1,0 +1,2 @@
+TemplateCode;TemplateName;DistDateFormat;DistCounter;MnfDateFormat;MnfCounter;LotDateFormat;LotCounter;DistFormula;MnfFormula;LotFormula
+Tmpl1;Test Template;yyyy-MM-dd;;yyyy-MM-dd;;yyyy-MM-dd;;%Date%||'-'||%Counter%;%Date%||'-'||%Counter%;%Date%||'-'||%Counter%
