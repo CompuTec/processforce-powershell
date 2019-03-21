@@ -206,7 +206,7 @@ try {
                     if ($csvItem.ValidTO -ne "") {
                         $md.Lines.U_ValidTo = $csvItem.ValidTO;
                     }
-                    $md.Lines.U_Ratio = $csvItems.Ratio;
+                    $md.Lines.U_Ratio = [double]$csvItem.Ratio;
                     $md.Lines.U_Remarks = $csvItem.Remarks
                     $dummy = $md.Lines.Add();
                 }
