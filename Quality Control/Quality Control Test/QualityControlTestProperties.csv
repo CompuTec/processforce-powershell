@@ -1,4 +1,4 @@
-Key;PropertyCode;Expresion;RangeFrom;RangeTo;UoM;TestedValue;ReferenceCode;TestedRefCode;Pass_Fail;ReasonCode;Remarks
+Key;PropertyCode;Expression;RangeFrom;RangeTo;UoM;TestedValue;ReferenceCode;TestedRefCode;Pass_Fail;ReasonCode;Remarks
 1;01;BT;12.1;43;PCE;;;;;;
 1;02;EQ;;;;;13;;;;
 1;03;NE;;31;;;;;;;
