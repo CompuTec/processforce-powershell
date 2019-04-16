@@ -390,7 +390,7 @@ try {
                 #Adding Properties
                 foreach ($prop in $Properties) {
                     $test.TestResults.U_PrpCode = $prop.PropertyCode;
-                    $test.TestResults.U_Expression = $prop.Expresion;
+                    $test.TestResults.U_Expression = $prop.Expression;
 				
                     if ($prop.RangeFrom -ne "") {
                         $test.TestResults.U_RangeValueFrom = $prop.RangeFrom;

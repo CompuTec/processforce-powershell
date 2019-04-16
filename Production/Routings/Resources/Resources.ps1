@@ -1,4 +1,4 @@
-﻿region #Script info
+﻿#region Script info
 Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Resources
