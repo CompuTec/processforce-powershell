@@ -3,7 +3,8 @@
 # CompuTec PowerShell Script - Import Quality Control Test Protocols
 ########################################################################
 $SCRIPT_VERSION = "3.3"
-# Last tested PF version: ProcessForce 9.3 (9.30.180) PL: 08 R1 (64-bit)
+# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 05 R1 HF1 (64-bit)
+# THIS VERSION CAN BE USED ONLY FOR VERSIONS LOWER THAN ProcessForce 9.3 PL: 08 
 # Description:
 #      Import Test Protocol. Script add new or will update existing data.
 #      You need to have all requred files for import.
@@ -392,18 +393,7 @@ try {
                     }
 
                     $test.Properties.U_PrpCode = $prop.PropertyCode;
-                    
-                    switch ($prop.Expression) {
-                        'BT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Between; break; }
-                        'EQ' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; break; }
-                        'NE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::NotEqual; break; }
-                        'GT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThan; break; }
-                        'GE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThanOrEqual; break; }
-                        'LE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThanOrEqual; break; }
-                        'LT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThan; break; }
-                        Default { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; }
-                    } 
-                    $test.Properties.U_Expression = $EnumExpressionValue;
+                    $test.Properties.U_Expression = $prop.Expression;
 				
                     if ($prop.RangeFrom -ne "") {
                         $test.Properties.U_RangeValueFrom = $prop.RangeFrom;
@@ -453,18 +443,10 @@ try {
 	         
                 #Adding Item Properies
                 foreach ($itprop in $ItemProperties) {
+                    $test.Properties.U_PrpCode = $prop.PropertyCode;
+                    $test.Properties.U_Expression = $prop.Expression;
                     $test.ItemProperties.U_PrpCode = $itprop.PropertyCode;
-                    switch ($itprop.Expression) {
-                        'BT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Between; break; }
-                        'EQ' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; break; }
-                        'NE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::NotEqual; break; }
-                        'GT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThan; break; }
-                        'GE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThanOrEqual; break; }
-                        'LE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThanOrEqual; break; }
-                        'LT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThan; break; }
-                        Default { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; }
-                    } 
-                    $test.ItemProperties.U_Expression = $EnumExpressionValue;
+                    $test.ItemProperties.U_Expression = $itprop.Expression;
                     if ($itprop.RangeFrom -ne "") {
                         $test.ItemProperties.U_RangeValueFrom = $itprop.RangeFrom;
                     }

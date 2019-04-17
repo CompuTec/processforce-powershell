@@ -3,8 +3,9 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Item Details
 ########################################################################
-$SCRIPT_VERSION = "3.4"
-# Last tested PF version: ProcessForce 9.3 (9.30.180) PL: 08 R1 (64-bit)
+$SCRIPT_VERSION = "3.3"
+# Last tested PF version: ProcessForce 9.3 (9.30.180) PL: 08 R1 Pre-Release (64-bit)
+# THIS VERSION CAN BE USED ONLY FOR VERSIONS LOWER THAN ProcessForce 9.3 PL: 08 
 # Description:
 #      Import Item Details. Script will update only existing ItemDetails. Remember to run Restore Item Details before running this script.
 #      Only required csv for this file is ItemDetails.csv.
@@ -776,16 +777,16 @@ try {
                     #Adding Properies
                     foreach ($prop in $properties) {
                         $idt.Properties.U_PrpCode = $prop.PropertyCode;
-                        
+
                         switch ($prop.Expression) {
-                            'BT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Between; break; }
-                            'EQ' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; break; }
-                            'NE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::NotEqual; break; }
-                            'GT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThan; break; }
-                            'GE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThanOrEqual; break; }
-                            'LE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThanOrEqual; break; }
-                            'LT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThan; break; }
-                            Default { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; }
+                            'BT' { $EnumExpressionValue = 'Between'; break; }
+                            'EQ' { $EnumExpressionValue = 'Equal'; break; }
+                            'NE' { $EnumExpressionValue = 'NotEqual'; break; }
+                            'GT' { $EnumExpressionValue = 'GratherThan'; break; }
+                            'GE' { $EnumExpressionValue = 'GratherThanOrEqual'; break; }
+                            'LE' { $EnumExpressionValue = 'LessThanOrEqual'; break; }
+                            'LT' { $EnumExpressionValue = 'LessThan'; break; }
+                            Default { $EnumExpressionValue = 'Equal'; }
                         } 
                         $idt.Properties.U_Expression = $EnumExpressionValue;
 

@@ -3,8 +3,9 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Quality Control Tests
 ########################################################################
-$SCRIPT_VERSION = "3.1"
-# Last tested PF version: ProcessForce 9.3 (9.30.180) PL: 08 R1 (64-bit)
+$SCRIPT_VERSION = "3.0"
+# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
+# THIS VERSION CAN BE USED ONLY FOR VERSIONS LOWER THAN ProcessForce 9.3 PL: 08 
 # Description:
 #      Import Quality Control Tests. Script add new Quality Control Tests.
 #      You need to have all requred files for import.
@@ -310,7 +311,7 @@ try {
     $progressItterator = 0;
     $progress = 0;
     $beforeProgress = 0;
-    
+    #Checking that Control Test already exist 
     foreach ($csvTest in $qcTestsList) {
         try {
             $progressItterator++;
@@ -333,42 +334,36 @@ try {
             $test.U_Status = [string] $csvTest.Status;
             if ($csvTest.CreatedDate -ne "") {
                 $test.U_Created = $csvTest.CreatedDate;
-            }
-            else {
-                $test.U_Created = [datetime]::MinValue
-            }
+            } else {
+				$test.U_Created = [datetime]::MinValue
+			}
             if ($csvTest.StartDate -ne "") {
                 $test.U_Start = $csvTest.StartDate;
-            }
-            else {
-                $test.U_Start = [datetime]::MinValue
-            }
+            } else {
+				$test.U_Start = [datetime]::MinValue
+			}
             if ( $csvTest.OnHoldDate -ne "") {
                 $test.U_OnHold = $csvTest.OnHoldDate;
-            }
-            else {
-                $test.U_OnHold = [datetime]::MinValue
-            }
+            } else {
+				$test.U_OnHold = [datetime]::MinValue
+			}
             if ( $csvTest.WaitingNcmrDate -ne "") {
                 $test.U_WaitingNcmr = $csvTest.WaitingNcmrDate;
-            }
-            else {
-                $test.U_WaitingNcmr = [datetime]::MinValue;
-            }
+            } else {
+				$test.U_WaitingNcmr = [datetime]::MinValue;
+			}
             if ( $csvTest.ClosedDate -ne "") {
                 $test.U_Closed = $csvTest.ClosedDate;
-            }
-            else {
-                $test.U_Closed = [datetime]::MinValue
-            }
+            } else {
+				$test.U_Closed = [datetime]::MinValue
+			}
 	
             $test.U_TestStatus = $csvTest.TestStatus;
             if ($csvTest.Pass_FailDate -ne "") {
                 $test.U_PassFailDate = $csvTest.Pass_FailDate;
-            }
-            else {
-                $test.U_PassFailDate = [datetime]::MinValue
-            }
+            } else {
+				$test.U_PassFailDate = [datetime]::MinValue
+			}
             #Defects
             $test.U_SampleSize = $csvTest.DefSampleSize;
             $test.U_UoM = $csvTest.DefUoM;
@@ -395,19 +390,8 @@ try {
                 #Adding Properties
                 foreach ($prop in $Properties) {
                     $test.TestResults.U_PrpCode = $prop.PropertyCode;
-
-                    switch ($prop.Expression) {
-                        'BT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Between; break; }
-                        'EQ' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; break; }
-                        'NE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::NotEqual; break; }
-                        'GT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThan; break; }
-                        'GE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThanOrEqual; break; }
-                        'LE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThanOrEqual; break; }
-                        'LT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThan; break; }
-                        Default { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; }
-                    } 
-                    $test.TestResults.U_Expression = $EnumExpressionValue;
-                        
+                    $test.TestResults.U_Expression = $prop.Expression;
+				
                     if ($prop.RangeFrom -ne "") {
                         $test.TestResults.U_RangeValueFrom = $prop.RangeFrom;
                     }
@@ -448,19 +432,7 @@ try {
                 #Adding Item Properies
                 foreach ($itprop in $properties) {
                     $test.ItemProperties.U_PrpCode = $itprop.PropertyCode;
-
-                    switch ($itprop.Expression) {
-                        'BT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Between; break; }
-                        'EQ' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; break; }
-                        'NE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::NotEqual; break; }
-                        'GT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThan; break; }
-                        'GE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::GratherThanOrEqual; break; }
-                        'LE' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThanOrEqual; break; }
-                        'LT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::LessThan; break; }
-                        Default { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Equal; }
-                    } 
-                    $test.ItemProperties.U_Expression = $EnumExpressionValue;
-
+                    $test.ItemProperties.U_Expression = $itprop.Expression;
                     if ($itprop.RangeFrom -ne "") {
                         $test.ItemProperties.U_RangeValueFrom = $itprop.RangeFrom;
                     }
