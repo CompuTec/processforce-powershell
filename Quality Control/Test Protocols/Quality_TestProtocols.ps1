@@ -3,7 +3,7 @@
 # CompuTec PowerShell Script - Import Quality Control Test Protocols
 ########################################################################
 $SCRIPT_VERSION = "3.3"
-# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 05 R1 HF1 (64-bit)
+# Last tested PF version: ProcessForce 9.3 (9.30.180) PL: 08 R1 (64-bit)
 # Description:
 #      Import Test Protocol. Script add new or will update existing data.
 #      You need to have all requred files for import.

@@ -2,8 +2,8 @@
 <configuration>
 	<connection 
         Database="PFDEMOGB_MACIEJP" 
-        SQLServer="10.0.0.244:30015" 
-        LicenseServer="10.0.0.244:40000" 
+        SQLServer="10.0.0.240:30015" 
+        LicenseServer="10.0.0.240:40000" 
         DbServerType="dst_HANADB" 
         UserName="manager" 
         Password="1234"

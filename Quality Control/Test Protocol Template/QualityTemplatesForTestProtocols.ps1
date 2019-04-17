@@ -4,7 +4,7 @@ Clear-Host
 # CompuTec PowerShell Script - Import Protocols Templates
 ########################################################################
 $SCRIPT_VERSION = "3.1"
-# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
+# Last tested PF version: ProcessForce 9.3 (9.30.180) PL: 08 R1 (64-bit)
 # Description:
 #      Import Protocols Templates. Script add new or will update existing Templates.
 #      You need to have all requred files for import.
