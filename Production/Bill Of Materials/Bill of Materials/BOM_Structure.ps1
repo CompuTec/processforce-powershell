@@ -273,7 +273,7 @@ try {
             $bom.U_OcrCode3 = $csvItem.DistRule3
             $bom.U_OcrCode4 = $csvItem.DistRule4
             $bom.U_OcrCode5 = $csvItem.DistRule5
-            $bom.U_Project = $csvItem.Projec
+            $bom.U_Project = $csvItem.Project
             $bom.U_ProdType = $csvItem.ProdType # I = Internal, E = External
             $bom.U_Instructions = [string] $csvItem.Instructions
             #$bom.UDFItems.Item("U_UDF1").Value = $csvItem.UDF1 # how to import UDF
