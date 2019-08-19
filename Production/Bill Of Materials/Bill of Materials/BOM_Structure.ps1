@@ -2,8 +2,8 @@
 ########################################################################
 # CompuTec PowerShell Script - Import Bill of Materials Structures
 ########################################################################
-$SCRIPT_VERSION = "3.2"
-# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 05 R1 HF1 (64-bit)
+$SCRIPT_VERSION = "3.3"
+# Last tested PF version: ProcessForce 9.3 (9.30.200) PL: MAIN (64-bit)
 # Description:
 #      Import Bill of Materials Structures. Script add new BOMs or will update existing BOMs.    
 #      You need to have all requred files for import. The BOM_Coproducts.csv & BOM_Scraps.csv can be empty except first header line)
@@ -275,7 +275,11 @@ try {
             $bom.U_OcrCode5 = $csvItem.DistRule5
             $bom.U_Project = $csvItem.Project
             $bom.U_ProdType = $csvItem.ProdType # I = Internal, E = External
-            $bom.U_Instructions = [string] $csvItem.Instructions
+            if(-not [string]::IsNullOrEmpty($csvItem.Instructions)){
+                $bom.U_Instructions = [string] $csvItem.Instructions.Replace("``n","`n");
+            } else {
+                $bom.U_Instructions = [string]::Empty
+            }
             #$bom.UDFItems.Item("U_UDF1").Value = $csvItem.UDF1 # how to import UDF
 
 
