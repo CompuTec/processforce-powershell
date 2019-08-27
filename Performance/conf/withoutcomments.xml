@@ -1,0 +1,168 @@
+<Application>
+	<Menus uid="CT_PF_MENU">
+    <action type="del">
+      <Menu UniqueID="12290"/>
+    </action>
+    <action type="add">
+      
+      <Menu Checked="0" Enabled="1" FatherUID="1280" Image="" Position="0" String="What's this?" Type="1" UniqueID="whtThsCtx"/>
+      <Menu Checked="0" Enabled="1" FatherUID="8192" Image="" Position="5" String="Configuration of Series Synchronization" Type="1" UniqueID="CT_PF_SrsConf" />
+      
+      <Menu Checked="0" Enabled="1" FatherUID="8448" Image="" Position="14" String="Help Configurator" Type="1" UniqueID="CT_PF_65" />
+      <Menu Checked="0" Enabled="1" FatherUID="8448" Image="" Position="12" String="CompuTec Dashboard Configuration" Type="1" UniqueID="DashConfig" />
+      <Menu Checked="0" Enabled="1" FatherUID="8448" Image="" Position="17" String="PDC Settings" Type="1" UniqueID="CT_PF_PDCSettings" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43526" Image="" Position="2" String="Cost Categories" Type="1" UniqueID="CT_PF_CCCT" />
+      <Menu Checked="0" Enabled="1" FatherUID="43526" Image="" Position="3" String="Resource Accounting" Type="1" UniqueID="CT_PF_ORAC" />
+      
+      <Menu Checked="0" Enabled="1" FatherUID="43525" Image="" Position="5" String="Production" Type="2" UniqueID="CT_PF_SPRD" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SPRD" Image="" Position="1" String="Resource Groups" Type="1" UniqueID="CT_PF_11" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SPRD" Image="" Position="2" String="Resource Properties" Type="1" UniqueID="CT_PF_17" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SPRD" Image="" Position="3" String="Resource Calendar Templates" Type="1" UniqueID="CT_PF_CLTMP" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SPRD" Image="" Position="4" String="Operation Properties" Type="1" UniqueID="CT_PF_16" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SPRD" Image="" Position="5" String="I/O Operation Properties" Type="1" UniqueID="CT_PF_18" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SPRD" Image="" Position="6" String="Downtime Reasons" Type="1" UniqueID="CT_PF_DTReason" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SPRD" Image="" Position="7" String="Scrap Reasons" Type="1" UniqueID="CT_PF_SCReason" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SPRD" Image="" Position="8" String="Rework Reasons" Type="1" UniqueID="CT_PF_RWReason" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SPRD" Image="" Position="8" String="Orderless Production Templates" Type="1" UniqueID="CT_PF_OlProdTepl" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="11520" Image="" Position="12" String="Batch Template Definition" Type="1" UniqueID="CT_PF_68" />
+      <Menu Checked="0" Enabled="1" FatherUID="11520" Image="" Position="13" String="Serial Template Definition" Type="1" UniqueID="CT_PF_69" />
+      <Menu Checked="0" Enabled="1" FatherUID="11520" Image="" Position="14" String="Expiry Date Evaluation Template" Type="1" UniqueID="CT_PF_ExpExtTempl" />
+      <Menu Checked="0" Enabled="1" FatherUID="11520" Image="" Position="15" String="Classes" Type="1" UniqueID="CT_PF_Class" />
+      <Menu Checked="0" Enabled="1" FatherUID="11520" Image="" Position="16" String="Categories" Type="1" UniqueID="CT_PF_Category" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43525" Image="" Position="8" String="Item Details" Type="2" UniqueID="CT_PF_SIDT" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="1" String="Item Groups" Type="1" UniqueID="CT_PF_37" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="2" String="Item Group Groups" Type="1" UniqueID="CT_PF_38" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="3" String="Item Texts" Type="1" UniqueID="CT_PF_39" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="4" String="Item Text Groups" Type="1" UniqueID="CT_PF_40" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="5" String="Item Properties" Type="1" UniqueID="CT_PF_33" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="6" String="Item Property Groups" Type="1" UniqueID="CT_PF_30" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="7" String="Property Reference Library" Type="1" UniqueID="CT_PF_34" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="8" String="Item Classifications" Type="1" UniqueID="CT_PF_32" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="9" String="Item Classification Groups" Type="1" UniqueID="CT_PF_31" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="10" String="Item Phrases" Type="1" UniqueID="CT_PF_35" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIDT" Image="" Position="11" String="Item Phrase Groups" Type="1" UniqueID="CT_PF_36" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43525" Image="" Position="9" String="Vehicle Inspection" Type="2" UniqueID="CT_PF_VICM" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_VICM" Image="" Position="1" String="Vehicle Inspection Groups" Type="1" UniqueID="CT_PF_VIG" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_VICM" Image="" Position="2" String="Vehicle Inspection Reasons" Type="1" UniqueID="CT_PF_VIR" />
+      
+      <Menu Checked="0" Enabled="1" FatherUID="43525" Image="" Position="9" String="Complaints" Type="2" UniqueID="CT_PF_SCPL" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SCPL" Image="" Position="1" String="Complaint Groups" Type="1" UniqueID="CT_PF_CGR" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SCPL" Image="" Position="2" String="Complaint Reasons" Type="1" UniqueID="CT_PF_CRS" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43525" Image="" Position="10" String="Ingredients" Type="2" UniqueID="CT_PF_SIGD" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIGD" Image="" Position="1" String="Allergens" Type="1" UniqueID="CT_PF_IDTALG" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIGD" Image="" Position="2" String="Ingredient Categories" Type="1" UniqueID="CT_PF_IDTIGC" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIGD" Image="" Position="2" String="Ingredient Classification Types" Type="1" UniqueID="CT_PF_IDTCTE" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SIGD" Image="" Position="2" String="Ingredient Classifications" Type="1" UniqueID="CT_PF_IDTCSS" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43525" Image="" Position="11" String="Quality Control" Type="2" UniqueID="CT_PF_SQCR" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="1" String="Defects" Type="1" UniqueID="CT_PF_42" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="2" String="Defect Group" Type="1" UniqueID="CT_PF_43" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="3" String="Reasons" Type="1" UniqueID="CT_PF_44" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="4" String="NCMR Reasons" Type="1" UniqueID="CT_PF_5" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="5" String="Reason Groups" Type="1" UniqueID="CT_PF_45" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="6" String="Inspectors" Type="1" UniqueID="CT_PF_46" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="7" String="NCMR Inspectors" Type="1" UniqueID="CT_PF_4" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="8" String="Inspector Groups" Type="1" UniqueID="CT_PF_47" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="9" String="Test Properties" Type="1" UniqueID="CT_PF_49" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="10" String="Test Property Groups" Type="1" UniqueID="CT_PF_50" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_SQCR" Image="" Position="11" String="Test Protocol Groups" Type="1" UniqueID="CT_PF_52" />
+      <Menu Checked="0" Enabled="1" FatherUID="43524" Image="" Position="1" String="ProcessForce License Administration" Type="1" UniqueID="CT_PF_67" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="2304" Image="" Position="5" String="Vehicle Inspection" Type="1" UniqueID="CT_PF_VIC" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="2048" Image="" Position="4" String="Vehicle Inspection" Type="1" UniqueID="CT_PF_VIC_Sales" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43535" Image="" Position="1" String="Supplier Score Card" Type="1" UniqueID="CT_PF_SSC" />
+      
+      <Menu Checked="0" Enabled="1" FatherUID="3072" Image="" Position="1" String="Item Details" Type="1" UniqueID="CT_PF_1" />
+      <Menu Checked="0" Enabled="1" FatherUID="3072" Image="" Position="2" String="Substitutes" Type="1" UniqueID="CT_PF_Substitutes" />
+      <Menu Checked="0" Enabled="1" FatherUID="3072" Image="" Position="3" String="Ingredients" Type="2" UniqueID="CT_PF_IDTIGD" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_IDTIGD" Image="" Position="1" String="Ingredient Master Data" Type="1" UniqueID="CT_PF_IDTIMD" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_IDTIGD" Image="" Position="1" String="Nutrient Master Data" Type="1" UniqueID="CT_PF_IDTNUT" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_IDTIGD" Image="" Position="2" String="Ingredient/Nutrient Template" Type="1" UniqueID="CT_PF_IDTIGT" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_IDTIGD" Image="" Position="3" String="Recommended Daily Intake" Type="1" UniqueID="CT_PF_IDTIDV" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_IDTIGD" Image="" Position="4" String="Item Ingredient Master Data" Type="1" UniqueID="CT_PF_IDTIID" />
+			<Menu Checked="0" Enabled="1" FatherUID="43540" Image="" Position="4" String="Inventory Register" Type="1" UniqueID="CT_PF_OIRG" />
+      <Menu Checked="0" Enabled="1" FatherUID="12288" Image="" Position="3" String="Batch Master Data" Type="1" UniqueID="CT_PF_85" />
+      <Menu Checked="0" Enabled="1" FatherUID="12288" Image="" Position="4" String="Batch Traceability" Type="1" UniqueID="CT_PF_BTCr" /> 
+
+      <Menu Checked="0" Enabled="0" FatherUID="4352" Image="" Position="1" String="HiddenMenu" Type="1" UniqueID="whtHidden" />
+      <Menu Checked="0" Enabled="1" FatherUID="4352" Image="" Position="6" String="Routings" Type="2" UniqueID="CT_PF_BOMRT" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMRT" Image="" Position="1" String="Resource" Type="1" UniqueID="CT_PF_12" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMRT" Image="" Position="2" String="Resource Calendar" Type="1" UniqueID="CT_PF_RSCAL" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMRT" Image="" Position="3" String="Resource Calendar Update" Type="1" UniqueID="CT_PF_RSCLT" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMRT" Image="" Position="4" String="Operation" Type="1" UniqueID="CT_PF_14" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMRT" Image="" Position="5" String="Routing" Type="1" UniqueID="CT_PF_13" />
+      <Menu Checked="0" Enabled="1" FatherUID="4352" Image="" Position="7" String="Bill Of Materials" Type="2" UniqueID="CT_PF_BOM" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOM" Image="" Position="1" String="Bill of Materials" Type="1" UniqueID="CT_PF_2" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOM" Image="" Position="2" String="Production Process" Type="1" UniqueID="CT_PF_81" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOM" Image="" Position="3" String="Costed Bill of Materials" Type="1" UniqueID="CostedBomC" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOM" Image="" Position="4" String="Bill of Materials Costs Comparison" Type="1" UniqueID="CT_PF_OCMP" />
+      
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOM" Image="" Position="5" String="Mass Replace" Type="1" UniqueID="CT_PF_3" />
+      <Menu Checked="0" Enabled="1" FatherUID="4352" Image="" Position="8" String="Manufacturing Order" Type="2" UniqueID="CT_PF_BOMMO" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMMO" Image="" Position="1" String="Manufacturing Order" Type="1" UniqueID="CT_PF_6" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMMO" Image="" Position="2" String="Orderless Production" Type="1" UniqueID="CT_PF_OlProd" /> 
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMMO" Image="" Position="3" String="Document Status Change Wizard" Type="1" UniqueID="CT_PF_DocStaChaWiz" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMMO" Image="" Position="4" String="Close Manufacturing Orders" Type="1" UniqueID="CT_PF_MORCSC" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_BOMMO" Image="" Position="5" String="Scheduling" Type="1" UniqueID="CT_PF_MORSched" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="4352" Image="" Position="9" String="Inventory Transactions" Type="2" UniqueID="CT_PF_PITR" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_PITR" Image="" Position="1" String="Pick Receipt" Type="1" UniqueID="CT_PF_53" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_PITR" Image="" Position="2" String="Pick Order" Type="1" UniqueID="CT_PF_24" />
+      <Menu Checked="0" Enabled="1" FatherUID="4352" Image="" Position="10" String="Time Bookings" Type="2" UniqueID="CT_PF_PTBK" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_PTBK" Image="" Position="1" String="Time Booking" Type="1" UniqueID="CT_PF_86" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_PTBK" Image="" Position="2" String="Quantity Time Booking" Type="1" UniqueID="CT_PF_TQR" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_PTBK" Image="" Position="3" String="Time Correction" Type="1" UniqueID="CT_PF_87" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_PTBK" Image="" Position="4" String="Team" Type="1" UniqueID="CT_PF_19" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_PTBK" Image="" Position="5" String="Downtime" Type="1" UniqueID="CT_PF_DownTime" />
+      
+      <Menu Checked="0" Enabled="1" FatherUID="43520" Image="" Position="11" String="Costing" Type="2" UniqueID="CT_PF_CCST" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_CCST" Image="" Position="1" String="Item Costing" Type="1" UniqueID="CT_PF_CITC" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_CCST" Image="" Position="2" String="Resource Costing" Type="1" UniqueID="CT_PF_CRCT" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_CCST" Image="" Position="3" String="Cost Roll-Up" Type="1" UniqueID="CT_PF_CRUP" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_CCST" Image="" Position="4" String="Cost Roll-Over" Type="1" UniqueID="CT_PF_CROV" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43520" Image="" Position="12" String="Quality Control" Type="2" UniqueID="CT_PF_QC" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_QC" Image="" Position="1" String="Test Protocol Template" Type="1" UniqueID="CT_PF_60" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_QC" Image="" Position="2" String="Test Protocol" Type="1" UniqueID="CT_PF_51" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_QC" Image="" Position="3" String="Quality Control Test" Type="1" UniqueID="CT_PF_OQCT" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_QC" Image="" Position="4" String="Quality Control Test Report" Type="1" UniqueID="CT_PF_QCTREP" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_QC" Image="" Position="5" String="Non-Conforming Material Report" Type="1" UniqueID="CT_PF_ONTR" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_QC" Image="" Position="6" String="Quality Control Tests Creation Wizard" Type="1" UniqueID="CT_PF_QCTestWiz" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_QC" Image="" Position="7" String="Item's Test Protocols" Type="1" UniqueID="CT_PF_ItmsTestPrtls" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_QC" Image="" Position="8" String="Quality Control Test Pool" Type="1" UniqueID="CT_PF_QCPool" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43520" Image="" Position="13" String="Complaints" Type="2" UniqueID="CT_PF_QCCM" />
+      <Menu Checked="0" Enabled="1" FatherUID="CT_PF_QCCM" Image="" Position="1" String="Complaint" Type="1" UniqueID="CT_PF_CPL" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43544" Image="" Position="1" String="Employee Calendars" Type="1" UniqueID="CT_PF_EMCAL" />
+      <Menu Checked="0" Enabled="1" FatherUID="43544" Image="" Position="2" String="Employee Calendar Updates" Type="1" UniqueID="CT_PF_EMCLT" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43557" Image="" Position="1" String="Bill of Materials Report" Type="1" UniqueID="CT_PF_BOMREPCR" />
+      <Menu Checked="0" Enabled="1" FatherUID="43542" Image="" Position="1" String="Bill of Materials Report" Type="1" UniqueID="CT_PF_BOMREPCR2" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43564" Image="" Position="6" String="About CompuTec ProcessForce" Type="1" UniqueID="CT_PF_AboutScreen" />
+      
+      <Menu Checked="0" Enabled="1" FatherUID="278" Image="" Position="5" String="Initial Data Creator" Type="1" UniqueID="CT_PF_15" />
+
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="6" String="Restore Item Details" Type="1" UniqueID="CT_PF_RestIDT" />
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="7" String="Restore Item Costing" Type="1" UniqueID="CT_PF_RestITC" />
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="8" String="Restore Resource Costing" Type="1" UniqueID="CT_PF_RestRCT" />
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="9" String="Restore Resource Calendars" Type="1" UniqueID="CT_PF_RestRCL" />
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="10" String="Restore Employee Calendars" Type="1" UniqueID="CT_PF_RestECL" />
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="11" String="Restore Batch Master Data" Type="1" UniqueID="CT_PF_RestADB" />
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="12" String="Restore Bill of Materials" Type="1" UniqueID="CT_PF_RestBOMD" />
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="13" String="Synchronize Manufacturing Orders" Type="1" UniqueID="CT_PF_SyncMor" />
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="14" String="Restore Actual Cost in Manufacturing Orders" Type="1" UniqueID="CT_PF_RacaMORs" />
+      
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="14" String="Restore References in Manufacturing Orders" Type="1" UniqueID="CT_PF_RestPickRef" />
+      <Menu Checked="0" Enabled="1" FatherUID="43574" Image="" Position="16" String="Run Item Revaluation for the last failed Cost Roll-over" Type="1" UniqueID="CT_PF_RestROR" />
+    </action>
+  </Menus>
+</Application>

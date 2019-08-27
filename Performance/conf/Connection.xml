@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <CT_CONFIG>
-    <Connection Database="MB" 
-    SQLServer="192.168.230.2:30015" 
-    LicenseServer="192.168.230.2:40000" 
-    DbServerType="dst_HANADB" 
-    UserName="manager" Password="1234"/>
+    <Connection Database="SAPB1_FC" 
+    SQLServer="SAP01" 
+    LicenseServer="192.168.230.3:40000" 
+    DbServerType="dst_MSSQL2016" 
+    UserName="manager" Password="Ct*2009sa"/>
 </CT_CONFIG>

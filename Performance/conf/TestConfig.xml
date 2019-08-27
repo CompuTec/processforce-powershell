@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <CT_CONFIG>
     <MasterData>
-        <ItemMasterData Prefix="ACTPF_" NumberOfItems="30" NumberOfMakeItems="10" WarehouseCode="01"/>
+        <ItemMasterData Prefix="ACTPF1_" NumberOfItems="30" NumberOfMakeItems="10" WarehouseCode="01"/>
         <ItemDetails NumberOfRevisions="10"/>
         <BOM NumberOfBoms="10" NumberOfItems="20" WarehouseCode="01" ItemsWarehouseCode="01"/>
         <Resource Prefix="ACTPF_" NumberOfResources="10"/>

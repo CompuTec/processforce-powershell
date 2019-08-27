@@ -1,8 +1,7 @@
 using module .\lib\CTLogger.psm1;
 using module .\lib\CTProgress.psm1;
-
+using module .\lib\CTTimer.psm1;
 Clear-Host
-[System.Reflection.Assembly]::LoadWithPartialName("CompuTec.ProcessForce.API")
 #add-type -Path "C:\PS_MP\MP_PS\SAP\DLL\Interop.SAPbobsCOM.dll"
 #add-type -Path "C:\PS_MP\MP_PS\SAP\DLL\Interop.SAPbouiCOM.dll"
 
@@ -19,6 +18,22 @@ $MDConfigXml = $TestConfigXml.SelectSingleNode("/CT_CONFIG/MasterData");
 $UIConfigXML = $TestConfigXml.SelectSingleNode("/CT_CONFIG/UI");
 $RESULT_FILE = $PSScriptRoot + "\Results.csv";
 $RESULT_FILE_CONF = $PSScriptRoot + "\Results_conf.csv";
+
+function LoadAssembleys($path)
+{
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.ProcessForce.API.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.Core.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CoreCalc.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.ProcessForce.Scheduling.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'NLog.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.License.Data.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.LicenseServer.Client.API.dll')
+ 
+    [System.Reflection.Assembly]::LoadFile($path+'System.Net.Http.Formatting.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'System.Net.Http.dll')
+    Newtonsoft.Json.dll
+}
+
 function Imports() {
 
     
@@ -202,9 +217,11 @@ function Imports() {
       
                     if ($itemDetailsExists ) {
                         $message = $itemDetails.Update()
+                        RefreshHeader($itemDetails)
                     }
                     else {
                         $message = $itemDetails.Add()
+                        RefreshHeader($itemDetails)
                     }
       
                     if ($message -lt 0) {  
@@ -233,6 +250,17 @@ function Imports() {
             }
         }
     }
+function RefreshHeader($udo)
+{
+    try{
+         $udo.RefreshHeaderData();
+    }catch
+    {
+        $err = $_.Exception.Message;
+        $logPFIMD.endSubtask('RefreshHeader', 'F', $err);
+    }
+}
+
 
     function ImportBOMStructure($pfcCompany) {
         [CTLogger] $log = New-Object CTLogger ('DI', 'Import BOM Structure', $RESULT_FILE)
@@ -299,9 +327,13 @@ function Imports() {
       
                 if ($bomExists ) {
                     $message = $bom.Update()
+                    RefreshHeader($bom)
+
                 }
                 else {
                     $message = $bom.Add()
+                    RefreshHeader($bom)
+
                 }
       
                 if ($message -lt 0) {  
@@ -375,9 +407,13 @@ function Imports() {
       
                 if ($resourceExists ) {
                     $message = $resource.Update()
+                    RefreshHeader($resource)
+                    
                 }
                 else {
                     $message = $resource.Add()
+                    RefreshHeader($resource)
+
                 }
       
                 if ($message -lt 0) {  
@@ -474,9 +510,13 @@ function Imports() {
       
                 if ($operationExists ) {
                     $message = $operation.Update()
+                    RefreshHeader($operation)
+
                 }
                 else {
                     $message = $operation.Add()
+                    RefreshHeader($operation)
+
                 }
       
                 if ($message -lt 0) {  
@@ -567,9 +607,11 @@ function Imports() {
       
                 if ($routingExists ) {
                     $message = $routing.Update()
+                    RefreshHeader($routing)
                 }
                 else {
                     $message = $routing.Add()
+                    RefreshHeader($routing)
                 }
       
                 if ($message -lt 0) {  
@@ -669,9 +711,13 @@ function Imports() {
       
                 if ($bomExists ) {
                     $message = $bom.Update()
+                    RefreshHeader($bom)
+
                 }
                 else {
                     $message = $bom.Add()
+                    RefreshHeader($bom)
+
                 }
       
                 if ($message -lt 0) {  
@@ -816,7 +862,7 @@ function UITests() {
         $next = $app.Menus.Item('1288');
         [CTProgress] $progress = New-Object CTProgress ($recordsToGoThrough);
         try {
-            $firstItemCode = $ItemsDictionary['MAKE'][0].ItemCode;
+            $firstItemCode = $ItemsDictionary['MAKE'][0].ItemCode; 
             $log.startSubtask('Open Item Details Form');
             $formOpenMenu = $app.Menus.Item('CT_PF_1'); 
             $formOpenMenu.Activate();        
@@ -1328,9 +1374,10 @@ function saveTestConfiguration(){
     
 }
 
-saveTestConfiguration ;
+LoadAssembleys('C:\DEV\Releases\PL10\Source\CompuTec.ProcessForce.API\bin\x64\Debug\')
+#saveTestConfiguration ;
 Write-Host '';
-Imports ;
+ Imports ;
 write-host '';
 UITests ;
 
