@@ -1,11 +1,9 @@
 using module .\lib\CTLogger.psm1;
 using module .\lib\CTProgress.psm1;
-
+using module .\lib\CTTimer.psm1;
 Clear-Host
-[System.Reflection.Assembly]::LoadWithPartialName("CompuTec.ProcessForce.API")
 #add-type -Path "C:\PS_MP\MP_PS\SAP\DLL\Interop.SAPbobsCOM.dll"
 #add-type -Path "C:\PS_MP\MP_PS\SAP\DLL\Interop.SAPbouiCOM.dll"
-
 
 $ItemsDictionary = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[psobject]]';
 $ResourcesList = New-Object 'System.Collections.Generic.List[string]';
@@ -13,45 +11,37 @@ $OperationsList = New-Object 'System.Collections.Generic.List[string]';
 $RoutingsList = New-Object 'System.Collections.Generic.List[string]';
 $ItemsDictionary.Add('MAKE', (New-Object 'System.Collections.Generic.List[psobject]'));
 $ItemsDictionary.Add('BUY', (New-Object 'System.Collections.Generic.List[psobject]'));
-
-
-
-$connectionXMLFilePath = $PSScriptRoot + "\conf\Connection.xml";
-
-
-if(!(Test-Path $connectionXMLFilePath -PathType Leaf)){
-    Write-Host -BackgroundColor Red ([string]::Format("File: {0} don't exists.",$connectionXMLFilePath));
-    return;
-}
-[xml] $connectionConfigXml = Get-Content -Encoding UTF8 $connectionXMLFilePath
+[xml] $connectionConfigXml = Get-Content -Encoding UTF8 .\conf\Connection.xml
 $xmlConnection = $connectionConfigXml.SelectSingleNode("/CT_CONFIG/Connection");
-$xmlTestInfo = $connectionConfigXml.SelectSingleNode("/CT_CONFIG/Test");
-$testType = $xmlTestInfo.Type;
-
-if($testType -eq '3'){
-    $testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfigLong.xml";
-} elseif($testType -eq '2'){
-    $testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfigMedium.xml";
-} else {
-    $testConfigXMLFilePath = $PSScriptRoot + "\conf\TestConfig.xml";
-}
-
-if(!(Test-Path $testConfigXMLFilePath -PathType Leaf)){
-    Write-Host -BackgroundColor Red ([string]::Format("File: {0} don't exists.",$testConfigXMLFilePath));
-    return;
-}
-
-[xml] $TestConfigXml = Get-Content -Encoding UTF8 $testConfigXMLFilePath
+[xml] $TestConfigXml = Get-Content -Encoding UTF8 .\conf\TestConfig.xml
 $MDConfigXml = $TestConfigXml.SelectSingleNode("/CT_CONFIG/MasterData");
 $UIConfigXML = $TestConfigXml.SelectSingleNode("/CT_CONFIG/UI");
-$currentDate = Get-Date
-$dateTimeStringForFileName = [string]::Format("{0}_{1}",$currentDate.ToShortDateString().Replace('.','-'),$currentDate.ToLongTimeString().Replace(':',''));
-$RESULT_FILE = $PSScriptRoot + ("\Results_" + $dateTimeStringForFileName + ".csv");
-$RESULT_FILE_CONF = $PSScriptRoot + "\Results_conf_"+$dateTimeStringForFileName+".csv";
+$RESULT_FILE = $PSScriptRoot + "\Results.csv";
+$RESULT_FILE_CONF = $PSScriptRoot + "\Results_conf.csv";
+
+function LoadAssembleys($path)
+{
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.ProcessForce.API.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.Core.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CoreCalc.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.ProcessForce.Scheduling.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'NLog.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.License.Data.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'CompuTec.LicenseServer.Client.API.dll')
+ 
+    [System.Reflection.Assembly]::LoadFile($path+'System.Net.Http.Formatting.dll')
+    [System.Reflection.Assembly]::LoadFile($path+'System.Net.Http.dll')
+    Newtonsoft.Json.dll
+}
+
 function Imports() {
+
+    
+    
     [CTLogger] $logJobs = New-Object CTLogger ('DI', 'Import', $RESULT_FILE)
 
     #region connection
+    
     $logJobs.startSubtask('Import');
     $logJobs.startSubtask('Connection');
     $pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::CreateCompany();
@@ -61,15 +51,16 @@ function Imports() {
     $pfcCompany.Databasename = $xmlConnection.Database;
     $pfcCompany.UserName = $xmlConnection.UserName;
     $pfcCompany.Password = $xmlConnection.Password;
+    
 
     write-host -backgroundcolor yellow -foregroundcolor black  "Trying connect..."
     $version = [CompuTec.Core.CoreConfiguration+DatabaseSetup]::AddonVersion
     write-host -backgroundcolor green -foregroundcolor black "PF API Library:" $version';' 'Host:'(Get-WmiObject Win32_OperatingSystem).CSName';' 'OSArchitecture:' (Get-WmiObject Win32_OperatingSystem).OSArchitecture
-
+    
     try {
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
         $dummy = $pfcCompany.Connect()
-
+    
         write-host -backgroundcolor green -foregroundcolor black "Connected to:" $pfcCompany.SapCompany.CompanyName "/ " $pfcCompany.SapCompany.CompanyDB"" "Sap Company version: " $pfcCompany.SapCompany.Version
     }
     catch {
@@ -87,7 +78,7 @@ function Imports() {
     if (-not $pfcCompany.IsConnected) {
         write-host -backgroundcolor yellow -foregroundcolor black "Company is not connected"
         $logJobs.endSubtask('Connection', 'F', 'Company is not connected');
-        return;
+        return 
     }
     $logJobs.endSubtask('Connection', 'S', '');
     $sapCompany = $pfcCompany.SapCompany;
@@ -98,7 +89,7 @@ function Imports() {
         [CTLogger] $logIMD = New-Object CTLogger ('DI', 'Import Item Master Data', $RESULT_FILE)
         #region import of Item Master Data
         write-host ''
-        write-host 'Import of Item Master Data: ' -NoNewline
+        write-host 'Import of Item Master Data: '
         $xmlItems = $MDConfigXml.SelectSingleNode([string]::Format("ItemMasterData"));
 
         $numberOfItems = [int] $xmlItems.NumberOfItems;
@@ -112,7 +103,7 @@ function Imports() {
                 $progress.next();
                 $logIMD.startSubtask('Get Item Master Data');
                 $sapIMD = $sapCompany.GetBusinessObject([SAPbobsCOM.BoObjectTypes]::oItems);
-
+        
                 $ItemCode = $itemPrefix + ([string]$i).PadLeft($itemCodeLength, '0');
 
                 if ($i -lt $numberOfMakeItems) {
@@ -142,9 +133,9 @@ function Imports() {
 
                 $sapIMD.WhsInfo.WarehouseCode = $warehouseCode;
                 $sapIMD.DefaultWarehouse = $warehouseCode;
-
+            
                 $message = $sapIMD.Add();
-
+            
                 if ($message -lt 0) {
                     $err = $sapCompany.GetLastErrorDescription();
                     Throw [System.Exception] ($err);
@@ -163,11 +154,11 @@ function Imports() {
     function importItemDetails($pfcCompany) {
         [CTLogger] $logPFIMD = New-Object CTLogger ('DI', 'Import Item Details', $RESULT_FILE)
         write-host ''
-        write-host 'Import of Item Details: ' -NoNewline
+        write-host 'Import of Item Details: '
         $xmlItemDetails = $MDConfigXml.SelectSingleNode([string]::Format("ItemDetails"));
         $numberOfRevisions = [int] $xmlItemDetails.NumberOfRevisions;
         $revisionCodeLength = ([string]$numberOfRevisions).Length;
-
+    
 
         [CTProgress] $progress = New-Object CTProgress (($ItemsDictionary['MAKE'].Count + $ItemsDictionary['BUY'].Count));
         foreach ($itemType in $ItemsDictionary.Keys) {
@@ -206,7 +197,7 @@ function Imports() {
                             $itemDetails.Revisions.U_Code = $revisionCode;
                             $itemDetails.Revisions.U_Description = $revisionCode;
                             $itemDetails.Revisions.U_Status = 1;
-
+                
                             if ($i -eq 0) {
                                 $itemDetails.Revisions.U_Default = 1;
                                 $itemDetails.Revisions.U_IsMRPDefault = 1;
@@ -217,21 +208,23 @@ function Imports() {
                                 $itemDetails.Revisions.U_IsMRPDefault = 2;
                                 $itemDetails.Revisions.U_IsCostingDefault = 2;
                             }
-                            [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
+                        
                             $dummy = $itemDetails.Revisions.Add()
                         }
                     }
 
                     $message = 0
-
+      
                     if ($itemDetailsExists ) {
                         $message = $itemDetails.Update()
+                        RefreshHeader($itemDetails)
                     }
                     else {
                         $message = $itemDetails.Add()
+                        RefreshHeader($itemDetails)
                     }
-
-                    if ($message -lt 0) {
+      
+                    if ($message -lt 0) {  
                         $err = $pfcCompany.GetLastErrorDescription()
                         Throw [System.Exception] ($err);
                     }
@@ -241,7 +234,7 @@ function Imports() {
                     else {
                         $logPFIMD.endSubtask('Add Item Details', 'S', '');
                     }
-
+                
                 }
                 catch {
                     $err = $_.Exception.Message;
@@ -257,11 +250,22 @@ function Imports() {
             }
         }
     }
+function RefreshHeader($udo)
+{
+    try{
+         $udo.RefreshHeaderData();
+    }catch
+    {
+        $err = $_.Exception.Message;
+        $logPFIMD.endSubtask('RefreshHeader', 'F', $err);
+    }
+}
+
 
     function ImportBOMStructure($pfcCompany) {
         [CTLogger] $log = New-Object CTLogger ('DI', 'Import BOM Structure', $RESULT_FILE)
         Write-Host '';
-        Write-Host 'Import of BOM:' -NoNewline
+        Write-Host 'Import of BOM:'
         $xmlBOM = $MDConfigXml.SelectSingleNode([string]::Format("BOM"));
         $numberOfItems = [int] $xmlBOM.NumberOfItems;
         $numberOfBoms = [int] $xmlBOM.NumberOfBoms;
@@ -294,7 +298,6 @@ function Imports() {
                     $log.startSubtask('Update BOM');
                     $count = $bom.Items.Count
                     for ($i = 0; $i -lt $count; $i++) {
-                        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
                         $dummy = $bom.Items.DelRowAtPos(0);
                     }
                 }
@@ -321,15 +324,19 @@ function Imports() {
                 }
 
                 $message = 0
-
+      
                 if ($bomExists ) {
                     $message = $bom.Update()
+                    RefreshHeader($bom)
+
                 }
                 else {
                     $message = $bom.Add()
-                }
+                    RefreshHeader($bom)
 
-                if ($message -lt 0) {
+                }
+      
+                if ($message -lt 0) {  
                     $err = $pfcCompany.GetLastErrorDescription()
                     Throw [System.Exception] ($err);
                 }
@@ -339,7 +346,7 @@ function Imports() {
                 else {
                     $log.endSubtask('Add BOM', 'S', '');
                 }
-
+                
             }
             catch {
                 $err = $_.Exception.Message;
@@ -397,15 +404,19 @@ function Imports() {
                 }
 
                 $message = 0
-
+      
                 if ($resourceExists ) {
                     $message = $resource.Update()
+                    RefreshHeader($resource)
+                    
                 }
                 else {
                     $message = $resource.Add()
-                }
+                    RefreshHeader($resource)
 
-                if ($message -lt 0) {
+                }
+      
+                if ($message -lt 0) {  
                     $err = $pfcCompany.GetLastErrorDescription()
                     Throw [System.Exception] ($err);
                 }
@@ -415,7 +426,7 @@ function Imports() {
                 else {
                     $log.endSubtask('Add Resource', 'S', '');
                 }
-
+                
             }
             catch {
                 $err = $_.Exception.Message;
@@ -468,7 +479,6 @@ function Imports() {
                     $log.startSubtask('Update Operation');
                     $count = $operation.OperationResources.Count - 1
                     for ($i = $count - 1; $i -ge 0; $i--) {
-                        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
                         $dummy = $operation.OperationResources.DelRowAtPos(0);
                     }
                 }
@@ -489,7 +499,7 @@ function Imports() {
                     else {
                         $operation.OperationResources.U_IsDefault = 'N';
                     }
-
+                
                     $operation.OperationResources.U_HasCycles = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No
 
                     $dummy = $operation.OperationResources.Add()
@@ -497,15 +507,19 @@ function Imports() {
 
 
                 $message = 0
-
+      
                 if ($operationExists ) {
                     $message = $operation.Update()
+                    RefreshHeader($operation)
+
                 }
                 else {
                     $message = $operation.Add()
-                }
+                    RefreshHeader($operation)
 
-                if ($message -lt 0) {
+                }
+      
+                if ($message -lt 0) {  
                     $err = $pfcCompany.GetLastErrorDescription()
                     Throw [System.Exception] ($err);
                 }
@@ -515,7 +529,7 @@ function Imports() {
                 else {
                     $log.endSubtask('Add Operation', 'S', '');
                 }
-
+                
             }
             catch {
                 $err = $_.Exception.Message;
@@ -567,13 +581,12 @@ function Imports() {
                     $log.startSubtask('Update Routing');
                     $count = $routing.Operations.Count
                     for ($j = 0; $j -lt $count; $j++) {
-                        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
                         $dummy = $routing.Operations.DelRowAtPos(0);
                     }
                     $count = $routing.OperationResources.Count
                     for ($k = 0; $k -lt $count; $k++) {
                         $dummy = $routing.OperationResources.DelRowAtPos(0);
-                    }
+                    }   
                 }
                 else {
                     $log.startSubtask('Add Routing');
@@ -591,15 +604,17 @@ function Imports() {
                 }
 
                 $message = 0
-
+      
                 if ($routingExists ) {
                     $message = $routing.Update()
+                    RefreshHeader($routing)
                 }
                 else {
                     $message = $routing.Add()
+                    RefreshHeader($routing)
                 }
-
-                if ($message -lt 0) {
+      
+                if ($message -lt 0) {  
                     $err = $pfcCompany.GetLastErrorDescription()
                     Throw [System.Exception] ($err);
                 }
@@ -609,7 +624,7 @@ function Imports() {
                 else {
                     $log.endSubtask('Add Routing', 'S', '');
                 }
-
+                
             }
             catch {
                 $err = $_.Exception.Message;
@@ -658,19 +673,18 @@ function Imports() {
                     $log.startSubtask('Update Production Process');
                     $count = $bom.Routings.Count
                     for ($i = 0; $i -lt $count; $i++) {
-                        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
                         $dummy = $bom.Routings.DelRowAtPos(0);
                     }
-
+            
                     $count = $bom.RoutingOperations.Count
                     for ($i = 0; $i -lt $count; $i++) {
                         $dummy = $bom.RoutingOperations.DelRowAtPos(0);
                     }
-
+                    
                     $count = $bom.RoutingOperationResources.Count
                     for ($i = 0; $i -lt $count; $i++) {
                         $dummy = $bom.RoutingOperationResources.DelRowAtPos(0);
-                    }
+                    }    
                 }
                 else {
                     $log.startSubtask('Add BOM');
@@ -694,15 +708,19 @@ function Imports() {
                 }
 
                 $message = 0
-
+      
                 if ($bomExists ) {
                     $message = $bom.Update()
+                    RefreshHeader($bom)
+
                 }
                 else {
                     $message = $bom.Add()
-                }
+                    RefreshHeader($bom)
 
-                if ($message -lt 0) {
+                }
+      
+                if ($message -lt 0) {  
                     $err = $pfcCompany.GetLastErrorDescription()
                     Throw [System.Exception] ($err);
                 }
@@ -712,7 +730,7 @@ function Imports() {
                 else {
                     $log.endSubtask('Add Production Process', 'S', '');
                 }
-
+                
             }
             catch {
                 $err = $_.Exception.Message;
@@ -773,14 +791,14 @@ function UITests() {
     Write-Host -BackgroundColor Blue 'Connecting...'
 
     $app = $null;
-
+    
 
     write-host -backgroundcolor yellow -foregroundcolor black  "Trying connect..."
     $version = [CompuTec.Core.CoreConfiguration+DatabaseSetup]::AddonVersion
     write-host -backgroundcolor green -foregroundcolor black "PF API Library:" $version';' 'Host:'(Get-WmiObject Win32_OperatingSystem).CSName';' 'OSArchitecture:' (Get-WmiObject Win32_OperatingSystem).OSArchitecture
-
+    
     try {
-        $pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::ConnectUI([ref] $app, $true)
+        $pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::ConnectUI([ref] $app,$true)
         write-host -backgroundcolor green -foregroundcolor black "Connected to:" $pfcCompany.SapCompany.CompanyName "/ " $pfcCompany.SapCompany.CompanyDB"" "Sap Company version: " $pfcCompany.SapCompany.Version
     }
     catch {
@@ -798,7 +816,7 @@ function UITests() {
     if ($pfcCompany.SapCompany.Connected -ne 1) {
         write-host -backgroundcolor yellow -foregroundcolor black "Company is not connected"
         $logJobs.endSubtask('Connection', 'F', 'Company is not connected');
-        return;
+        return 
     }
     #If company is connected to wrong database - stops the script
     if ($pfcCompany.SapCompany.CompanyDB -ne $xmlConnection.Database) {
@@ -815,17 +833,17 @@ function UITests() {
         Write-Host 'Open Item Details:' -NoNewline;
         $xmlOpenItemDetails = $UIConfigXml.SelectSingleNode([string]::Format("ItemDetails"));
         $repeatOpenForm = [int] $xmlOpenItemDetails.repeatOpenForm;
-
+        
         [CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
-        for ($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Open Item Details Form');
-                $formOpenMenu = $app.Menus.Item('CT_PF_1');
-                $formOpenMenu.Activate();
+                $formOpenMenu = $app.Menus.Item('CT_PF_1'); 
+                $formOpenMenu.Activate();        
                 $log.endSubtask('Open Item Details Form', 'S', '');
                 $form = $app.Forms.ActiveForm()
-                $form.Close();
+                $form.Close();       
             }
             catch {
                 $err = $_.Exception.Message;
@@ -844,11 +862,11 @@ function UITests() {
         $next = $app.Menus.Item('1288');
         [CTProgress] $progress = New-Object CTProgress ($recordsToGoThrough);
         try {
-            $firstItemCode = $ItemsDictionary['MAKE'][0].ItemCode;
+            $firstItemCode = $ItemsDictionary['MAKE'][0].ItemCode; 
             $log.startSubtask('Open Item Details Form');
-            $formOpenMenu = $app.Menus.Item('CT_PF_1');
-            $formOpenMenu.Activate();
-            $form = $app.Forms.ActiveForm
+            $formOpenMenu = $app.Menus.Item('CT_PF_1'); 
+            $formOpenMenu.Activate();        
+            $form = $app.Forms.ActiveForm       
             $log.endSubtask('Open Item Details Form', 'S', '');
         }
         catch {
@@ -856,17 +874,16 @@ function UITests() {
             $log.endSubtask('Open Item Details Form', 'F', $err);
             continue;
         }
-        for ($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Item Details Load Data');
-                if ($iRecord -eq 0) {
+                if($iRecord -eq 0){
 
                     $ItemCodeInputField = $form.Items('idtItCTbx');
                     $ItemCodeInputField.Specific.String = [string]$firstItemCode;
                     $app.SendKeys('{ENTER}');
-                }
-                else {
+                } else {
                     $next.Activate();
                 }
                 $log.endSubtask('Item Details Load Data', 'S', '');
@@ -877,7 +894,7 @@ function UITests() {
             }
         }
         $form.Close();
-
+        
     }
 
     function openBOMForm ($app) {
@@ -886,17 +903,17 @@ function UITests() {
         Write-Host 'Open BOM:' -NoNewline;
         $xmlOpenBOM = $UIConfigXml.SelectSingleNode([string]::Format("BOM"));
         $repeatOpenForm = [int] $xmlOpenBOM.repeatOpenForm;
-
+        
         [CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
-        for ($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Open BOM Form');
-                $formOpenMenu = $app.Menus.Item('CT_PF_2');
-                $formOpenMenu.Activate();
+                $formOpenMenu = $app.Menus.Item('CT_PF_2'); 
+                $formOpenMenu.Activate();        
                 $log.endSubtask('Open BOM Form', 'S', '');
                 $form = $app.Forms.ActiveForm()
-                $form.Close();
+                $form.Close();       
             }
             catch {
                 $err = $_.Exception.Message;
@@ -920,12 +937,12 @@ function UITests() {
             $firstItemCode = $ItemsDictionary['MAKE'][0].ItemCode;
             $firstRevision = $ItemsDictionary['MAKE'][0].Revisions[0]
             $log.startSubtask('Open BOM Form');
-            $formOpenMenu = $app.Menus.Item('CT_PF_2');
-            $formOpenMenu.Activate();
-            if ($find.Enabled -eq $true) {
+            $formOpenMenu = $app.Menus.Item('CT_PF_2'); 
+            $formOpenMenu.Activate();      
+            if($find.Enabled -eq $true) {
                 $find.Activate();
             }
-            $form = $app.Forms.ActiveForm
+            $form = $app.Forms.ActiveForm       
             $log.endSubtask('Open BOM Form', 'S', '');
         }
         catch {
@@ -933,11 +950,11 @@ function UITests() {
             $log.endSubtask('Open BOM Form', 'F', $err);
             continue;
         }
-        for ($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Load BOM Data');
-                if ($iRecord -eq 0) {
+                if($iRecord -eq 0){
 
                     $ItemCodeInputField = $form.Items('7');
                     $RevisionInputField = $form.Items('13');
@@ -945,8 +962,7 @@ function UITests() {
                     $RevisionInputField.Specific.String = [string]$firstRevision;
 
                     $app.SendKeys('{ENTER}');
-                }
-                else {
+                } else {
                     $next.Activate();
                 }
                 $log.endSubtask('Load BOM Data', 'S', '');
@@ -957,27 +973,27 @@ function UITests() {
             }
         }
         $form.Close();
-
+        
     }
 
-
+    
     function openProductionProcessForm ($app) {
         [CTLogger] $log = New-Object CTLogger ('UI', 'Open Production Process', $RESULT_FILE)
         Write-Host '';
         Write-Host 'Open Production Process:' -NoNewline;
         $xmlOpenProductionProcess = $UIConfigXml.SelectSingleNode([string]::Format("ProductionProcess"));
         $repeatOpenForm = [int] $xmlOpenProductionProcess.repeatOpenForm;
-
+        
         [CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
-        for ($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Open Production Process Form');
-                $formOpenMenu = $app.Menus.Item('CT_PF_81');
-                $formOpenMenu.Activate();
+                $formOpenMenu = $app.Menus.Item('CT_PF_81'); 
+                $formOpenMenu.Activate();        
                 $log.endSubtask('Open Production Process Form', 'S', '');
                 $form = $app.Forms.ActiveForm()
-                $form.Close();
+                $form.Close();       
             }
             catch {
                 $err = $_.Exception.Message;
@@ -1001,12 +1017,12 @@ function UITests() {
             $firstItemCode = $ItemsDictionary['MAKE'][0].ItemCode;
             $firstRevision = $ItemsDictionary['MAKE'][0].Revisions[0]
             $log.startSubtask('Open Production Process Form');
-            $formOpenMenu = $app.Menus.Item('CT_PF_81');
-            $formOpenMenu.Activate();
-            if ($find.Enabled -eq $true) {
+            $formOpenMenu = $app.Menus.Item('CT_PF_81'); 
+            $formOpenMenu.Activate();      
+            if($find.Enabled -eq $true) {
                 $find.Activate();
             }
-            $form = $app.Forms.ActiveForm
+            $form = $app.Forms.ActiveForm       
             $log.endSubtask('Open Production Process Form', 'S', '');
         }
         catch {
@@ -1014,11 +1030,11 @@ function UITests() {
             $log.endSubtask('Open Production Process Form', 'F', $err);
             continue;
         }
-        for ($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Load Production Process Data');
-                if ($iRecord -eq 0) {
+                if($iRecord -eq 0){
 
                     $ItemCodeInputField = $form.Items('7');
                     $RevisionInputField = $form.Items('RevNameTbx');
@@ -1026,8 +1042,7 @@ function UITests() {
                     $RevisionInputField.Specific.String = [string]$firstRevision;
 
                     $app.SendKeys('{ENTER}');
-                }
-                else {
+                } else {
                     $next.Activate();
                 }
                 $log.endSubtask('Load Production Process Data', 'S', '');
@@ -1038,7 +1053,7 @@ function UITests() {
             }
         }
         $form.Close();
-
+        
     }
 
     function openResourceForm ($app) {
@@ -1047,17 +1062,17 @@ function UITests() {
         Write-Host 'Open Production Process:' -NoNewline;
         $xmlOpenResource = $UIConfigXml.SelectSingleNode([string]::Format("Resource"));
         $repeatOpenForm = [int] $xmlOpenResource.repeatOpenForm;
-
+        
         [CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
-        for ($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Open Resource Form');
-                $formOpenMenu = $app.Menus.Item('CT_PF_12');
-                $formOpenMenu.Activate();
+                $formOpenMenu = $app.Menus.Item('CT_PF_12'); 
+                $formOpenMenu.Activate();        
                 $log.endSubtask('Open Resource Form', 'S', '');
                 $form = $app.Forms.ActiveForm()
-                $form.Close();
+                $form.Close();       
             }
             catch {
                 $err = $_.Exception.Message;
@@ -1080,12 +1095,12 @@ function UITests() {
         try {
             $firstResourceCode = $ResourcesList[0]
             $log.startSubtask('Open Resource Form');
-            $formOpenMenu = $app.Menus.Item('CT_PF_12');
-            $formOpenMenu.Activate();
-            if ($find.Enabled -eq $true) {
+            $formOpenMenu = $app.Menus.Item('CT_PF_12'); 
+            $formOpenMenu.Activate();      
+            if($find.Enabled -eq $true) {
                 $find.Activate();
             }
-            $form = $app.Forms.ActiveForm
+            $form = $app.Forms.ActiveForm       
             $log.endSubtask('Open Resource Form', 'S', '');
         }
         catch {
@@ -1093,16 +1108,15 @@ function UITests() {
             $log.endSubtask('Open Resource Form', 'F', $err);
             continue;
         }
-        for ($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Load Resource Data');
-                if ($iRecord -eq 0) {
+                if($iRecord -eq 0){
                     $ResourceCodeInputField = $form.Items('rscCodBox');
                     $ResourceCodeInputField.Specific.String = [string]$firstResourceCode;
                     $app.SendKeys('{ENTER}');
-                }
-                else {
+                } else {
                     $next.Activate();
                 }
                 $log.endSubtask('Load Resource Data', 'S', '');
@@ -1113,7 +1127,7 @@ function UITests() {
             }
         }
         $form.Close();
-
+        
     }
 
     function openOperationForm ($app) {
@@ -1122,17 +1136,17 @@ function UITests() {
         Write-Host 'Open Operations:' -NoNewline;
         $xmlOpenOperation = $UIConfigXml.SelectSingleNode([string]::Format("Operation"));
         $repeatOpenForm = [int] $xmlOpenOperation.repeatOpenForm;
-
+        
         [CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
-        for ($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Open Operation Form');
-                $formOpenMenu = $app.Menus.Item('CT_PF_14');
-                $formOpenMenu.Activate();
+                $formOpenMenu = $app.Menus.Item('CT_PF_14'); 
+                $formOpenMenu.Activate();        
                 $log.endSubtask('Open Operation Form', 'S', '');
                 $form = $app.Forms.ActiveForm()
-                $form.Close();
+                $form.Close();       
             }
             catch {
                 $err = $_.Exception.Message;
@@ -1155,12 +1169,12 @@ function UITests() {
         try {
             $firstOprationCode = $OperationsList[0]
             $log.startSubtask('Open Operation Form');
-            $formOpenMenu = $app.Menus.Item('CT_PF_14');
-            $formOpenMenu.Activate();
-            if ($find.Enabled -eq $true) {
+            $formOpenMenu = $app.Menus.Item('CT_PF_14'); 
+            $formOpenMenu.Activate();      
+            if($find.Enabled -eq $true) {
                 $find.Activate();
             }
-            $form = $app.Forms.ActiveForm
+            $form = $app.Forms.ActiveForm       
             $log.endSubtask('Open Operation Form', 'S', '');
         }
         catch {
@@ -1168,16 +1182,15 @@ function UITests() {
             $log.endSubtask('Open Operation Form', 'F', $err);
             continue;
         }
-        for ($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Load Operation Data');
-                if ($iRecord -eq 0) {
+                if($iRecord -eq 0){
                     $OperationCodeInputField = $form.Items('oprCodBox');
                     $OperationCodeInputField.Specific.String = [string]$firstOprationCode;
                     $app.SendKeys('{ENTER}');
-                }
-                else {
+                } else {
                     $next.Activate();
                 }
                 $log.endSubtask('Load Operation Data', 'S', '');
@@ -1188,7 +1201,7 @@ function UITests() {
             }
         }
         $form.Close();
-
+        
     }
 
     function openRoutingForm ($app) {
@@ -1197,17 +1210,17 @@ function UITests() {
         Write-Host 'Open Routings:' -NoNewline;
         $xmlOpenRouting = $UIConfigXml.SelectSingleNode([string]::Format("Routing"));
         $repeatOpenForm = [int] $xmlOpenRouting.repeatOpenForm;
-
+        
         [CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
-        for ($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Open Routing Form');
-                $formOpenMenu = $app.Menus.Item('CT_PF_13');
-                $formOpenMenu.Activate();
+                $formOpenMenu = $app.Menus.Item('CT_PF_13'); 
+                $formOpenMenu.Activate();        
                 $log.endSubtask('Open Routing Form', 'S', '');
                 $form = $app.Forms.ActiveForm()
-                $form.Close();
+                $form.Close();       
             }
             catch {
                 $err = $_.Exception.Message;
@@ -1230,12 +1243,12 @@ function UITests() {
         try {
             $firstRoutingCode = $RoutingsList[0]
             $log.startSubtask('Open Routing Form');
-            $formOpenMenu = $app.Menus.Item('CT_PF_13');
-            $formOpenMenu.Activate();
-            if ($find.Enabled -eq $true) {
+            $formOpenMenu = $app.Menus.Item('CT_PF_13'); 
+            $formOpenMenu.Activate();      
+            if($find.Enabled -eq $true) {
                 $find.Activate();
             }
-            $form = $app.Forms.ActiveForm
+            $form = $app.Forms.ActiveForm       
             $log.endSubtask('Open Routing Form', 'S', '');
         }
         catch {
@@ -1243,16 +1256,15 @@ function UITests() {
             $log.endSubtask('Open Routing Form', 'F', $err);
             continue;
         }
-        for ($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++) {
+        for($iRecord = 0; $iRecord -lt $recordsToGoThrough; $iRecord++){
             try {
                 $progress.next();
                 $log.startSubtask('Load Routing Data');
-                if ($iRecord -eq 0) {
+                if($iRecord -eq 0){
                     $RoutingCodeInputField = $form.Items('rtgCodBox');
                     $RoutingCodeInputField.Specific.String = [string]$firstRoutingCode;
                     $app.SendKeys('{ENTER}');
-                }
-                else {
+                } else {
                     $next.Activate();
                 }
                 $log.endSubtask('Load Routing Data', 'S', '');
@@ -1263,12 +1275,12 @@ function UITests() {
             }
         }
         $form.Close();
-
+        
     }
 
-    openItemDetailsForm $app;
+   openItemDetailsForm $app;
 
-    loadItemDetails $app;
+   loadItemDetails $app;
 
     openBOMForm $app;
 
@@ -1285,7 +1297,7 @@ function UITests() {
     openOperationForm $app;
 
     loadOperations $app;
-
+    
     openRoutingForm $app;
 
     loadRoutings $app;
@@ -1293,28 +1305,28 @@ function UITests() {
     $logJobs.endSubtask('Get', 'S', '');
 }
 
-function saveTestConfiguration() {
+function saveTestConfiguration(){
 
     [CTProgress] $progress = New-Object CTProgress (10);
     Write-Host 'Checking enviroment:' -NoNewline
-
-    Add-Content -path $RESULT_FILE_CONF ([string]::Format("Test started at: {0}", (Get-Date)));
+    
+    Add-Content -path $RESULT_FILE_CONF ([string]::Format("Test started at: {0}",(Get-Date)));
 
     Add-Content -Path $RESULT_FILE_CONF '';
     $os = Get-Ciminstance Win32_OperatingSystem;
-    Add-Content -Path $RESULT_FILE_CONF ( [string]::Format("Total Memory: {0} GB", [int]($os.TotalVisibleMemorySize / 1mb)) );
-    Add-Content -Path $RESULT_FILE_CONF ( [string]::Format("Free Memory: {0} GB", [math]::Round($os.FreePhysicalMemory / 1mb, 2)) );
+    Add-Content -Path $RESULT_FILE_CONF ( [string]::Format("Total Memory: {0} GB",[int]($os.TotalVisibleMemorySize/1mb)) );
+    Add-Content -Path $RESULT_FILE_CONF ( [string]::Format("Free Memory: {0} GB",[math]::Round($os.FreePhysicalMemory/1mb,2)) );
     $progress.next();
 
     Add-Content -Path $RESULT_FILE_CONF '';
     $processor = Get-WmiObject win32_processor
-    Add-Content -Path $RESULT_FILE_CONF ( [string]::Format("Processor: {0}", $processor.Name) );
-    Add-Content -Path $RESULT_FILE_CONF ( [string]::Format("Processor average usage: {0} %", ($processor|Measure-Object -property LoadPercentage -Average | Select Average).Average) );
+    Add-Content -Path $RESULT_FILE_CONF ( [string]::Format("Processor: {0}",$processor.Name) );
+    Add-Content -Path $RESULT_FILE_CONF ( [string]::Format("Processor average usage: {0} %",($processor|Measure-Object -property LoadPercentage -Average | Select Average).Average) );
 
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
 
-    # TestConfig.xml
+    # TestConfig.xml 
     Add-Content -Path $RESULT_FILE_CONF 'TestConfig.xml:'
     Add-Content -path $RESULT_FILE_CONF $TestConfigXml.InnerXml;
     Add-Content -Path $RESULT_FILE_CONF ''
@@ -1329,41 +1341,45 @@ function saveTestConfiguration() {
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
 
-    $pingToDbServer = (Test-Connection $sqlServer -Count 20)
+    $pingToDbServer = Test-Connection $sqlServer -Count 20
     $progress.next();
-    $pingToDbServer += (Test-Connection $sqlServer -Count 20)
+    $pingToDbServer += Test-Connection $sqlServer -Count 20
     $progress.next();
-    $pingToDbServer += (Test-Connection $sqlServer -Count 20)
-
+    $pingToDbServer += Test-Connection $sqlServer -Count 20
+    
     Add-Content -Path $RESULT_FILE_CONF 'Ping Database Server:'
-    foreach ($pingResponse in  $pingToDbServer) {
-        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, ResponseTime [ms]: {2}",$pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.ResponseTime ))
+    foreach($pingResponse in  $pingToDbServer) {
+        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, IPV4Address:{2}, IPV6Address{3}, ResponseTime: {4}",
+        $pingResponse.PSComputerName,$pingResponse.Address ,$pingResponse.IPV4Address,$pingResponse.IPV6Address,$pingResponse.ResponseTime ))    
     }
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
 
-    $pingToDbLicenseServer = (Test-Connection $licenseServer -Count 20)
+    $pingToDbLicenseServer = Test-Connection $licenseServer -Count 20
     $progress.next();
-    $pingToDbLicenseServer += (Test-Connection $licenseServer -Count 20)
+    $pingToDbLicenseServer += Test-Connection $licenseServer -Count 20
     $progress.next();
-    $pingToDbLicenseServer += (Test-Connection $licenseServer -Count 20)
+    $pingToDbLicenseServer += Test-Connection $licenseServer -Count 20
     Add-Content -Path $RESULT_FILE_CONF 'Ping License Server:'
-    foreach ($pingResponse in  $pingToDbLicenseServer) {
-        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, ResponseTime [ms]: {2}",$pingResponse.PSComputerName, $pingResponse.Address , $pingResponse.ResponseTime ))
+    foreach($pingResponse in  $pingToDbLicenseServer) {
+        Add-Content -Path $RESULT_FILE_CONF ([string]::Format("Source:{0}, Destination:{1}, IPV4Address:{2}, IPV6Address{3}, ResponseTime: {4}",
+        $pingResponse.PSComputerName,$pingResponse.Address ,$pingResponse.IPV4Address,$pingResponse.IPV6Address,$pingResponse.ResponseTime ))    
     }
     Add-Content -Path $RESULT_FILE_CONF '';
     $progress.next();
 
+    
 
-
-
-
+    
+    
 }
 
-saveTestConfiguration ;
+LoadAssembleys('C:\DEV\Releases\PL10\Source\CompuTec.ProcessForce.API\bin\x64\Debug\')
+#saveTestConfiguration ;
 Write-Host '';
-Imports ;
+ Imports ;
 write-host '';
 UITests ;
 
 
+ 

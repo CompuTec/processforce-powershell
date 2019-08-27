@@ -1,0 +1,21 @@
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\API Training.exe.config
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\obj\x86\Debug\Interop.SAPbobsCOM.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\obj\x86\Debug\API Training.csproj.ResolveComReference.cache
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\API Training.exe
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\API Training.pdb
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\CompuTec.Core.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\CompuTec.ProcessForce.API.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\CompuTec.License.Data.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\CompuTec.LicenseServer.Client.API.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\CompuTec.ProcessForce.Scheduling.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\CoreCalc.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\NLog.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\System.Web.Http.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\Newtonsoft.Json.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\System.Net.Http.Formatting.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\CarlosAg.ExcelXmlWriter.dll
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\bin\x86\Debug\CompuTec.ProcessForce.API.xml
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\obj\x86\Debug\API Training.csprojResolveAssemblyReference.cache
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\obj\x86\Debug\API Training.exe
+C:\Users\michalw\Documents\Visual Studio 2013\Projects\API TRAINING\API Training\API Training\obj\x86\Debug\API Training.pdb
+C:\Users\dariuszg\Desktop\API Training\API Training\obj\x86\Debug\API Training.csproj.CoreCompileInputs.cache
