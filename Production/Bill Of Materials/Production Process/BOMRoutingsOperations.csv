@@ -1,3 +1,4 @@
-BOM_Header;Revision;RoutingCode;Sequence;OperationCode;OperationOverlayCode;OperationOverlaySequence;OperationOverlayQty
-Product-A;code00;01;10;01;;;
-Product-A;code00;01;20;01;01;10;13
+BOM_Header;Revision;RoutingCode;Sequence;OperationCode;OperationOverlayCode;OperationOverlaySequence;OperationOverlayQty;RelationType
+Product-A;code00;01;10;01;;;;NO
+Product-A;code00;01;20;01;01;10;13;OV
+Product-A;code00;01;30;02;;;;FF
