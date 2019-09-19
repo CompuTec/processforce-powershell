@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Production Processes
 ########################################################################
-$SCRIPT_VERSION = "3.1"
+$SCRIPT_VERSION = "3.2"
 # Last tested PF version: ProcessForce 9.3 (9.30.170) PL: 07 R1 Pre-Release (64-bit)
 # Description:
 #      Import Production Processes. Script add new or will update existing Production Processes.
@@ -42,6 +42,7 @@ $csvBOMRoutingsFilePath = -join ($csvImportCatalog, "BOMRoutings.csv")
 $csvBOMRoutingsOperationsFilePath = -join ($csvImportCatalog, "BOMRoutingsOperations.csv")
 $csvBOMRoutingsOperationsPropertiesFilePath = -join ($csvImportCatalog, "BOMRoutingsOperationsProperties.csv")
 $csvBOMRoutingsOperationsResources = -join ($csvImportCatalog, "BOMRoutingsOperationsResources.csv")
+$csvBOMRoutingsOperationsRelations = -join ($csvImportCatalog, "BOMRoutingsOperationsRelations.csv")
 $csvopResourcePropertiesFilePath = -join ($csvImportCatalog, "BOMRoutingsOperationsResourcesProperties.csv")
 
 #endregion
@@ -49,8 +50,8 @@ $csvopResourcePropertiesFilePath = -join ($csvImportCatalog, "BOMRoutingsOperati
 #configuration xml
 $configurationXMLFilePath = -join ($csvImportCatalog, "configuration.xml");
 if (!(Test-Path $configurationXMLFilePath -PathType Leaf)) {
-    Write-Host -BackgroundColor Red ([string]::Format("File: {0} don't exists.", $configurationXMLFilePath));
-    return;
+	Write-Host -BackgroundColor Red ([string]::Format("File: {0} don't exists.", $configurationXMLFilePath));
+	return;
 }
 [xml] $configurationXml = Get-Content -Encoding UTF8 $configurationXMLFilePath
 $xmlConnection = $configurationXml.SelectSingleNode("/configuration/connection");
@@ -59,7 +60,7 @@ $connectionConfirmation = [string]::Format('You are connecting to Database: {0} 
 Write-Host $connectionConfirmation -backgroundcolor Yellow -foregroundcolor DarkBlue -NoNewline
 $confirmation = Read-Host
 if (($confirmation -ne 'y') -and ($confirmation -ne 'Y')) {
-    return;
+	return;
 }
 
 $pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::CreateCompany()
@@ -79,535 +80,630 @@ $version = [CompuTec.Core.CoreConfiguration+DatabaseSetup]::AddonVersion
 write-host -backgroundcolor green -foregroundcolor black "PF API Library:" $version';' 'Host:'(Get-WmiObject Win32_OperatingSystem).CSName';' 'OSArchitecture:' (Get-WmiObject Win32_OperatingSystem).OSArchitecture
  
 try {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'code')]
-    $code = $pfcCompany.Connect()
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'code')]
+	$code = $pfcCompany.Connect()
  
-    write-host -backgroundcolor green -foregroundcolor black "Connected to:" $pfcCompany.SapCompany.CompanyName "/ " $pfcCompany.SapCompany.CompanyDB"" "Sap Company version: " $pfcCompany.SapCompany.Version
+	write-host -backgroundcolor green -foregroundcolor black "Connected to:" $pfcCompany.SapCompany.CompanyName "/ " $pfcCompany.SapCompany.CompanyDB"" "Sap Company version: " $pfcCompany.SapCompany.Version
 }
 catch {
-    #Show error messages & stop the script
-    write-host "Connection Failure: " -backgroundcolor red -foregroundcolor white $_.Exception.Message
+	#Show error messages & stop the script
+	write-host "Connection Failure: " -backgroundcolor red -foregroundcolor white $_.Exception.Message
  
-    write-host "LicenseServer:" $pfcCompany.LicenseServer
-    write-host "SQLServer:" $pfcCompany.SQLServer
-    write-host "DbServerType:" $pfcCompany.DbServerType
-    write-host "Databasename" $pfcCompany.Databasename
-    write-host "UserName:" $pfcCompany.UserName
+	write-host "LicenseServer:" $pfcCompany.LicenseServer
+	write-host "SQLServer:" $pfcCompany.SQLServer
+	write-host "DbServerType:" $pfcCompany.DbServerType
+	write-host "Databasename" $pfcCompany.Databasename
+	write-host "UserName:" $pfcCompany.UserName
 }
 
 #If company is not connected - stops the script
 if (-not $pfcCompany.IsConnected) {
-    write-host -backgroundcolor yellow -foregroundcolor black "Company is not connected"
-    return 
+	write-host -backgroundcolor yellow -foregroundcolor black "Company is not connected"
+	return 
 }
 
 try {
-    #region preparing data
+	#region preparing data
     
-    #Data loading from a csv file
-    [array]$csvItems = Import-Csv -Delimiter ';' -Path $opResourceProperties
-    [array]$bomRoutings = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsFilePath
-    [array]$bomRoutingsOperations = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsOperationsFilePath
+	#Data loading from a csv file
+	[array]$csvItems = Import-Csv -Delimiter ';' -Path $opResourceProperties
+	[array]$bomRoutings = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsFilePath
+	[array]$bomRoutingsOperations = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsOperationsFilePath
 
-    if ((Test-Path -Path $csvBOMRoutingsOperationsPropertiesFilePath -PathType leaf) -eq $true) {
-        [array] $bomRoutingsOperationsProperties = Import-Csv -Delimiter ';' $csvBOMRoutingsOperationsPropertiesFilePath;
-    }
-    else {
-        [array] $bomRoutingsOperationsProperties = $null;
-        write-host "BOM Routings Operations Properties - csv not available."
-    }
+	if ((Test-Path -Path $csvBOMRoutingsOperationsPropertiesFilePath -PathType leaf) -eq $true) {
+		[array] $bomRoutingsOperationsProperties = Import-Csv -Delimiter ';' $csvBOMRoutingsOperationsPropertiesFilePath;
+	}
+	else {
+		[array] $bomRoutingsOperationsProperties = $null;
+		write-host "BOM Routings Operations Properties - csv not available."
+	}
 
-    [array]$bomRoutingsOperationsResources = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsOperationsResources
+	[array]$bomRoutingsOperationsResources = Import-Csv -Delimiter ';' -Path $csvBOMRoutingsOperationsResources
 
-    if ((Test-Path -Path $csvopResourcePropertiesFilePath -PathType leaf) -eq $true) {
-        [array] $opResourceProperties = Import-Csv -Delimiter ';' $csvopResourcePropertiesFilePath;
-    }
-    else {
-        [array] $opResourceProperties = $null;
-        write-host "BOM Routings Operations Resources Properties - csv not available."
-    }
-    write-Host 'Preparing data: ' -NoNewline
+	if ((Test-Path -Path $csvBOMRoutingsOperationsRelations -PathType leaf) -eq $true) {
+		[array] $bomRoutingsOperationsRelations = Import-Csv -Delimiter ';' $csvBOMRoutingsOperationsRelations;
+	}
+	else {
+		[array] $bomRoutingsOperationsRelations = $null;
+		write-host "BOM Routings Operations Relations - csv not available."
+	}
+
+	if ((Test-Path -Path $csvopResourcePropertiesFilePath -PathType leaf) -eq $true) {
+		[array] $opResourceProperties = Import-Csv -Delimiter ';' $csvopResourcePropertiesFilePath;
+	}
+	else {
+		[array] $opResourceProperties = $null;
+		write-host "BOM Routings Operations Resources Properties - csv not available."
+	}
+	write-Host 'Preparing data: ' -NoNewline
     
-    $totalRows = $csvItems.Count + $bomRoutings.Count + $bomRoutingsOperations.Count + $bomRoutingsOperationsProperties.Count + $bomRoutingsOperationsResources.Count + $opResourceProperties.Count
+	$totalRows = $csvItems.Count + $bomRoutings.Count + $bomRoutingsOperations.Count + $bomRoutingsOperationsProperties.Count + $bomRoutingsOperationsResources.Count + $bomRoutingsOperationsRelations.Count + $opResourceProperties.Count
 
-    $bomList = New-Object 'System.Collections.Generic.List[array]'
+	$bomList = New-Object 'System.Collections.Generic.List[array]'
 
-    $dictionaryRoutings = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
-    $dictionaryRoutingsOperations = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
-    $dictionaryRoutingsOperationsProperties = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
-    $dictionaryRoutingsOperationsResources = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
-    $dictionaryResourceProperties = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
+	$dictionaryRoutings = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
+	$dictionaryRoutingsOperations = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
+	$dictionaryRoutingsOperationsProperties = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
+	$dictionaryRoutingsOperationsResources = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
+	$dictionaryRoutingsOperationsRelations = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
+	$dictionaryResourceProperties = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
 
-    $progressItterator = 0;
-    $progres = 0;
-    $beforeProgress = 0;
+	$progressItterator = 0;
+	$progres = 0;
+	$beforeProgress = 0;
 
-    if ($totalRows -gt 1) {
-        $total = $totalRows
-    }
-    else {
-        $total = 1
-    }
+	if ($totalRows -gt 1) {
+		$total = $totalRows
+	}
+	else {
+		$total = 1
+	}
 
-    foreach ($row in $csvItems) {
-        $progressItterator++;
-        $progres = [math]::Round(($progressItterator * 100) / $total);
-        if ($progres -gt $beforeProgress) {
-            Write-Host $progres"% " -NoNewline
-            $beforeProgress = $progres
-        }
+	foreach ($row in $csvItems) {
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
 
   
-        $bomList.Add([array]$row);
-    }
+		$bomList.Add([array]$row);
+	}
 
-    foreach ($row in $bomRoutings) {
-        $key = $row.BOM_Header + '___' + $row.Revision;
-        $progressItterator++;
-        $progres = [math]::Round(($progressItterator * 100) / $total);
-        if ($progres -gt $beforeProgress) {
-            Write-Host $progres"% " -NoNewline
-            $beforeProgress = $progres
-        }
+	foreach ($row in $bomRoutings) {
+		$key = $row.BOM_Header + '___' + $row.Revision;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
 
-        if ($dictionaryRoutings.ContainsKey($key)) {
-            $list = $dictionaryRoutings[$key];
-        }
-        else {
-            $list = New-Object System.Collections.Generic.List[array];
-            $dictionaryRoutings[$key] = $list;
-        }
+		if ($dictionaryRoutings.ContainsKey($key)) {
+			$list = $dictionaryRoutings[$key];
+		}
+		else {
+			$list = New-Object System.Collections.Generic.List[array];
+			$dictionaryRoutings[$key] = $list;
+		}
     
-        $list.Add([array]$row);
-    }
+		$list.Add([array]$row);
+	}
 
-    foreach ($row in $bomRoutingsOperations) {
-        $key = $row.BOM_Header + '___' + $row.Revision + '___' + $row.RoutingCode;
-        $progressItterator++;
-        $progres = [math]::Round(($progressItterator * 100) / $total);
-        if ($progres -gt $beforeProgress) {
-            Write-Host $progres"% " -NoNewline
-            $beforeProgress = $progres
-        }
+	foreach ($row in $bomRoutingsOperations) {
+		$key = $row.BOM_Header + '___' + $row.Revision + '___' + $row.RoutingCode;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
 
-        if ($dictionaryRoutingsOperations.ContainsKey($key)) {
-            $list = $dictionaryRoutingsOperations[$key];
-        }
-        else {
-            $list = New-Object System.Collections.Generic.List[array];
-            $dictionaryRoutingsOperations[$key] = $list;
-        }
+		if ($dictionaryRoutingsOperations.ContainsKey($key)) {
+			$list = $dictionaryRoutingsOperations[$key];
+		}
+		else {
+			$list = New-Object System.Collections.Generic.List[array];
+			$dictionaryRoutingsOperations[$key] = $list;
+		}
     
-        $list.Add([array]$row);
-    }
+		$list.Add([array]$row);
+	}
 
-    foreach ($row in $bomRoutingsOperationsProperties) {
-        $key = $row.BOM_Header + '___' + $row.Revision + '___' + $row.RoutingCode;
-        $progressItterator++;
-        $progres = [math]::Round(($progressItterator * 100) / $total);
-        if ($progres -gt $beforeProgress) {
-            Write-Host $progres"% " -NoNewline
-            $beforeProgress = $progres
-        }
+	foreach ($row in $bomRoutingsOperationsProperties) {
+		$key = $row.BOM_Header + '___' + $row.Revision + '___' + $row.RoutingCode;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
 
-        if ($dictionaryRoutingsOperationsProperties.ContainsKey($key)) {
-            $list = $dictionaryRoutingsOperationsProperties[$key];
-        }
-        else {
-            $list = New-Object System.Collections.Generic.List[array];
-            $dictionaryRoutingsOperationsProperties[$key] = $list;
-        }
+		if ($dictionaryRoutingsOperationsProperties.ContainsKey($key)) {
+			$list = $dictionaryRoutingsOperationsProperties[$key];
+		}
+		else {
+			$list = New-Object System.Collections.Generic.List[array];
+			$dictionaryRoutingsOperationsProperties[$key] = $list;
+		}
     
-        $list.Add([array]$row);
-    }
+		$list.Add([array]$row);
+	}
 
     
-    foreach ($row in $bomRoutingsOperationsResources) {
-        $key = $row.BOM_Header + '___' + $row.Revision + '___' + $row.RoutingCode;
-        $progressItterator++;
-        $progres = [math]::Round(($progressItterator * 100) / $total);
-        if ($progres -gt $beforeProgress) {
-            Write-Host $progres"% " -NoNewline
-            $beforeProgress = $progres
-        }
+	foreach ($row in $bomRoutingsOperationsResources) {
+		$key = $row.BOM_Header + '___' + $row.Revision + '___' + $row.RoutingCode;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
 
-        if ($dictionaryRoutingsOperationsResources.ContainsKey($key)) {
-            $list = $dictionaryRoutingsOperationsResources[$key];
-        }
-        else {
-            $list = New-Object System.Collections.Generic.List[array];
-            $dictionaryRoutingsOperationsResources[$key] = $list;
-        }
+		if ($dictionaryRoutingsOperationsResources.ContainsKey($key)) {
+			$list = $dictionaryRoutingsOperationsResources[$key];
+		}
+		else {
+			$list = New-Object System.Collections.Generic.List[array];
+			$dictionaryRoutingsOperationsResources[$key] = $list;
+		}
     
-        $list.Add([array]$row);
-    }
+		$list.Add([array]$row);
+	}
     
-    foreach ($row in $opResourceProperties) {
-        $key = $row.BOM_Header + '___' + $row.Revision + '___' + $row.RoutingCode;
-        $progressItterator++;
-        $progres = [math]::Round(($progressItterator * 100) / $total);
-        if ($progres -gt $beforeProgress) {
-            Write-Host $progres"% " -NoNewline
-            $beforeProgress = $progres
-        }
+	foreach ($row in $bomRoutingsOperationsRelations) {
+		$key = $row.BOM_Header + '___' + $row.Revision + '___' + $row.RoutingCode;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
 
-        if ($dictionaryResourceProperties.ContainsKey($key)) {
-            $list = $dictionaryResourceProperties[$key];
-        }
-        else {
-            $list = New-Object System.Collections.Generic.List[array];
-            $dictionaryResourceProperties[$key] = $list;
-        }
+		if ($dictionaryRoutingsOperationsRelations.ContainsKey($key)) {
+			$list = $dictionaryRoutingsOperationsRelations[$key];
+		}
+		else {
+			$list = New-Object System.Collections.Generic.List[array];
+			$dictionaryRoutingsOperationsRelations[$key] = $list;
+		}
     
-        $list.Add([array]$row);
-    }
-    Write-Host '';
-    Write-Host 'Adding/updating data: ' -NoNewline;
-    #endregion
+		$list.Add([array]$row);
+	}
+    
+	foreach ($row in $opResourceProperties) {
+		$key = $row.BOM_Header + '___' + $row.Revision + '___' + $row.RoutingCode;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
 
-    if ($bomList.Count -gt 1) {
-        $total = $bomList.Count
-    }
-    else {
-        $total = 1
-    }
-    $progressItterator = 0;
-    $progress = 0;
-    $beforeProgress = 0;
+		if ($dictionaryResourceProperties.ContainsKey($key)) {
+			$list = $dictionaryResourceProperties[$key];
+		}
+		else {
+			$list = New-Object System.Collections.Generic.List[array];
+			$dictionaryResourceProperties[$key] = $list;
+		}
+    
+		$list.Add([array]$row);
+	}
+	Write-Host '';
+	Write-Host 'Adding/updating data: ' -NoNewline;
+	#endregion
+
+	if ($bomList.Count -gt 1) {
+		$total = $bomList.Count
+	}
+	else {
+		$total = 1
+	}
+	$progressItterator = 0;
+	$progress = 0;
+	$beforeProgress = 0;
 
 
-    foreach ($csvItem in $bomList) {
-        try {
-            $progressItterator++;
-            $progress = [math]::Round(($progressItterator * 100) / $total);
-            if ($progress -gt $beforeProgress) {
-                Write-Host $progress"% " -NoNewline
-                $beforeProgress = $progress
-            }
+	foreach ($csvItem in $bomList) {
+		try {
+			$progressItterator++;
+			$progress = [math]::Round(($progressItterator * 100) / $total);
+			if ($progress -gt $beforeProgress) {
+				Write-Host $progress"% " -NoNewline
+				$beforeProgress = $progress
+			}
 
-            $dictionaryKey = $csvItem.BOM_Header + '___' + $csvItem.Revision;
+			$dictionaryKey = $csvItem.BOM_Header + '___' + $csvItem.Revision;
     
 
-            #Creating BOM object
-            $bom = $pfcCompany.CreatePFObject([CompuTec.ProcessForce.API.Core.ObjectTypes]"BillOfMaterial");
-            #Checking that the BOM already exist
-            $retValue = $bom.GetByItemCodeAndRevision($csvItem.BOM_Header, $csvItem.Revision)
-            if ($retValue -ne 0) {
-                $bom.U_ItemCode = $csvItem.BOM_Header
-                $bom.U_Revision = $csvItem.Revision
-                $exists = $false;
-            }
-            else {
-                $exists = $true;
-            }
-            #Data loading from a csv file - Routing
-            $bomRoutings = $dictionaryRoutings[$dictionaryKey];
-            if ($bomRoutings.count -gt 0) {
-                #Deleting all existing routings, operations, resources
+			#Creating BOM object
+			$bom = $pfcCompany.CreatePFObject([CompuTec.ProcessForce.API.Core.ObjectTypes]"BillOfMaterial");
+			#Checking that the BOM already exist
+			$retValue = $bom.GetByItemCodeAndRevision($csvItem.BOM_Header, $csvItem.Revision)
+			if ($retValue -ne 0) {
+				$bom.U_ItemCode = $csvItem.BOM_Header
+				$bom.U_Revision = $csvItem.Revision
+				$exists = $false;
+			}
+			else {
+				$exists = $true;
+			}
+           
+			#Data loading from a csv file - Routing
+			$bomRoutings = $dictionaryRoutings[$dictionaryKey];
+			if ($bomRoutings.count -gt 0) {
+				#Deleting all existing routings, operations, resources
         
-                $count = $bom.Routings.Count
-                for ($i = 0; $i -lt $count; $i++) {
-                    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
-                    $dummy = $bom.Routings.DelRowAtPos(0);
-                }
+				$count = $bom.Routings.Count
+				for ($i = 0; $i -lt $count; $i++) {
+					[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'dummy')]
+					$dummy = $bom.Routings.DelRowAtPos(0);
+				}
         
-                $count = $bom.RoutingOperations.Count
-                for ($i = 0; $i -lt $count; $i++) {
-                    $dummy = $bom.RoutingOperations.DelRowAtPos(0);
-                }
+				$count = $bom.RoutingOperations.Count
+				for ($i = 0; $i -lt $count; $i++) {
+					$dummy = $bom.RoutingOperations.DelRowAtPos(0);
+				}
                 
-                $count = $bom.RoutingOperationResources.Count
-                for ($i = 0; $i -lt $count; $i++) {
-                    $dummy = $bom.RoutingOperationResources.DelRowAtPos(0);
-                }     
+				$count = $bom.RoutingOperationResources.Count
+				for ($i = 0; $i -lt $count; $i++) {
+					$dummy = $bom.RoutingOperationResources.DelRowAtPos(0);
+				}     
         
-                $count = $bom.RoutingOperationProperties.Count
-                for ($i = 0; $i -lt $count; $i++) {
-                    $dummy = $bom.RoutingOperationProperties.DelRowAtPos(0);
-                }
+				$count = $bom.RoutingOperationProperties.Count
+				for ($i = 0; $i -lt $count; $i++) {
+					$dummy = $bom.RoutingOperationProperties.DelRowAtPos(0);
+				}
         
-                #Adding a new data - Routings
-                foreach ($rtg in $bomRoutings) {  
-                    $bom.Routings.U_RtgCode = $rtg.RoutingCode
-                    $bom.Routings.U_IsDefault = $rtg.DefaultMRP # Y = Yes, N = No
-                    $bom.Routings.U_IsRollUpDefault = $rtg.DefaultCosting # Y = Yes, N = No
-                    $dummy = $bom.Routings.Add()
-                }
+				#Adding a new data - Routings
+				foreach ($rtg in $bomRoutings) {  
+					$bom.Routings.U_RtgCode = $rtg.RoutingCode
+					$bom.Routings.U_IsDefault = $rtg.DefaultMRP # Y = Yes, N = No
+					$bom.Routings.U_IsRollUpDefault = $rtg.DefaultCosting # Y = Yes, N = No
+					$dummy = $bom.Routings.Add()
+				}
       
-                #Deleting defautl operationes copied from Routing
-                while ($bom.RoutingOperations.Count -ne 1 ) {  
-                    $count = $bom.RoutingOperations.Count
-                    $nextint = 0;
+				#Deleting defautl operationes copied from Routing
+				while ($bom.RoutingOperations.Count -ne 1 ) {  
+					$count = $bom.RoutingOperations.Count
+					$nextint = 0;
         
-                    for ($i = 0; $i -lt $count; $i++) {
-                        try {
-                            $dummy = $bom.RoutingOperations.DelRowAtPos($nextint);
-                        }
-                        catch {
-                            $nextint++
-                        }
+					for ($i = 0; $i -lt $count; $i++) {
+						try {
+							$dummy = $bom.RoutingOperations.DelRowAtPos($nextint);
+						}
+						catch {
+							$nextint++
+						}
             
-                    }
-                }
-                $dummy = $bom.RoutingOperations.DelRowAtPos(0);
-                $bom.RoutingOperations.SetCurrentLine($bom.RoutingOperations.Count - 1)
+					}
+				}
+				$dummy = $bom.RoutingOperations.DelRowAtPos(0);
+				$bom.RoutingOperations.SetCurrentLine($bom.RoutingOperations.Count - 1)
        
-                $drivers = New-Object 'System.Collections.Generic.Dictionary[String,int]'
-                #Adding a new data - Operations for Routings
-                foreach ($rtg in $bomRoutings) {
-                    $dictionaryKeyRt = $csvItem.BOM_Header + '___' + $csvItem.Revision + '___' + $rtg.RoutingCode;
-                    $bomRoutingsOperations = $dictionaryRoutingsOperations[$dictionaryKeyRt];
-                    $overlayDict = New-Object 'System.Collections.Generic.Dictionary[int,int]';
-                    foreach ($rtgOper in $bomRoutingsOperations) {
-                        $bom.RoutingOperations.U_RtgCode = $rtgOper.RoutingCode   
-                        $bom.RoutingOperations.U_OprCode = $rtgOper.OperationCode      
-                        $bom.RoutingOperations.U_OprSequence = $rtgOper.Sequence
+				$drivers = New-Object 'System.Collections.Generic.Dictionary[String,int]'
+				#Adding a new data - Operations for Routings
+				foreach ($rtg in $bomRoutings) {
+					$dictionaryKeyRt = $csvItem.BOM_Header + '___' + $csvItem.Revision + '___' + $rtg.RoutingCode;
+					$bomRoutingsOperations = $dictionaryRoutingsOperations[$dictionaryKeyRt];
+					$overlayDict = New-Object 'System.Collections.Generic.Dictionary[int,int]';
+					foreach ($rtgOper in $bomRoutingsOperations) {
+						$bom.RoutingOperations.U_RtgCode = $rtgOper.RoutingCode   
+						$bom.RoutingOperations.U_OprCode = $rtgOper.OperationCode      
+						$bom.RoutingOperations.U_OprSequence = $rtgOper.Sequence
 
-                        if ($rtgOper.OperationOverlayCode -gt '') {
-                            $bom.RoutingOperations.U_OprOverlayCode = $rtgOper.OperationOverlayCode;
-                            $bom.RoutingOperations.U_OprOverlayId = $overlayDict[$rtgOper.OperationOverlaySequence];
-                            $bom.RoutingOperations.U_OprOverlayQty = $rtgOper.OperationOverlayQty;
-                        }
+						# Relation Types:
+						# "NO" - NOne, 
+						# "LF" - Last Finish,
+						# "FF" - First Finish,
+						# "SO" - Starting Operation,
+						# "OV" - Overloading
+						switch ($rtgOper.RelationType) {
+							"LF" {
+								$bom.RoutingOperations.U_RelationType = [CompuTec.ProcessForce.API.Enumerators.OperationRelationType]::LastFinish; 
+								$bom.RoutingOperations.U_HasRelations = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes;
+								break;
+							}
+							"FF" { 
+								$bom.RoutingOperations.U_RelationType = [CompuTec.ProcessForce.API.Enumerators.OperationRelationType]::FirstFinish; 
+								$bom.RoutingOperations.U_HasRelations = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes;
+								break; 
+							}
+							"SO" { 
+								$bom.RoutingOperations.U_RelationType = [CompuTec.ProcessForce.API.Enumerators.OperationRelationType]::StartingOperation; 
+								$bom.RoutingOperations.U_HasRelations = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes;
+								break;
+							}
+							"OV" {
+								$bom.RoutingOperations.U_RelationType = [CompuTec.ProcessForce.API.Enumerators.OperationRelationType]::Overloading; 
+								$bom.RoutingOperations.U_HasRelations = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No;
+								break; 
+							}
+							Default {
+								$bom.RoutingOperations.U_RelationType = [CompuTec.ProcessForce.API.Enumerators.OperationRelationType]::None;
+								$bom.RoutingOperations.U_HasRelations = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No;
+							}
+						}					
 
-                        $overlayDict.Add($rtgOper.Sequence, $bom.RoutingOperations.U_LineNum);
-                        $drivers_key = $rtgOper.RoutingCode + '@#@' + $bom.RoutingOperations.U_OprSequence;
-                        $drivers.Add($drivers_key, $bom.RoutingOperations.U_RtgOprCode);
-                        $dummy = $bom.RoutingOperations.Add()
-                    }
-			
-                    #operation properties
-                    $bomRoutingsOperationsProperties = $dictionaryRoutingsOperationsProperties[$dictionaryKeyRt];
-                    if ($bomRoutingsOperationsProperties.count -gt 0) {
-                        #Deleting all existing properties
-                        $count = $bom.RoutingOperationProperties.Count
-                        for ($i = $count - 1; $i -ge 0; $i--) {
-                            $bom.RoutingOperationProperties.SetCurrentLine($i);
-                            if ($bom.RoutingOperationProperties.U_RtgCode -eq $rtg.RoutingCode) {
-                                $dummy = $bom.RoutingOperationProperties.DelRowAtPos($i);
-                            }
-                        }
-                        $bom.RoutingOperationProperties.SetCurrentLine(($bom.RoutingOperationProperties.Count - 1));
-                        #Adding the new data       
-                        foreach ($prop in $bomRoutingsOperationsProperties) {
-                            $drivers_key = $prop.RoutingCode + '@#@' + $prop.Sequence;
-                            $bom.RoutingOperationProperties.U_RtgOprCode = $drivers[$drivers_key];
-                            $bom.RoutingOperationProperties.U_RtgCode = $prop.RoutingCode
-                            $bom.RoutingOperationProperties.U_OprCode = $prop.OperationCode
-                            $bom.RoutingOperationProperties.U_PrpCode = $prop.PropertiesCode
-                            $bom.RoutingOperationProperties.U_PrpConType = $prop.Condition #enum ConditionType; Equal EQ = 1, NotEqual NE = 2, GratherThan GT = 3, GratherThanOrEqual GE = 4, LessThan LT = 5, LessThanOrEqual LE = 6, Between BT = 7
-                            $bom.RoutingOperationProperties.U_PrpConValue = $prop.Value
-                            $bom.RoutingOperationProperties.U_PrpConValueTo = $prop.ToValue
-                            $bom.RoutingOperationProperties.U_UnitOfMeasure = $prop.UoM
-                            $dummy = $bom.RoutingOperationProperties.Add()
-                        }
+						if ($rtgOper.OperationOverlayCode -gt '') {
+							$bom.RoutingOperations.U_OprOverlayCode = $rtgOper.OperationOverlayCode;
+							$bom.RoutingOperations.U_OprOverlayId = $overlayDict[$rtgOper.OperationOverlaySequence];
+							$bom.RoutingOperations.U_OprOverlayQty = $rtgOper.OperationOverlayQty;
+						}
+						$addedOperaionLineNum = $bom.RoutingOperations.U_LineNum;
+						$overlayDict.Add($rtgOper.Sequence, $addedOperaionLineNum);
+						$drivers_key = $rtgOper.RoutingCode + '@#@' + $bom.RoutingOperations.U_OprSequence;
+						$drivers.Add($drivers_key, $bom.RoutingOperations.U_RtgOprCode);
+						$dummy = $bom.RoutingOperations.Add()
+
+					}
+
+
+					#region operation advanced relations
+					$oprRelKey = $csvItem.BOM_Header + '___' + $csvItem.Revision + '___' + $rtg.RoutingCode;
+					$bomRoutingsOperationsRelations = $dictionaryRoutingsOperationsRelations[$oprRelKey];
+					if ($bomRoutingsOperationsRelations.Count -gt 0) {
+						$count = $bom.RoutingsOperationRelation.Count
+						for ($i = $count - 1; $i -ge 0; $i--) {
+							$bom.RoutingsOperationRelation.SetCurrentLine($i);
+							if ($bom.RoutingsOperationRelation.U_RtgCode -eq $rtg.RoutingCode) {
+								$dummy = $bom.RoutingsOperationRelation.DelRowAtPos($i);
+							}
+						}
+					
+						$bom.RoutingsOperationRelation.SetCurrentLine($bom.RoutingsOperationRelation.Count - 1);
+						foreach ($rtgOprRel in $bomRoutingsOperationsRelations) {
+							if ($bom.RoutingsOperationRelation.IsRowFilled()) {
+								$dummy = $bom.RoutingsOperationRelation.Add();
+							}
+
+							$bom.RoutingsOperationRelation.U_BaseLine = $overlayDict[$rtgOprRel.Sequence];
+							$bom.RoutingsOperationRelation.U_RtgCode = $rtgOprRel.RoutingCode;
+							$operLineNum = $bom.RoutingOperations.Where( { $_.U_RtgCode -eq $rtgOprRel.RoutingCode -and $_.U_OprSequence -eq $rtgOprRel.RelOprSequence -and $_.U_OprCode -eq $rtgOprRel.RelOprCode })[0].U_LineNum;
+							if (-not $operLineNum -gt 0) {
+								throw [System.Exception]([string]::Format("Couldn't find operation: '{0}' with sequence: '{1}' in Routing: '{2}' for Relation",$rtgOprRel.RelOprSequence,$rtgOprRel.RelOprSequence,$rtgOprRel.RoutingCode));
+							}
+							$bom.RoutingsOperationRelation.U_POprLine = $operLineNum
+
+						}
+					}
+					#endregion
+					
+					#operation properties
+					$bomRoutingsOperationsProperties = $dictionaryRoutingsOperationsProperties[$dictionaryKeyRt];
+					if ($bomRoutingsOperationsProperties.count -gt 0) {
+						#Deleting all existing properties
+						$count = $bom.RoutingOperationProperties.Count
+						for ($i = $count - 1; $i -ge 0; $i--) {
+							$bom.RoutingOperationProperties.SetCurrentLine($i);
+							if ($bom.RoutingOperationProperties.U_RtgCode -eq $rtg.RoutingCode) {
+								$dummy = $bom.RoutingOperationProperties.DelRowAtPos($i);
+							}
+						}
+						$bom.RoutingOperationProperties.SetCurrentLine(($bom.RoutingOperationProperties.Count - 1));
+						#Adding the new data       
+						foreach ($prop in $bomRoutingsOperationsProperties) {
+							$drivers_key = $prop.RoutingCode + '@#@' + $prop.Sequence;
+							$bom.RoutingOperationProperties.U_RtgOprCode = $drivers[$drivers_key];
+							$bom.RoutingOperationProperties.U_RtgCode = $prop.RoutingCode
+							$bom.RoutingOperationProperties.U_OprCode = $prop.OperationCode
+							$bom.RoutingOperationProperties.U_PrpCode = $prop.PropertiesCode
+							$bom.RoutingOperationProperties.U_PrpConType = $prop.Condition #enum ConditionType; Equal EQ = 1, NotEqual NE = 2, GratherThan GT = 3, GratherThanOrEqual GE = 4, LessThan LT = 5, LessThanOrEqual LE = 6, Between BT = 7
+							$bom.RoutingOperationProperties.U_PrpConValue = $prop.Value
+							$bom.RoutingOperationProperties.U_PrpConValueTo = $prop.ToValue
+							$bom.RoutingOperationProperties.U_UnitOfMeasure = $prop.UoM
+							$dummy = $bom.RoutingOperationProperties.Add()
+						}
 		        
-                    }
+					}
 			
         
          
-                    #Deleting default resources copied from operations for given routing code
-                    $count = $bom.RoutingOperationResources.Count
-                    for ($i = $count - 1; $i -ge 0; $i--) {
-                        $bom.RoutingOperationResources.SetCurrentLine($i);
-                        if ($bom.RoutingOperationResources.U_RtgCode -eq $rtg.RoutingCode) {
-                            $dummy = $bom.RoutingOperationResources.DelRowAtPos($i);
-                        }
-                    }
-                    $bom.RoutingOperationResources.SetCurrentLine(($bom.RoutingOperationResources.Count - 1));
-                    $count = $bom.RoutingsOperationResourceProperties.Count
-                    for ($i = $count - 1; $i -ge 0; $i--) {
-                        $bom.RoutingsOperationResourceProperties.SetCurrentLine($i);
-                        if ($bom.RoutingsOperationResourceProperties.U_RtgCode -eq $rtg.RoutingCode) {
-                            $dummy = $bom.RoutingsOperationResourceProperties.DelRowAtPos($i);  
-                        }
-                    }
-                    $bom.RoutingsOperationResourceProperties.SetCurrentLine(($bom.RoutingsOperationResourceProperties.Count - 1));
-                    $driversRtgOprRsc = New-Object 'System.Collections.Generic.Dictionary[String,int]'
-                    #Adding resources for operations   
+					#Deleting default resources copied from operations for given routing code
+					$count = $bom.RoutingOperationResources.Count
+					for ($i = $count - 1; $i -ge 0; $i--) {
+						$bom.RoutingOperationResources.SetCurrentLine($i);
+						if ($bom.RoutingOperationResources.U_RtgCode -eq $rtg.RoutingCode) {
+							$dummy = $bom.RoutingOperationResources.DelRowAtPos($i);
+						}
+					}
+					$bom.RoutingOperationResources.SetCurrentLine(($bom.RoutingOperationResources.Count - 1));
+					$count = $bom.RoutingsOperationResourceProperties.Count
+					for ($i = $count - 1; $i -ge 0; $i--) {
+						$bom.RoutingsOperationResourceProperties.SetCurrentLine($i);
+						if ($bom.RoutingsOperationResourceProperties.U_RtgCode -eq $rtg.RoutingCode) {
+							$dummy = $bom.RoutingsOperationResourceProperties.DelRowAtPos($i);  
+						}
+					}
+					$bom.RoutingsOperationResourceProperties.SetCurrentLine(($bom.RoutingsOperationResourceProperties.Count - 1));
+					$driversRtgOprRsc = New-Object 'System.Collections.Generic.Dictionary[String,int]'
+					#Adding resources for operations   
         
-                    $dictionaryKeyRt = $csvItem.BOM_Header + '___' + $csvItem.Revision + '___' + $rtg.RoutingCode;
-                    $bomRoutingsOperationsResources = $dictionaryRoutingsOperationsResources[$dictionaryKeyRt];
-                    if ($bomRoutingsOperationsResources.count -gt 0) {
-                        foreach ($rtgOperResc in $bomRoutingsOperationsResources) {
-                            $drivers_key = $rtgOperResc.RoutingCode + '@#@' + $rtgOperResc.Sequence;
-                            $bom.RoutingOperationResources.U_RtgCode = $rtgOperResc.RoutingCode
-                            $bom.RoutingOperationResources.U_OprCode = $rtgOperResc.OperationCode
-                            $bom.RoutingOperationResources.U_RtgOprCode = $drivers[$drivers_key];
-                            $bom.RoutingOperationResources.U_RscCode = $rtgOperResc.ResourceCode
+					$dictionaryKeyRt = $csvItem.BOM_Header + '___' + $csvItem.Revision + '___' + $rtg.RoutingCode;
+					$bomRoutingsOperationsResources = $dictionaryRoutingsOperationsResources[$dictionaryKeyRt];
+					if ($bomRoutingsOperationsResources.count -gt 0) {
+						foreach ($rtgOperResc in $bomRoutingsOperationsResources) {
+							$drivers_key = $rtgOperResc.RoutingCode + '@#@' + $rtgOperResc.Sequence;
+							$bom.RoutingOperationResources.U_RtgCode = $rtgOperResc.RoutingCode
+							$bom.RoutingOperationResources.U_OprCode = $rtgOperResc.OperationCode
+							$bom.RoutingOperationResources.U_RtgOprCode = $drivers[$drivers_key];
+							$bom.RoutingOperationResources.U_RscCode = $rtgOperResc.ResourceCode
 
-                            if ($rtgOperResc.MachineCode -ne '') {
-                                if ($bom.RoutingOperationResources.U_RscType -eq [CompuTec.ProcessForce.API.Enumerators.ResourceType]::Tool) {
-                                    $bom.RoutingOperationResources.U_MachineCode = $rtgOperResc.MachineCode;
-                                }
-                            }
+							if ($rtgOperResc.MachineCode -ne '') {
+								if ($bom.RoutingOperationResources.U_RscType -eq [CompuTec.ProcessForce.API.Enumerators.ResourceType]::Tool) {
+									$bom.RoutingOperationResources.U_MachineCode = $rtgOperResc.MachineCode;
+								}
+							}
 
-                            $bom.RoutingOperationResources.U_IsDefault = $rtgOperResc.Default
-                            $bom.RoutingOperationResources.U_IssueType = $rtgOperResc.IssueType;
-                            $bom.RoutingOperationResources.U_OcrCode = $rtgOperResc.DistRule
-                            $bom.RoutingOperationResources.U_OcrCode2 = $rtgOperResc.DistRule2
-                            $bom.RoutingOperationResources.U_OcrCode3 = $rtgOperResc.DistRule3
-                            $bom.RoutingOperationResources.U_OcrCode4 = $rtgOperResc.DistRule4
-                            $bom.RoutingOperationResources.U_OcrCode5 = $rtgOperResc.DistRule5
-                            $bom.RoutingOperationResources.U_QueueTime = $rtgOperResc.QueTime
+							$bom.RoutingOperationResources.U_IsDefault = $rtgOperResc.Default
+							$bom.RoutingOperationResources.U_IssueType = $rtgOperResc.IssueType;
+							$bom.RoutingOperationResources.U_OcrCode = $rtgOperResc.DistRule
+							$bom.RoutingOperationResources.U_OcrCode2 = $rtgOperResc.DistRule2
+							$bom.RoutingOperationResources.U_OcrCode3 = $rtgOperResc.DistRule3
+							$bom.RoutingOperationResources.U_OcrCode4 = $rtgOperResc.DistRule4
+							$bom.RoutingOperationResources.U_OcrCode5 = $rtgOperResc.DistRule5
+							$bom.RoutingOperationResources.U_QueueTime = $rtgOperResc.QueTime
                         
-                            $queTimeUoM = $rtgOperResc.QueTimeUoM #enum RateType; FixedSeconds = 1, FixedMinutes = 2, FixedHours = 3
-                            switch ($queTimeUoM) {
-                                "1" { $bom.RoutingOperationResources.U_QueueRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedSeconds }
-                                "2" { $bom.RoutingOperationResources.U_QueueRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedMinutes }
-                                "3" { $bom.RoutingOperationResources.U_QueueRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedHours }
+							$queTimeUoM = $rtgOperResc.QueTimeUoM #enum RateType; FixedSeconds = 1, FixedMinutes = 2, FixedHours = 3
+							switch ($queTimeUoM) {
+								"1" { $bom.RoutingOperationResources.U_QueueRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedSeconds }
+								"2" { $bom.RoutingOperationResources.U_QueueRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedMinutes }
+								"3" { $bom.RoutingOperationResources.U_QueueRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedHours }
 
-                            }
+							}
 
-                            $bom.RoutingOperationResources.U_SetupTime = $rtgOperResc.SetupTime
-                            $setupTimeUoM = $rtgOperResc.SetupTimeUoM #enum RateType; FixedSeconds = 1, FixedMinutes = 2, FixedHours = 3
-                            switch ($setupTimeUoM) {
-                                "1" { $bom.RoutingOperationResources.U_SetupRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedSeconds }
-                                "2" { $bom.RoutingOperationResources.U_SetupRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedMinutes }
-                                "3" { $bom.RoutingOperationResources.U_SetupRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedHours }
+							$bom.RoutingOperationResources.U_SetupTime = $rtgOperResc.SetupTime
+							$setupTimeUoM = $rtgOperResc.SetupTimeUoM #enum RateType; FixedSeconds = 1, FixedMinutes = 2, FixedHours = 3
+							switch ($setupTimeUoM) {
+								"1" { $bom.RoutingOperationResources.U_SetupRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedSeconds }
+								"2" { $bom.RoutingOperationResources.U_SetupRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedMinutes }
+								"3" { $bom.RoutingOperationResources.U_SetupRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedHours }
 
-                            }
+							}
 
                     
 
-                            $bom.RoutingOperationResources.U_RunTime = $rtgOperResc.RunTime
-                            $runtimeUom = $rtgOperResc.RunTimeUoM #enum RateType; FixedSeconds = 1, FixedMinutes = 2, FixedHours = 3, SecondsPerPiece = 4, MinutesPerPiece = 5, HoursPerPiece = 6, PiecesPerSecond = 7, PiecesPerMinute = 8,PiecesPerHour = 9
-                            switch ($runtimeUom) {
-                                "1" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedSeconds }
-                                "2" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedMinutes }
-                                "3" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedHours }
-                                "4" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::SecondsPerPiece }
-                                "5" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::MinutesPerPiece }
-                                "6" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::HoursPerPiece }
-                                "7" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::PiecesPerSecond }
-                                "8" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::PiecesPerMinute }
-                                "9" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::PiecesPerHour }
+							$bom.RoutingOperationResources.U_RunTime = $rtgOperResc.RunTime
+							$runtimeUom = $rtgOperResc.RunTimeUoM #enum RateType; FixedSeconds = 1, FixedMinutes = 2, FixedHours = 3, SecondsPerPiece = 4, MinutesPerPiece = 5, HoursPerPiece = 6, PiecesPerSecond = 7, PiecesPerMinute = 8,PiecesPerHour = 9
+							switch ($runtimeUom) {
+								"1" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedSeconds }
+								"2" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedMinutes }
+								"3" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedHours }
+								"4" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::SecondsPerPiece }
+								"5" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::MinutesPerPiece }
+								"6" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::HoursPerPiece }
+								"7" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::PiecesPerSecond }
+								"8" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::PiecesPerMinute }
+								"9" { $bom.RoutingOperationResources.U_RunRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::PiecesPerHour }
 
-                            }
-                            $bom.RoutingOperationResources.U_StockTime = $rtgOperResc.StockTime
-                            $stockTimeUoM = $rtgOperResc.StockTimeUoM #enum RateType; FixedSeconds = 1, FixedMinutes = 2, FixedHours = 3 
-                            switch ($stockTimeUoM) {
-                                "1" { $bom.RoutingOperationResources.U_StockRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedSeconds }
-                                "2" { $bom.RoutingOperationResources.U_StockRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedMinutes }
-                                "3" { $bom.RoutingOperationResources.U_StockRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedHours }
+							}
+							$bom.RoutingOperationResources.U_StockTime = $rtgOperResc.StockTime
+							$stockTimeUoM = $rtgOperResc.StockTimeUoM #enum RateType; FixedSeconds = 1, FixedMinutes = 2, FixedHours = 3 
+							switch ($stockTimeUoM) {
+								"1" { $bom.RoutingOperationResources.U_StockRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedSeconds }
+								"2" { $bom.RoutingOperationResources.U_StockRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedMinutes }
+								"3" { $bom.RoutingOperationResources.U_StockRate = [CompuTec.ProcessForce.API.Enumerators.RateType]::FixedHours }
 
-                            }
-                            if ($rtgOperResc.NumberOfResources -ne '') {
-                                $bom.RoutingOperationResources.U_NrOfResources = $rtgOperResc.NumberOfResources
-                            }
+							}
+							if ($rtgOperResc.NumberOfResources -ne '') {
+								$bom.RoutingOperationResources.U_NrOfResources = $rtgOperResc.NumberOfResources
+							}
 					
-                            if ($rtgOperResc.HasCycles -ne '') {
+							if ($rtgOperResc.HasCycles -ne '') {
 						
-                                if ($rtgOperResc.HasCycles -eq 'Y') {
+								if ($rtgOperResc.HasCycles -eq 'Y') {
 							
-                                    $bom.RoutingOperationResources.U_HasCycles = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes
+									$bom.RoutingOperationResources.U_HasCycles = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes
 							
-                                    if ($rtgOperResc.CycleCapacity -ne '') {
-                                        $bom.RoutingOperationResources.U_CycleCap = $rtgOperResc.CycleCapacity
-                                    }
-                                }
-                                else {
-                                    $bom.RoutingOperationResources.U_HasCycles = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No
-                                }
-                            }
+									if ($rtgOperResc.CycleCapacity -ne '') {
+										$bom.RoutingOperationResources.U_CycleCap = $rtgOperResc.CycleCapacity
+									}
+								}
+								else {
+									$bom.RoutingOperationResources.U_HasCycles = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No
+								}
+							}
 					
-                            $bom.RoutingOperationResources.U_Remarks = $rtgOperResc.Remarks
-                            if ($rtgOperResc.Project -ne '') {
-                                $bom.RoutingOperationResources.U_Project = $rtgOperResc.Project
-                            }
+							$bom.RoutingOperationResources.U_Remarks = $rtgOperResc.Remarks
+							if ($rtgOperResc.Project -ne '') {
+								$bom.RoutingOperationResources.U_Project = $rtgOperResc.Project
+							}
 					
-                            $key = $rtgOperResc.Sequence + '@#@' + $bom.RoutingOperationResources.U_RscCode
+							$key = $rtgOperResc.Sequence + '@#@' + $bom.RoutingOperationResources.U_RscCode
 					
-                            $driversRtgOprRsc.Add($key, $bom.RoutingOperationResources.U_RtgOprRscCode);
-                            $dummy = $bom.RoutingOperationResources.Add()
+							$driversRtgOprRsc.Add($key, $bom.RoutingOperationResources.U_RtgOprRscCode);
+							$dummy = $bom.RoutingOperationResources.Add()
                 
-                        }
+						}
 				
-                        #Adding resources properties to Operations
-                        $dictionaryKeyRt = $csvItem.BOM_Header + '___' + $csvItem.Revision + '___' + $rtg.RoutingCode;
-                        $opResourceProperties = $dictionaryResourceProperties[$dictionaryKeyRt];
-                        if ($opResourceProperties.count -gt 0) {
-                            #Deleting all existing resources
-                            $count = $bom.RoutingsOperationResourceProperties.Count
-                            for ($i = $count-1; $i -ge 0; $i--) {
-                                $bom.RoutingsOperationResourceProperties.SetCurrentLine($i);
-                                if ($bom.RoutingsOperationResourceProperties.U_RtgCode -eq $rtg.RoutingCode) {
-                                    $dummy = $bom.RoutingsOperationResourceProperties.DelRowAtPos($i); 
-                                }
-                            }
-                            $bom.RoutingsOperationResourceProperties.SetCurrentLine(($bom.RoutingsOperationResourceProperties.Count - 1));
+						#Adding resources properties to Operations
+						$dictionaryKeyRt = $csvItem.BOM_Header + '___' + $csvItem.Revision + '___' + $rtg.RoutingCode;
+						$opResourceProperties = $dictionaryResourceProperties[$dictionaryKeyRt];
+						if ($opResourceProperties.count -gt 0) {
+							#Deleting all existing resources
+							$count = $bom.RoutingsOperationResourceProperties.Count
+							for ($i = $count - 1; $i -ge 0; $i--) {
+								$bom.RoutingsOperationResourceProperties.SetCurrentLine($i);
+								if ($bom.RoutingsOperationResourceProperties.U_RtgCode -eq $rtg.RoutingCode) {
+									$dummy = $bom.RoutingsOperationResourceProperties.DelRowAtPos($i); 
+								}
+							}
+							$bom.RoutingsOperationResourceProperties.SetCurrentLine(($bom.RoutingsOperationResourceProperties.Count - 1));
 			        
-                            #Adding the new data
-                            foreach ($opResProp in $opResourceProperties) {
+							#Adding the new data
+							foreach ($opResProp in $opResourceProperties) {
 			      
-                                $key = $opResProp.Sequence + '@#@' + $opResProp.RoutingCode
-                                $drivers_key = $opResProp.RoutingCode + '@#@' + $opResProp.Sequence;
+								$key = $opResProp.Sequence + '@#@' + $opResProp.RoutingCode
+								$drivers_key = $opResProp.RoutingCode + '@#@' + $opResProp.Sequence;
 					
-                                $bom.RoutingsOperationResourceProperties.U_RtgOprCode = $drivers[$drivers_key]
-                                $bom.RoutingsOperationResourceProperties.U_RtOpRscCode = $driversRtgOprRsc[$key]
-                                $bom.RoutingsOperationResourceProperties.U_RtgCode = $opResProp.RoutingCode
-                                $bom.RoutingsOperationResourceProperties.U_OprCode = $opResProp.OperationCode
-                                $bom.RoutingsOperationResourceProperties.U_PrpCode = $opResProp.PropertiesCode
-                                $bom.RoutingsOperationResourceProperties.U_PrpConType = $opResProp.Condition
-                                $bom.RoutingsOperationResourceProperties.U_PrpConValue = $opResProp.Value
-                                $bom.RoutingsOperationResourceProperties.U_PrpConValueTo = $opResProp.ToValue
-                                $bom.RoutingsOperationResourceProperties.U_UnitOfMeasure = $opResProp.UoM
+								$bom.RoutingsOperationResourceProperties.U_RtgOprCode = $drivers[$drivers_key]
+								$bom.RoutingsOperationResourceProperties.U_RtOpRscCode = $driversRtgOprRsc[$key]
+								$bom.RoutingsOperationResourceProperties.U_RtgCode = $opResProp.RoutingCode
+								$bom.RoutingsOperationResourceProperties.U_OprCode = $opResProp.OperationCode
+								$bom.RoutingsOperationResourceProperties.U_PrpCode = $opResProp.PropertiesCode
+								$bom.RoutingsOperationResourceProperties.U_PrpConType = $opResProp.Condition
+								$bom.RoutingsOperationResourceProperties.U_PrpConValue = $opResProp.Value
+								$bom.RoutingsOperationResourceProperties.U_PrpConValueTo = $opResProp.ToValue
+								$bom.RoutingsOperationResourceProperties.U_UnitOfMeasure = $opResProp.UoM
 						
-                                #$bom.RoutingsOperationResourceProperties.UDFItems.Item("U_UDF1").Value = $opRes.U_UDF1 # how to add UDF
-                                $dummy = $bom.RoutingsOperationResourceProperties.Add()
+								#$bom.RoutingsOperationResourceProperties.UDFItems.Item("U_UDF1").Value = $opRes.U_UDF1 # how to add UDF
+								$dummy = $bom.RoutingsOperationResourceProperties.Add()
 			            
-                            }
-                        }
-                    }
-                }
+							}
+						}
+					}
+				}
 	
-            }
+			}
        
-            $message = 0
-            #Adding or updating BOMs depends on exists in the database
-            if ($exists -eq $true) {
-                $message = $bom.Update()
-            }
-            else {
-                $message = $bom.Add()
-            }
+			$message = 0
+			#Adding or updating BOMs depends on exists in the database
+			if ($exists -eq $true) {
+				$message = $bom.Update()
+			}
+			else {
+				$message = $bom.Add()
+			}
     
-            if ($message -lt 0) {    
-                $err = $pfcCompany.GetLastErrorDescription()
-                Throw [System.Exception] ($err)
-            }
-        }
-        Catch {
-            $err = $_.Exception.Message;
-            if ($exists -eq $true) {
-                $taskMsg = "adding";
-            }
-            else {
-                $taskMsg = "updating"
-            }
-            $ms = [string]::Format("Error when {0} Production Process with ItemCode {1} and Revision: {2}. Details: {3}", $taskMsg, $csvItem.BOM_Header, $csvItem.Revision, $err);
-            Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
-            if ($pfcCompany.InTransaction) {
-                $pfcCompany.EndTransaction([CompuTec.ProcessForce.API.StopTransactionType]::Rollback);
-            } 
-        }		 
-    }
+			if ($message -lt 0) {    
+				$err = $pfcCompany.GetLastErrorDescription()
+				Throw [System.Exception] ($err)
+			}
+		}
+		Catch {
+			$err = $_.Exception.Message;
+			if ($exists -eq $false) {
+				$taskMsg = "adding";
+			}
+			else {
+				$taskMsg = "updating"
+			}
+			$ms = [string]::Format("Error when {0} Production Process with ItemCode {1} and Revision: {2}. Details: {3}", $taskMsg, $csvItem.BOM_Header, $csvItem.Revision, $err);
+			Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
+			if ($pfcCompany.InTransaction) {
+				$pfcCompany.EndTransaction([CompuTec.ProcessForce.API.StopTransactionType]::Rollback);
+			} 
+		}		 
+	}
 }
 Catch {
-    $err = $_.Exception.Message;
-    $ms = [string]::Format("Exception occured: {0}", $err);
-    Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
-    if ($pfcCompany.InTransaction) {
-        $pfcCompany.EndTransaction([CompuTec.ProcessForce.API.StopTransactionType]::Rollback);
-    } 
+	$err = $_.Exception.Message;
+	$ms = [string]::Format("Exception occured: {0}", $err);
+	Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
+	if ($pfcCompany.InTransaction) {
+		$pfcCompany.EndTransaction([CompuTec.ProcessForce.API.StopTransactionType]::Rollback);
+	} 
 }
 Finally {
-    #region Close connection
-    if ($pfcCompany.IsConnected) {
-        $pfcCompany.Disconnect()
-        Write-Host '';
-        write-host  –backgroundcolor green –foregroundcolor black "Disconnected from the company"
-    }
-    #endregion
+	#region Close connection
+	if ($pfcCompany.IsConnected) {
+		$pfcCompany.Disconnect()
+		Write-Host '';
+		write-host  –backgroundcolor green –foregroundcolor black "Disconnected from the company"
+	}
+	#endregion
 }
 
 

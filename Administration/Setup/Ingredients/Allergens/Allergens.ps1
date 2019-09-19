@@ -154,10 +154,10 @@ try {
         }
         Catch {
 			$err = $_.Exception.Message;
-			if ($exists -eq $true) {
+			if ($exists -eq $false) {
 				$taskMsg = "adding";
 			} else {
-				$taskMsg ="updating"
+				$taskMsg = "updating"
 			}
             $ms = [string]::Format("Error when {0} Allergens with Code {1} Details: {2}",$taskMsg, $csvHeader.Code, $err);
             Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
