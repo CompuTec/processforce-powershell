@@ -371,7 +371,7 @@ try {
         }
         Catch {
             $err = $_.Exception.Message;
-            if ($exists -eq $true) {
+            if ($exists -eq $false) {
                 $taskMsg = "adding";
             }
             else {

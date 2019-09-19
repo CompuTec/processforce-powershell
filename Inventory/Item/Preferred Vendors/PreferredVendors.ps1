@@ -215,7 +215,7 @@ try {
             $message = 0
      
             #Adding or updating depends if object already exists in the database
-            if ($exists -eq $true) {
+            if ($exists -eq $false) {
                 $message = $PVObject.Update()
             }
             else {

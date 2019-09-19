@@ -346,7 +346,7 @@ try {
 						}
 						"OV" {
 							$routing.Operations.U_RelationType = [CompuTec.ProcessForce.API.Enumerators.OperationRelationType]::Overloading; 
-							$routing.Operations.U_HasRelations = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes;
+							$routing.Operations.U_HasRelations = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No;
 							break; 
 						}
 						Default {
@@ -517,7 +517,7 @@ try {
 		Catch {
 			$err = $_.Exception.Message;
 			$errInner = $_.Exception.InnerException.ToString()
-			if ($exists -eq $true) {
+			if ($exists -eq $false) {
 				$taskMsg = "updating";
 			}
 			else {
