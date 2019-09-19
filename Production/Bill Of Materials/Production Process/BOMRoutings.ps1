@@ -463,7 +463,7 @@ try {
 							$bom.RoutingsOperationRelation.U_RtgCode = $rtgOprRel.RoutingCode;
 							$operLineNum = $bom.RoutingOperations.Where( { $_.U_RtgCode -eq $rtgOprRel.RoutingCode -and $_.U_OprSequence -eq $rtgOprRel.RelOprSequence -and $_.U_OprCode -eq $rtgOprRel.RelOprCode })[0].U_LineNum;
 							if (-not $operLineNum -gt 0) {
-								throw [System.Exception]($"Couldn't find operation: '{$rtgOprRel.RelOprSequence}' with sequence: '{$rtgOprRel.RelOprSequence}' in Routing: '{$rtgOprRel.RoutingCode}' for Relation");
+								throw [System.Exception]([string]::Format("Couldn't find operation: '{0}' with sequence: '{1}' in Routing: '{2}' for Relation",$rtgOprRel.RelOprSequence,$rtgOprRel.RelOprSequence,$rtgOprRel.RoutingCode));
 							}
 							$bom.RoutingsOperationRelation.U_POprLine = $operLineNum
 
@@ -675,10 +675,10 @@ try {
 		Catch {
 			$err = $_.Exception.Message;
 			if ($exists -eq $true) {
-				$taskMsg = "adding";
+				$taskMsg = "updating";
 			}
 			else {
-				$taskMsg = "updating"
+				$taskMsg = "adding"
 			}
 			$ms = [string]::Format("Error when {0} Production Process with ItemCode {1} and Revision: {2}. Details: {3}", $taskMsg, $csvItem.BOM_Header, $csvItem.Revision, $err);
 			Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
