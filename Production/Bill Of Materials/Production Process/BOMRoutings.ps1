@@ -418,7 +418,7 @@ try {
 							}
 							"OV" {
 								$bom.RoutingOperations.U_RelationType = [CompuTec.ProcessForce.API.Enumerators.OperationRelationType]::Overloading; 
-								$bom.RoutingOperations.U_HasRelations = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes;
+								$bom.RoutingOperations.U_HasRelations = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No;
 								break; 
 							}
 							Default {
@@ -674,11 +674,11 @@ try {
 		}
 		Catch {
 			$err = $_.Exception.Message;
-			if ($exists -eq $true) {
-				$taskMsg = "updating";
+			if ($exists -eq $false) {
+				$taskMsg = "adding";
 			}
 			else {
-				$taskMsg = "adding"
+				$taskMsg = "updating"
 			}
 			$ms = [string]::Format("Error when {0} Production Process with ItemCode {1} and Revision: {2}. Details: {3}", $taskMsg, $csvItem.BOM_Header, $csvItem.Revision, $err);
 			Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms

@@ -1,4 +1,4 @@
 RoutingCode;OperationCode;Sequence;OverlayID;OperationOverCode;OverlayQty;RelationType;Remarks
 01;01;10;0;;0;NO;Remarks1
-01;01;20;1;20;40;NO;Remarks2
+01;01;20;1;20;40;OV;Remarks2
 01;02;30;;;;FF;Remarks2
