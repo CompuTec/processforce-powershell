@@ -47,15 +47,21 @@ if (!(Test-Path $testConfigXMLFilePath -PathType Leaf)) {
 [xml] $TestConfigXml = Get-Content -Encoding UTF8 $testConfigXMLFilePath
 $MDConfigXml = $TestConfigXml.SelectSingleNode("/CT_CONFIG/MasterData");
 $UIConfigXML = $TestConfigXml.SelectSingleNode("/CT_CONFIG/UI");
-$RESULT_FILE = $PSScriptRoot + "\Results.csv";
-$RESULT_FILE_CONF = $PSScriptRoot + "\Results_conf.csv";
 
+$date = Get-Date
+$RESULT_FOLDER = [string]::Format("{0}\RESULTS_{1}{2}{3}_{4}{5}", $PSScriptRoot, ([string] $date.Year).PadLeft(4, '0'), ([string] $date.Month).PadLeft(2, '0'), ([string] $date.Day).PadLeft(2, '0'), ([string] $date.Hour).PadLeft(2, '0'), ([string] $date.Minute).PadLeft(2, '0') );
 
-function Imports() {
-	[CTLogger] $logJobs = New-Object CTLogger ('DI', 'Import', $RESULT_FILE)
+if ((Test-Path -Path $RESULT_FOLDER) -eq $false) {
+	New-Item -Path $RESULT_FOLDER -ItemType Directory
+}
 
-	#region connection
-	$logJobs.startSubtask('Import');
+$RESULT_FILE = $RESULT_FOLDER + "\Results_Details.csv";
+$RESULT_FILE_CONF = $RESULT_FOLDER + "\Result_Enviroment.csv";
+
+$pfcCompany = $null;
+
+function connectDI() {
+	[CTLogger] $logJobs = New-Object CTLogger ('DI', 'Connection', $RESULT_FILE)
 	$logJobs.startSubtask('Connection');
 	$pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::CreateCompany();
 	$pfcCompany.LicenseServer = $xmlConnection.LicenseServer;
@@ -84,6 +90,7 @@ function Imports() {
 		write-host "DbServerType:" $pfcCompany.DbServerType
 		write-host "Databasename" $pfcCompany.Databasename
 		write-host "UserName:" $pfcCompany.UserName
+		exit;
 	}
 
 	#If company is not connected - stops the script
@@ -93,8 +100,162 @@ function Imports() {
 		return;
 	}
 	$logJobs.endSubtask('Connection', 'S', '');
-	$sapCompany = $pfcCompany.SapCompany;
+	
+	return $pfcCompany;
 	#endregion
+}
+
+
+function testChoosedDatabaseConfiguration($pfcCompany) {
+	$validationPassed = $true;
+	function validateWarehouse($pfcCompany, $warehouseCode) {
+		# Check warehouses
+		try {
+			$qm = New-Object CompuTec.Core.DI.Database.QueryManager
+			$qm.SimpleTableName = "OWHS";
+			$qm.SetSimpleResultFields("WhsCode");
+			$qm.SetSimpleWhereFields("WhsCode", "Inactive");
+			$rs = $qm.ExecuteSimpleParameters($pfcCompany.Token, $warehouseCode, 'N');
+			if ($rs.RecordCount -lt 1) {
+				Throw [System.Exception] ([string]::Format("Warehouse with code: {0} does not exists.", $warehouseCode));
+			}
+		}
+		catch {
+			$err = [string]::Format("Warehouses {0} validation failed: {1}", $warehouseCode, [string]$_.Exception.Message);
+			Throw [System.Exception] ($err);
+		}
+	}
+	function checkIfItemsExists($pfcCompany, $itemPrefix) {
+		try {
+			$qm = New-Object CompuTec.Core.DI.Database.QueryManager
+			$ItemCodePrefix = $itemPrefix + "%";
+			$qm.CommandText = "SELECT ""ItemCode"" FROM OITM WHERE ""ItemCode"" LIKE @ItemCodePrefix";
+			$qm.AddParameter("ItemCodePrefix", $ItemCodePrefix)
+			$rs = $qm.Execute($pfcCompany.Token);
+			if ($rs.RecordCount -gt 0) {
+				Throw [System.Exception] ("It seems that script was already runned on this database");
+			}
+		}
+		catch {
+			$err = [string]$_.Exception.Message;
+			Throw [System.Exception] ($err);
+		}
+	}
+	function validateSeries($pfcCompany, $objectCode, $objectName) {
+		try {
+			$qm = New-Object CompuTec.Core.DI.Database.QueryManager
+			$qm.SimpleTableName = "NNM1";
+			$qm.SetSimpleResultFields("Series");
+			$qm.SetSimpleWhereFields("ObjectCode", "IsManual", "Locked");
+			$rs = $qm.ExecuteSimpleParameters($pfcCompany.Token, [string]$objectCode, 'Y', 'N');
+			if ($rs.RecordCount -lt 1) {
+				Throw [System.Exception] ("Manual numbering series need to be unlocked");
+			}
+		}
+		catch {
+			$err = [string]::Format("Object {0} validation failed: {1}", $objectName, [string]$_.Exception.Message);
+			Throw [System.Exception] ($err);
+		}
+	}
+	function checkAutoITW($pfcCompany) {
+		try {
+			$qm = New-Object CompuTec.Core.DI.Database.QueryManager
+			$qm.SimpleTableName = "OADM";
+			$qm.SetSimpleResultFields("AutoITW");
+			$qm.SetSimpleWhereFields("AutoITW");
+			$rs = $qm.ExecuteSimpleParameters($pfcCompany.Token, 'Y');
+			if ($rs.RecordCount -gt 0) {
+				Throw [System.Exception] ("Auto. Add All Warehouses to New and Existing Items setting needs to be disabled. You can find it in General Settings -> Stock -> Items");
+			}
+		}
+		catch {
+			$err = [string]$_.Exception.Message;
+			Throw [System.Exception] ($err);
+		}
+	}
+	
+
+	#region warehouses validation
+	try {
+		$w1 = $MDConfigXml.SelectNodes("//@WarehouseCode");
+		$w2 = $MDConfigXml.SelectNodes("//@ItemsWarehouseCode");
+		$warehouses = New-Object 'System.Collections.Generic.List[string]'
+		foreach ($whsCode in $w1) {
+			if ($warehouses.Contains($whsCode.Value) -eq $false) {
+				$warehouses.Add($whsCode.Value);
+			}
+		}
+		foreach ($whsCode in $w2) {
+			if ($warehouses.Contains($whsCode.Value) -eq $false) {
+				$warehouses.Add($whsCode.Value);
+			}
+		}
+
+		foreach ($whsCode in $warehouses) {
+			validateWarehouse -pfcCompany $pfcCompany -warehouseCode $whsCode
+		}
+	}
+	catch {
+		$validationPassed = $false;
+		$err = [string]$_.Exception.Message;
+		Write-Host -BackgroundColor DarkRed -ForegroundColor White $err;
+	}
+	#endregion
+	
+	#region check if manual numbering possible in case of all objects
+	try {
+		validateSeries -pfcCompany $pfcCompany -objectCode ([int][SAPbobsCOM.BoObjectTypes]::oItems) -objectName "Item Master Data";
+
+	}
+	catch {
+		$validationPassed = $false;
+		$err = [string]$_.Exception.Message;
+		Write-Host -BackgroundColor DarkRed -ForegroundColor White $err
+	}
+	
+
+	#endregion
+
+	
+	#region check Auto. Add All Warehouses to New and Existing Items
+	try {
+		checkAutoITW -pfcCompany $pfcCompany
+	}
+ catch {
+		$validationPassed = $false;
+		$err = [string]$_.Exception.Message;
+		Write-Host -BackgroundColor DarkRed -ForegroundColor White $err
+	}
+	#end regions
+
+	#region check if items already exists - this means that script already runned
+	$xmlItems = $MDConfigXml.SelectSingleNode([string]::Format("ItemMasterData"));
+	$itemPrefix = [string] $xmlItems.Prefix
+	try {
+		checkIfItemsExists -pfcCompany $pfcCompany -itemPrefix $itemPrefix
+	}
+ catch {
+		$err = [string]$_.Exception.Message;
+		Write-Host -BackgroundColor DarkRed -ForegroundColor White $err
+		if ($validationPassed -eq $true) {
+			Write-Host "Are you sure that you want to continue? (Not Recommended) [y/n]: " -backgroundcolor Yellow -foregroundcolor DarkBlue -NoNewline
+			$confirmation = Read-Host
+			if (($confirmation -ne 'y') -and ($confirmation -ne 'Y')) {
+				$validationPassed = $false;
+			}
+		}
+	}
+	#endregion
+
+
+	return $validationPassed
+}
+function Imports($pfcCompany) {
+	[CTLogger] $logJobs = New-Object CTLogger ('DI', 'Import', $RESULT_FILE)
+
+	#region connection
+	$logJobs.startSubtask('Import');
+	$sapCompany = $pfcCompany.SapCompany;
 
 
 	function importIMD($sapCompany) {
@@ -1328,12 +1489,18 @@ function saveTestConfiguration() {
 	Add-Content -Path $RESULT_FILE_CONF '';
 	$progress.next();
 }
-
-saveTestConfiguration ;
-Write-Host '';
-Imports ;
-write-host '';
-UITests ;
+$pfcCompany = connectDI;
+$configurationTest = testChoosedDatabaseConfiguration -pfcCompany $pfcCompany;
+if ($configurationTest -eq $true) {
+	saveTestConfiguration ;
+	Write-Host '';
+	Imports -pfcCompany $pfcCompany ;
+	write-host '';
+	UITests ;
+}
+else {
+	Write-Host -BackgroundColor DarkRed -ForegroundColor White "Configuration test failed. To perform Performance Test please fix your configuration."
+}
 
 
  
