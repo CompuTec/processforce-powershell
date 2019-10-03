@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Item Properties
 ########################################################################
-$SCRIPT_VERSION = "3.0"
+$SCRIPT_VERSION = "3.1"
 # Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
 # Description:
 #      Import Item Properties. Script add new or will update existing Properties.
@@ -293,7 +293,7 @@ try {
 				}
 				$dummy = $itmProperty.Words.SetCurrentLine(0);
          
-				#Adding Revisions
+				#Adding References
 				foreach ($ref in $references) {
 					$itmProperty.Words.U_WordCode = $ref.ReferenceCode;
 					$dummy = $itmProperty.Words.Add();
@@ -313,8 +313,8 @@ try {
 					}
 				}
 				$dummy = $itmProperty.BusinessPartnerRelations.SetCurrentLine(0);
-         
-				#Adding Revisions
+
+				#Adding Certificates
 				foreach ($crt in $certs) {
 					$itmProperty.BusinessPartnerRelations.U_CardCode = $crt.CardCode;
 					switch ($crt.Expression) {
