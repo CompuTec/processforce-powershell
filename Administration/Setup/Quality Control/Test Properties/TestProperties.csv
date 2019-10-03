@@ -1,2 +1,8 @@
 PropertyCode;PropertyName;Group;Remarks
-01;Temperature;01;Remarks
+01;Temperature1;01;Remarks
+02;Temperature2;01;Remarks
+03;Temperature3;01;Remarks
+04;Temperature4;01;Remarks
+05;Temperature5;01;Remarks
+06;Temperature6;01;Remarks
+07;Temperature7;01;Remarks
