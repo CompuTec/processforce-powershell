@@ -1,4 +1,4 @@
 ﻿ItemCode;RevisionCode;RevisionName;Status;ValidFrom;ValidTo;Remarks;IsDefault;DefaultForCosting;IsMRPDefault
-Product-A;code00;Default;1;;;Notes_1;1;1;1
-Product-A;custom1;First;2;2020-01-01;2030-12-31;Notes_3;2;2;2
-Product-A;custom2;Second;2;2031-01-01;;Notes_3;2;2;2
+Product-A;code00;Default;1;;;Notes_1;Y;Y;Y
+Product-A;custom1;First;2;2020-01-01;2030-12-31;Notes_3;N;N;N
+Product-A;custom2;Second;2;2031-01-01;;Notes_3;N;N;N

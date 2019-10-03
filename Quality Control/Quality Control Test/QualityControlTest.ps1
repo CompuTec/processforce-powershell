@@ -509,12 +509,12 @@ try {
 				$BusinessPartnerRelations.SetCurrentLine(0);
          
 				#Adding Certificates
-				foreach ($crt in $certs) {
+				foreach ($crt in $PropertiesCerts) {
 					if ($TestPropertiesLineNumDict.ContainsKey($crt.PropertyCode) -eq $false) {
 						$err = [string]::Format("Test Property with Code:{0} don't exists.", $crt.PropertyCode);
 						throw [System.Exception]($err)
 					}
-					$BusinessPartnerRelations.U_BaseLineNum = $TestPropertiesLineNumesDict[$crt.PropertyCode]; 
+					$BusinessPartnerRelations.U_BaseLineNum = $TestPropertiesLineNumDict[$crt.PropertyCode]; 
 					$BusinessPartnerRelations.U_CardCode = $crt.CardCode;
 					switch ($crt.Expression) {
 						'BT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Between; break; }
@@ -608,7 +608,7 @@ try {
 				
 				$BusinessPartnerRelations.SetCurrentLine(0);
 				#Adding Certificates
-				foreach ($crt in $certs) {
+				foreach ($crt in $ItemPropertiesCerts) {
 					if ($ItemPropertiesLineNumDict.ContainsKey($crt.PropertyCode) -eq $false) {
 						$err = [string]::Format("Test Property with Code:{0} don't exists.", $crt.PropertyCode);
 						throw [System.Exception]($err)
