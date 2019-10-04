@@ -3,8 +3,8 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Production Processes
 ########################################################################
-$SCRIPT_VERSION = "3.2"
-# Last tested PF version: ProcessForce 9.3 (9.30.170) PL: 07 R1 Pre-Release (64-bit)
+$SCRIPT_VERSION = "3.3"
+# Last tested PF version: ProcessForce 9.3 (9.30.210) (64-bit)
 # Description:
 #      Import Production Processes. Script add new or will update existing Production Processes.
 #      You need to have all requred files for import.
@@ -390,8 +390,14 @@ try {
 					$bomRoutingsOperations = $dictionaryRoutingsOperations[$dictionaryKeyRt];
 					$overlayDict = New-Object 'System.Collections.Generic.Dictionary[int,int]';
 					foreach ($rtgOper in $bomRoutingsOperations) {
-						$bom.RoutingOperations.U_RtgCode = $rtgOper.RoutingCode   
-						$bom.RoutingOperations.U_OprCode = $rtgOper.OperationCode      
+						$bom.RoutingOperations.U_RtgCode = $rtgOper.RoutingCode;
+						$bom.RoutingOperations.U_OprCode = $rtgOper.OperationCode;
+						if ($bom.RoutingOperations.U_RtgOprCode -eq 0) {
+							$msg = [string]::Format("Operation {0} does not exists", [string]$rtgOper.OperationCode);
+							throw [System.Exception]($msg);
+						}
+						
+
 						$bom.RoutingOperations.U_OprSequence = $rtgOper.Sequence
 
 						# Relation Types:
@@ -463,7 +469,7 @@ try {
 							$bom.RoutingsOperationRelation.U_RtgCode = $rtgOprRel.RoutingCode;
 							$operLineNum = $bom.RoutingOperations.Where( { $_.U_RtgCode -eq $rtgOprRel.RoutingCode -and $_.U_OprSequence -eq $rtgOprRel.RelOprSequence -and $_.U_OprCode -eq $rtgOprRel.RelOprCode })[0].U_LineNum;
 							if (-not $operLineNum -gt 0) {
-								throw [System.Exception]([string]::Format("Couldn't find operation: '{0}' with sequence: '{1}' in Routing: '{2}' for Relation",$rtgOprRel.RelOprSequence,$rtgOprRel.RelOprSequence,$rtgOprRel.RoutingCode));
+								throw [System.Exception]([string]::Format("Couldn't find operation: '{0}' with sequence: '{1}' in Routing: '{2}' for Relation", $rtgOprRel.RelOprSequence, $rtgOprRel.RelOprSequence, $rtgOprRel.RoutingCode));
 							}
 							$bom.RoutingsOperationRelation.U_POprLine = $operLineNum
 

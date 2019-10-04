@@ -3,8 +3,8 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Routings
 ########################################################################
-$SCRIPT_VERSION = "3.0"
-# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
+$SCRIPT_VERSION = "3.1"
+# Last tested PF version: ProcessForce 9.3 (9.30.210) (64-bit)
 # Description:
 #      Import Routings. Script add new or will update existing Routings.
 #      You need to have all requred files for import.
@@ -317,6 +317,11 @@ try {
 				#Adding the new data       
 				foreach ($rtOper in $routingOperations) {
 					$routing.Operations.U_OprCode = $rtOper.OperationCode
+					if($routing.Operations.U_RtgOprCode -eq 0)
+                    {
+						$msg = [string]::Format("Operation {0} does not exists", [string]$rtOper.OperationCode);
+						throw [System.Exception]($msg);
+                    }
 					$routing.Operations.U_OprOverlayId = $rtOper.OverlayID
 					$routing.Operations.U_OprOverlayCode = $rtOper.OperationOverCode
 					$routing.Operations.U_OprOverlayQty = $rtOper.OverlayQty
@@ -516,8 +521,8 @@ try {
 		}
 		Catch {
 			$err = $_.Exception.Message;
-			$errInner = $_.Exception.InnerException.ToString()
-			if ($exists -eq $false) {
+			$errInner = if([string]::IsNullOrEmpty($_.Exception.InnerException) -eq $false) { $_.Exception.InnerException.ToString() } else { [string]::Empty };
+			if ($exists -eq $true) {
 				$taskMsg = "updating";
 			}
 			else {
