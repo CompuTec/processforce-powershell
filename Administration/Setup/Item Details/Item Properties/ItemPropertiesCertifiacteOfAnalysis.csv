@@ -1,0 +1,8 @@
+PropertyCode;CardCode;Expression;ValueFrom;ValueTo;ValidFrom;ValidTo
+01;00002;BT;12.1;43;2020-01-01;2030-12-31
+02;00002;EQ;;13;;
+01;00002;NE;;31;;
+02;00002;GT;;12;;
+03;00002;GE;;4;;
+04;00002;LE;;11;;
+05;00002;LT;;13;;
