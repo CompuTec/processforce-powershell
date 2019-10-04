@@ -422,7 +422,7 @@ try {
 			$test.U_Instructions = $csvTest.Instructions;
 	
 			#Properties
-			$TestPropertiesLineNumesDict = New-Object 'System.Collections.Generic.Dictionary[string,int]';
+			$TestPropertiesLineNumDict = New-Object 'System.Collections.Generic.Dictionary[string,int]';
 			[array]$Properties = $dictionaryPropertiesTest[$csvTest.TestProtocolCode];
 			if ($Properties.count -gt 0) {
 				#Deleting all exisitng Properties
@@ -488,7 +488,7 @@ try {
 					}
 				
 					$test.Properties.U_Remarks = $prop.Remarks
-					$TestPropertiesLineNumesDict.Add($prop.PropertyCode, $test.Properties.U_LineNum);
+					$TestPropertiesLineNumDict.Add($prop.PropertyCode, $test.Properties.U_LineNum);
 					$dummy = $test.Properties.Add()
 				}
 			}
@@ -510,11 +510,11 @@ try {
          
 				#Adding Certificates
 				foreach ($crt in $certs) {
-					if ($TestPropertiesLineNumesDict.ContainsKey($crt.PropertyCode) -eq $false) {
+					if ($TestPropertiesLineNumDict.ContainsKey($crt.PropertyCode) -eq $false) {
 						$err = [string]::Format("Test Property with Code:{0} don't exists.", $crt.PropertyCode);
 						throw [System.Exception]($err)
 					}
-					$BusinessPartnerRelations.U_BaseLineNum = $TestPropertiesLineNumesDict[$crt.PropertyCode]; 
+					$BusinessPartnerRelations.U_BaseLineNum = $TestPropertiesLineNumDict[$crt.PropertyCode]; 
 					$BusinessPartnerRelations.U_CardCode = $crt.CardCode;
 					switch ($crt.Expression) {
 						'BT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Between; break; }
@@ -547,7 +547,7 @@ try {
 			}
 	
 			#ItemProperties
-			$ItemPropertiesLineNumesDict = New-Object 'System.Collections.Generic.Dictionary[string,int]';
+			$ItemPropertiesLineNumDict = New-Object 'System.Collections.Generic.Dictionary[string,int]';
 			[array]$ItemProperties = $dictionaryPropertiesItem[$csvTest.TestProtocolCode];
 			if ($ItemProperties.count -gt 0) {
 				#Deleting all exisitng ItemProperties
@@ -596,7 +596,7 @@ try {
 					}
 				
 					$test.ItemProperties.U_Remarks = $itprop.Remarks
-					$ItemPropertiesLineNumesDict.Add($itprop.PropertyCode, $test.ItemProperties.U_LineNum);
+					$ItemPropertiesLineNumDict.Add($itprop.PropertyCode, $test.ItemProperties.U_LineNum);
 					$dummy = $test.ItemProperties.Add()
 				}
 			}
@@ -618,11 +618,11 @@ try {
          
 				#Adding Certificates
 				foreach ($crt in $certs) {
-					if ($ItemPropertiesLineNumesDict.ContainsKey($crt.PropertyCode) -eq $false) {
+					if ($ItemPropertiesLineNumDict.ContainsKey($crt.PropertyCode) -eq $false) {
 						$err = [string]::Format("Test Property with Code:{0} don't exists.", $crt.PropertyCode);
 						throw [System.Exception]($err)
 					}
-					$BusinessPartnerRelations.U_BaseLineNum = $ItemPropertiesLineNumesDict[$crt.PropertyCode]; 
+					$BusinessPartnerRelations.U_BaseLineNum = $ItemPropertiesLineNumDict[$crt.PropertyCode]; 
 					$BusinessPartnerRelations.U_CardCode = $crt.CardCode;
 					switch ($crt.Expression) {
 						'BT' { $EnumExpressionValue = [CompuTec.ProcessForce.API.Enumerators.ConditionType]::Between; break; }

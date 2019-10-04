@@ -1,0 +1,6 @@
+Key;TestProtocolCode;PropertyCode;CardCode;Expression;ValueFrom;ValueTo;ValidFrom;ValidTo
+1;TP1;01;00002;BT;12.1;43;2020-01-01;2030-12-31
+1;TP1;02;00002;EQ;;13;;
+1;TP1;03;00002;GE;;4;;
+1;TP1;04;00002;LE;;11;;
+2;TP2;05;00002;LT;;13;;
