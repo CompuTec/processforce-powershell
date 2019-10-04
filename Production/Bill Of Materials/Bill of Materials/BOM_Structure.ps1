@@ -266,7 +266,30 @@ try {
             }
     
             $bom.U_Quantity = $csvItem.Quantity
-            $bom.U_Factor = $csvItem.Factor
+			$bom.U_Factor = $csvItem.Factor
+			if([string]::IsNullOrWhiteSpace($csvItem.Yield) -eq $false){
+				$bom.U_Yield = $csvItem.Yield;
+			}
+			if([string]::IsNullOrWhiteSpace($csvItem.YieldFormula) -eq $false){
+				$bom.U_YieldFormula = $csvItem.YieldFormula;
+			} else {
+				$bom.U_YieldFormula = [string]::Empty;
+			}
+			if([string]::IsNullOrWhiteSpace($csvItem.YieldItemsFormula) -eq $false){
+				$bom.U_ItemFormula = $csvItem.YieldItemsFormula;
+			} else {
+				$bom.U_ItemFormula = [string]::Empty;
+			}
+			if([string]::IsNullOrWhiteSpace($csvItem.YieldCoproductsFormula) -eq $false){
+				$bom.U_CoproductFormula = $csvItem.YieldCoproductsFormula;
+			} else {
+				$bom.U_CoproductFormula = [string]::Empty;
+			}
+			if([string]::IsNullOrWhiteSpace($csvItem.U_CoproductFormula) -eq $false){
+				$bom.U_ScrapFormula = $csvItem.U_CoproductFormula;
+			} else {
+				$bom.U_ScrapFormula = [string]::Empty;
+			}
             $bom.U_WhsCode = $csvItem.Warehouse
             $bom.U_OcrCode = $csvItem.DistRule
             $bom.U_OcrCode2 = $csvItem.DistRule2
@@ -314,7 +337,12 @@ try {
                     }
                     else {
                         $bom.Items.U_SubRecepitItem = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No;
-                    }
+					}
+					 
+					if([string]::IsNullOrWhiteSpace($item.Yield) -eq $false){
+						$bom.Items.U_Yield = $item.Yield;
+					}
+
                     $bom.Items.U_Remarks = $item.Remarks
                     if ($item.Formula -ne "") {
                         $bom.Items.U_Formula = $item.Formula
@@ -352,7 +380,11 @@ try {
                     $bom.Coproducts.U_Remarks = $coproducts.Remarks
                     if ($coproducts.Formula -ne "") {
                         $bom.Coproducts.U_Formula = $coproducts.Formula
-                    }
+					}
+					
+					if([string]::IsNullOrWhiteSpace($coproducts.Yield) -eq $false){
+						$bom.CoProducts.U_Yield = $coproducts.Yield;
+					}
                     $dummy = $bom.Coproducts.Add()
                 }
             }
@@ -386,7 +418,10 @@ try {
                     $bom.Scraps.U_Remarks = $scraps.Remarks
                     if ($scraps.Formula -ne "") {
                         $bom.Scraps.U_Formula = $scraps.Formula
-                    }
+					}
+					if([string]::IsNullOrWhiteSpace($scraps.Yield) -eq $false){
+						$bom.Scraps.U_Yield = $scraps.Yield;
+					}
                     $dummy = $bom.Scraps.Add()
                 }
             }

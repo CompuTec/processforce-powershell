@@ -1,6 +1,6 @@
-BOM_ItemCode;Revision;Sequence;ItemCode;Item_Revision;Warehouse;Factor;FactorDesc;Quantity;ScrapPercent;IssueType;OcrCode;OcrCode2;OcrCode3;OcrCode4;OcrCode5;Project;SubcontractingItem;Remarks;Formula
-Product-A;code00;10;Active-Item-01;code00;01;10;FDesc1;120;5;M;01;;;;;IT;N;Remarks1;=U_Quantity()*U_Factor()*Items.U_Factor(10)*Items.U_Quantity(10)*100/(100 - Items.U_ScrapPercentage(10))
-Product-A;code00;20;Active-Item-02;code00;01;10;FDesc1;121;5;M;01;;;;;IT;N;Remarks2;
-Product-A;code00;30;Active-Item-03;code00;01;10;FDesc1;122;5;M;01;;;;;IT;N;Remarks3;
-Product-B;code00;10;Active-Item-01;code00;01;10;FDesc1;120;5;B;01;;;;;IT;Y;Remarks1;
-Product-B;code00;20;Active-Item-02;code00;01;10;FDesc1;121;5;M;01;;;;;IT;N;Remarks2;
+BOM_ItemCode;Revision;Sequence;ItemCode;Item_Revision;Warehouse;Factor;FactorDesc;Quantity;ScrapPercent;Yield;IssueType;OcrCode;OcrCode2;OcrCode3;OcrCode4;OcrCode5;Project;SubcontractingItem;Remarks;Formula
+Product-A;code00;10;Active-Item-01;code00;01;10;FDesc1;120;5;50;M;01;;;;;IT;N;Remarks1;"=U_Quantity()*U_Factor()*Items.U_Factor(10)*Items.U_Quantity(10)*100/(100 - Items.U_ScrapPercentage(10))"
+Product-A;code00;20;Active-Item-02;code00;01;10;FDesc1;121;5;;M;01;;;;;IT;N;Remarks2;
+Product-A;code00;30;Active-Item-03;code00;01;10;FDesc1;122;5;;M;01;;;;;IT;N;Remarks3;
+Product-B;code00;10;Active-Item-01;code00;01;10;FDesc1;120;5;;B;01;;;;;IT;Y;Remarks1;
+Product-B;code00;20;Active-Item-02;code00;01;10;FDesc1;121;5;;M;01;;;;;IT;N;Remarks2;
