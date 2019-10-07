@@ -401,7 +401,12 @@ try {
       
 			#Restoring Item Costs and setting Inherit Batch/Serial to 'Yes'
 			$dummy = $idt.GetByItemCode($key);
-			$idt.U_Yield = $csvItem.Yield
+			if([string]::IsNullOrWhiteSpace($csvItem.Yield) -eq $false){
+				$idt.U_Yield = $csvItem.Yield
+			} else {
+				$idt.U_Yield = 100;
+			}
+
 			$idt.U_IgnoreYield = $csvItem.IgnoreYield
 			$idt.U_DftOrigin = $csvItem.DefaultOrigin
 			$idt.U_AcptLowerQty = $csvItem.AllowResidualQty
