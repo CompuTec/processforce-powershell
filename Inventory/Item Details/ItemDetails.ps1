@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Item Details
 ########################################################################
-$SCRIPT_VERSION = "3.5"
+$SCRIPT_VERSION = "3.6"
 # Last tested PF version: ProcessForce 9.3 (9.30.210) PL: MAIN (64-bit)
 # Description:
 #      Import Item Details. Script will update only existing ItemDetails. Remember to run Restore Item Details before running this script.
@@ -401,7 +401,12 @@ try {
       
 			#Restoring Item Costs and setting Inherit Batch/Serial to 'Yes'
 			$dummy = $idt.GetByItemCode($key);
-			$idt.U_Yield = $csvItem.Yield
+			if([string]::IsNullOrWhiteSpace($csvItem.Yield) -eq $false){
+				$idt.U_Yield = $csvItem.Yield
+			} else {
+				$idt.U_Yield = 100;
+			}
+
 			$idt.U_IgnoreYield = $csvItem.IgnoreYield
 			$idt.U_DftOrigin = $csvItem.DefaultOrigin
 			$idt.U_AcptLowerQty = $csvItem.AllowResidualQty
