@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Item Details
 ########################################################################
-$SCRIPT_VERSION = "3.5"
+$SCRIPT_VERSION = "3.6"
 # Last tested PF version: ProcessForce 9.3 (9.30.210) PL: MAIN (64-bit)
 # Description:
 #      Import Item Details. Script will update only existing ItemDetails. Remember to run Restore Item Details before running this script.
