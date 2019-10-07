@@ -2,7 +2,7 @@
 ########################################################################
 # CompuTec PowerShell Script - Import Bill of Materials Structures
 ########################################################################
-$SCRIPT_VERSION = "3.3"
+$SCRIPT_VERSION = "3.4"
 # Last tested PF version: ProcessForce 9.3 (9.30.200) PL: MAIN (64-bit)
 # Description:
 #      Import Bill of Materials Structures. Script add new BOMs or will update existing BOMs.    
