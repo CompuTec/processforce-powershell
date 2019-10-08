@@ -1,0 +1,5 @@
+TemplateCode;BOMItemCode;BOMRevision;ItemType;ItemCode;ItemRevision;Sequence;RoutingCode
+Tx1;Product-A;code00;S;Scrap-01;code00;10;;
+T1;Product-A;code00;S;Scrap-01;code00;20;;
+T1;Product-A;code00;C;Coproduct-01;code00;10;;
+T1;Product-A;code00;H;Product-A;code00;;01;
