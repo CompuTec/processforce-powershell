@@ -94,9 +94,9 @@ if (-not $pfcCompany.IsConnected) {
 }
 #endregion
 
-#region additionalInfoFunctions
+#region additionalInfoFunctionsy
 $qmBOMCodeInfo = New-Object 'CompuTec.Core.DI.Database.QueryManager';
-$qmBOMCodeInfo.CommandText = "SELECT B.""Code"", B.""U_ItemCode"", B.""U_Revision"", 1 AS ""U_LineNum"" FROM ""@CT_PF_OBOM"" B WHERE B.""U_ItemCode"" = @BOMItemCode AND B.""U_Revision"" = @BOMRevision";
+$qmBOMCodeInfo.CommandText = "SELECT B.""Code"", B.""U_ItemCode"", B.""U_Revision"", 0 AS ""U_LineNum"" FROM ""@CT_PF_OBOM"" B WHERE B.""U_ItemCode"" = @BOMItemCode AND B.""U_Revision"" = @BOMRevision";
 $qmBOMCoproductInfo = New-Object 'CompuTec.Core.DI.Database.QueryManager';
 $qmBOMCoproductInfo.CommandText = "SELECT BC.""Code"", BC.""U_ItemCode"", BC.""U_Revision"", BC.""U_LineNum"" FROM ""@CT_PF_OBOM"" B INNER JOIN ""@CT_PF_BOM3"" BC ON B.""Code"" = BC.""Code"" WHERE B.""U_ItemCode"" = @BOMItemCode AND B.""U_Revision"" = @BOMRevision AND BC.""U_ItemCode"" = @ItemCode AND BC.""U_Revision"" = @ItemRevision AND BC.""U_Sequence"" = @Sequence";
 $qmBOMScrapInfo = New-Object 'CompuTec.Core.DI.Database.QueryManager';
@@ -198,7 +198,7 @@ try {
 	$totalRows = $csvTemplates.Count + $csvTemplatesLinesPath.Count;
 
 	$templates = New-Object 'System.Collections.Generic.List[array]'
-	$dictionaryTemplateLines = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
+	$dictionaryTemplateLines = New-Object 'System.Collections.Generic.Dictionary[string,psobject]'
 
 	$progressItterator = 0;
 	$progres = 0;
@@ -222,18 +222,42 @@ try {
 	}
 
 	foreach ($row in $csvTemplatesLinesPath) {
-		$key = $row.TemplateCode;
+		#region progress
 		$progressItterator++;
 		$progres = [math]::Round(($progressItterator * 100) / $total);
 		if ($progres -gt $beforeProgress) {
 			Write-Host $progres"% " -NoNewline
 			$beforeProgress = $progres
 		}
+		#endregion
+		$tCode = $row.TemplateCode;
+		$BOMItemCode = $row.BOMItemCode;
+		$BOMRevision = $row.BOMRevision;
+		$BOMKey = $BOMItemCode + '___' + $BOMRevision;
 
-		if ($dictionaryTemplateLines.ContainsKey($key) -eq $false) {
-			$dictionaryTemplateLines[$key] = New-Object System.Collections.Generic.List[array];
+		if ($dictionaryTemplateLines.ContainsKey($tCode) -eq $false) {
+			$dictionaryTemplateLines[$tCode] = New-Object 'System.Collections.Generic.Dictionary[string,psobject]';
 		}
-		$dictionaryTemplateLines[$key].Add([array]$row);    
+		if ($dictionaryTemplateLines[$tCode].ContainsKey($BOMKey) -eq $false) {
+			$dictionaryTemplateLines[$tCode].Add($BOMKey,
+				[psobject] @{
+					BOMItemCode = $BOMItemCode
+					BOMRevision = $BOMRevision
+					Lines       = New-Object 'System.Collections.Generic.List[psobject]';
+				});
+		}
+		$dictionaryTemplateLines[$tCode][$BOMKey].Lines.Add(
+			[psobject] @{
+				TemplateCode = $row.TemplateCode
+				BOMItemCode  = $row.BOMItemCode
+				BOMRevision  = $row.BOMRevision
+				ItemType     = $row.ItemType
+				ItemCode     = $row.ItemCode
+				ItemRevision = $row.ItemRevision
+				Sequence     = $row.Sequence
+				RoutingCode  = $row.RoutingCode
+				U_BaseLine   = $null
+			});
 	}
 	Write-Host '';
 	#endregion
@@ -268,7 +292,8 @@ try {
 				if ($retValue -eq 0) {
 					$exists = $true;
 				}
-			} catch {
+			}
+			catch {
 				$exists = $false;
 			}
 			if (-not $exists) {
@@ -285,87 +310,83 @@ try {
 			for ($i = $count - 1; $i -ge 0; $i--) {
 				$dummy = $template.Lines.DelRowAtPos($i);
 			}
-			$template.Lines.SetCurrentLine(0)
+			$template.Lines.SetCurrentLine(0);
 			
-			#Data loading from a csv file - BOM Coproducts
-			[array]$templateLines = @();
-			$templateLines = $dictionaryTemplateLines[$dictionaryKey];
-			if ($templateLines.Count -gt 0) {
-				
-				$distinctBOMs = New-Object 'System.Collections.Generic.Dictionary[string, psobject]' 
-				$templateLines.GetEnumerator().ForEach( { 
-					$keyBR = $_.BOMItemCode + '___' + $_.BOMRevision;
-					if(-not $distinctBOMs.ContainsKey($keyBR)){
-						$distinctBOMs.Add($keyBR,[psobject]@{
-							BOMItemCode = $_.BOMItemCode
-							BOMRevision = $_.BOMRevision
-						});
-					}
-				 } );
+			if ($dictionaryTemplateLines.ContainsKey($csvTempl.TemplateCode) -eq $false) { 
+				throw [System.Exception]("Lines for template not found in csv file.");
+			}
+			$linesForTemplate = $dictionaryTemplateLines[$csvTempl.TemplateCode];
+			$dictionaryBOMCodeBOMKey = New-Object 'System.Collections.Generic.Dictionary[string,string]';
+			foreach ($BOMKey in $linesForTemplate.Keys) {
+				$BOMInfo = $linesForTemplate[$BOMKey];
+				$BOMItemCode = $BOMInfo.BOMItemCode;
+				$BOMRevision = $BOMInfo.BOMRevision;
 
-				 foreach($keyBR in $distinctBOMs.Keys){
-					$BOMItemCode = $distinctBOMs[$keyBR].BOMItemCode;
-					$BOMRevision = $distinctBOMs[$keyBR].BOMRevision;
+				$addBOMInfo = getBOMInfo -token $pfcCompany.Token -BOMItemCode $BOMItemCode -BOMRevision $BOMRevision;
 
-					$template.Lines.SetCurrentLine($template.Lines.Count-1);
-					if ($template.Lines.IsRowFilled() -eq $true) {
-						$template.Lines.Add();
-					}
-					$addInfo = getBOMInfo -token $pfcCompany.Token -BOMItemCode $BOMItemCode -BOMRevision $BOMRevision;
-					$template.Lines.U_BomCode = $addInfo.Code;
-					$linesToDelete =  New-Object 'System.Collections.Generic.List[int]';
-					foreach($line in $template.Lines){
-						$found = $false;
-					}
+				if ($template.Lines.IsRowFilled() -eq $true) {
+					$template.Lines.Add();
+				}
+				$template.Lines.U_BomCode = $addBOMInfo.Code;
+				$dictionaryBOMCodeBOMKey.Add($addBOMInfo.Code, $BOMKey);
 
+				#Add BOM U_LineNum to lines from CSV
 
-					$templateLines.Where( { $_.BOMItemCode -eq $BOMItemCode -and $_.BOMRevision -eq $BOMRevision }).ForEach(
-						{
-
-						}
-					);
-
-
-
-				 }
-				 $template.Lines.U_BomCode = $addInfo.Code;
-
-				foreach ($csvLines in $templateLines) {
-					if ($template.Lines.IsRowFilled() -eq $true) {
-						$template.Lines.Add();
-					}
-					switch ($csvLines.ItemType) {
+				foreach ($line in $BOMInfo.Lines) {
+					switch ($line.ItemType) {
 						"H" { 
-							$addInfo = getBOMInfo -token $pfcCompany.Token -BOMItemCode $csvLines.BOMItemCode -BOMRevision $csvLines.BOMRevision;
+							$addInfo = $addBOMInfo;
 							break;
 						}
 						"C" { 
-							$addInfo = getBOMCoproductInfo -token $pfcCompany.Token -BOMItemCode $csvLines.BOMItemCode -BOMRevision $csvLines.BOMRevision -ItemCode $csvLines.ItemCode -ItemRevision $csvLines.ItemRevision -Sequence $csvLines.Sequence
+							$addInfo = getBOMCoproductInfo -token $pfcCompany.Token -BOMItemCode $line.BOMItemCode -BOMRevision $line.BOMRevision -ItemCode $line.ItemCode -ItemRevision $line.ItemRevision -Sequence $line.Sequence
 							break;
 						}
 						"S" { 
-							$addInfo = getBOMScrapInfo -token $pfcCompany.Token -BOMItemCode $csvLines.BOMItemCode -BOMRevision $csvLines.BOMRevision -ItemCode $csvLines.ItemCode -ItemRevision $csvLines.ItemRevision -Sequence $csvLines.Sequence
+							$addInfo = getBOMScrapInfo -token $pfcCompany.Token -BOMItemCode $line.BOMItemCode -BOMRevision $line.BOMRevision -ItemCode $line.ItemCode -ItemRevision $line.ItemRevision -Sequence $line.Sequence
 							break;
 						}
 						Default {
-							$msg = [string]::Format("Incorrect ItemType: {0}. BOMItemCode: {1}, BOMRevision: {2}, ItemCode: {3}, Revision: {4}, Sequence: {5}", [string]$csvLines.ItemType, [string]$csvLines.BOMItemCode, [string]$csvLines.BOMRevision, [string]$csvLines.ItemCode, [string]$csvLines.ItemRevision, [string]$csvLines.Sequence);
+							$msg = [string]::Format("Incorrect ItemType: {0}. BOMItemCode: {1}, BOMRevision: {2}, ItemCode: {3}, Revision: {4}, Sequence: {5}", [string]$line.ItemType, [string]$line.BOMItemCode, [string]$line.BOMRevision, [string]$line.ItemCode, [string]$line.ItemRevision, [string]$line.Sequence);
 							throw [System.Exception]($msg);
 						}
 					}
-					
-					$template.Lines.U_ItemType = $csvLines.ItemType; #S, C, H
-					$template.Lines.U_ItemCode = $addInfo.ItemCode;
-					$template.Lines.U_RevCode = $addInfo.Revision;
-					$template.Lines.U_BaseLine = $addInfo.LineNum;
-					if ( $csvLines.ItemType -eq "H" -and $csvLines.RoutingCode) {
-						$template.Lines.U_RtgCode = $csvLines.RoutingCode;
-					}
-					$dummy = $template.Lines.Add()
+					$line.U_BaseLine = $addInfo.LineNum;
 				}
-			} else {
-				throw [System.Exception]("No lines found in csv files for this template.");
 			}
-      
+
+			#find lines to update and delete
+			$lineNumbersToDel = New-Object 'System.Collections.Generic.List[int]'
+			for ($lineNum = 0; $lineNum -lt $template.Lines.Count; $lineNum++) {
+				$template.Lines.SetCurrentLine($lineNum);
+				
+				if ($dictionaryBOMCodeBOMKey.ContainsKey($template.Lines.U_BomCode) -eq $false) {
+					$msg = [string]::Format("Couldn't finde mapping for U_BOMCode: {0}.", [string]$template.Lines.U_BomCode);
+					throw [System.Exception]($msg);
+				}
+
+				$BOMKey = $dictionaryBOMCodeBOMKey[$template.Lines.U_BomCode];
+				$linesToCheck = $linesForTemplate[$BOMKey].Lines;
+
+				$lineFound = $false;
+				foreach ($ltc in  $linesToCheck) {
+					if ($ltc.ItemType -eq $template.Lines.U_ItemType -and $ltc.U_BaseLine -eq $template.Lines.U_BaseLine) {
+						if ($ltc.ItemType -eq "H" -and ([string]::IsNullOrWhiteSpace($ltc.RoutingCode) -eq $false)) {
+							$template.Lines.U_RtgCode = $ltc.RoutingCode;
+						}
+						$lineFound = $true;
+						break;
+					}
+				}
+				if ($lineFound -eq $false) {
+					$lineNumbersToDel.Add($lineNum);
+				}
+			}
+
+			#remove lines
+			for ($i = $lineNumbersToDel.Count - 1; $i -ge 0 ; $i--) {
+				$dummy = $template.Lines.DelRowAtPos($lineNumbersToDel[$i]);
+			}
 			#Adding or updating templates
 			$message = 0;
     
