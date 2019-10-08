@@ -2,7 +2,7 @@
 ########################################################################
 # CompuTec PowerShell Script - Import Bill of Materials Structures
 ########################################################################
-$SCRIPT_VERSION = "3.4"
+$SCRIPT_VERSION = "3.5"
 # Last tested PF version: ProcessForce 9.3 (9.30.200) PL: MAIN (64-bit)
 # Description:
 #      Import Bill of Materials Structures. Script add new BOMs or will update existing BOMs.    
@@ -324,7 +324,7 @@ try {
                     $bom.Items.U_FactorDescription = $item.FactorDesc
                     $bom.Items.U_Quantity = $item.Quantity
                     $bom.Items.U_ScrapPercentage = $item.ScrapPercent
-                    $bom.Items.U_IssueType = $item.IssueType # M = Manual, B = Backflush
+                    $bom.Items.U_IssueType = $item.IssueType # M = Manual, B = Backflush, #F = Fixed Backflush
                     $bom.Items.U_OcrCode = $item.OcrCode
                     $bom.Items.U_OcrCode2 = $item.OcrCode2
                     $bom.Items.U_OcrCode3 = $item.OcrCode3
@@ -370,7 +370,7 @@ try {
                     $bom.Coproducts.U_Factor = $coproducts.Factor
                     $bom.Coproducts.U_FactorDescription = $coproducts.FactorDesc
                     $bom.Coproducts.U_Quantity = $coproducts.Quantity
-                    $bom.Coproducts.U_IssueType = $coproducts.IssueType # M = Manual, B = Backflush
+                    $bom.Coproducts.U_IssueType = $coproducts.IssueType # M = Manual, B = Backflush, #F = Fixed Backflush
                     $bom.Coproducts.U_OcrCode = $coproducts.OcrCode
                     $bom.Coproducts.U_OcrCode2 = $coproducts.OcrCode2
                     $bom.Coproducts.U_OcrCode3 = $coproducts.OcrCode3
@@ -408,7 +408,7 @@ try {
                     $bom.Scraps.U_FactorDescription = $scraps.FactorDesc
                     $bom.Scraps.U_Quantity = $scraps.Quantity
                     $bom.Scraps.U_Type = $scraps.Type #enum type; Technological = 1, UseFul = 2
-                    $bom.Scraps.U_IssueType = $scraps.IssueType # M = Manual, B = Backflush
+                    $bom.Scraps.U_IssueType = $scraps.IssueType # M = Manual, B = Backflush, #F = Fixed Backflush
                     $bom.Scraps.U_OcrCode = $scraps.OcrCode
                     $bom.Scraps.U_OcrCode2 = $scraps.OcrCode2
                     $bom.Scraps.U_OcrCode3 = $scraps.OcrCode3
