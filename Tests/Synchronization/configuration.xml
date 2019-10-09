@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration>
+	<connection 
+        Database="PFDEMOGB" 
+        SQLServer="hanadev:30015" 
+        LicenseServer="hanadev:40000" 
+        DbServerType="dst_HANADB" 
+        UserName="manager" 
+        Password="1234"
+    />
+	<!--LicenseServer = SAP LicenceServer name or IP Address with port number (see in SAP Client -> Administration -> Licence -> Licence Administration -> Licence Server)-->
+	<!--SQLServer     = Server name or IP Address with port number, should be the same like in System Landscape Dirctory (see https://<Server>:<Port>/ControlCenter) - sometimes best is use IP Address for resolve connection problems.-->
+
+	<!--DbServerType = 	[SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2016"     # For MsSQL Server 2016
+						[SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2014"     # For MsSQL Server 2014
+						[SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2012"     # For MsSQL Server 2012
+						[SAPbobsCOM.BoDataServerTypes]::"dst_HANADB"        # For HANA-->
+	<!--Databasename = Database / schema name (check in SAP Company select form/window, or in MsSQL Management Studio or in HANA Studio)-->
+	<!--UserName     = SAP user name ex. manager-->
+	<!--Password     = SAP user password-->
+</configuration>
