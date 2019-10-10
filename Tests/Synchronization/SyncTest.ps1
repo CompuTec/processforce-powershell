@@ -1,11 +1,63 @@
 using module .\lib\ItemMasterData.psm1;
 using module .\lib\BillOfMaterials.psm1;
+using module .\lib\ProductionOrder.psm1;
+using module .\lib\Result.psm1;
 add-type -Path "C:\Projects\Playground\SAP\DLL\SAPHana\x64\Interop.SAPbobsCOM.dll"
 
 #region Script parameters
+$WHS_CODE_1 = "01"
+$WHS_CODE_2 = "02"
+$COD_ITEMCODE = "SyncTest_CoD";
+$FOD_ITEMCODE = "SyncTest_FoD";
+$PH_ITEMCODE = "SyncTest_PH";
+$A_ITEMCODE = "SyncTest_A";
+$B_ITEMCODE = "SyncTest_B";
+$C_ITEMCODE = "SyncTest_C";
+$D_ITEMCODE = "SyncTest_D";
+$F_ITEMCODE = "SyncTest_F";
+$H_ITEMCODE = "SyncTest_H";
+$X1_ITEMCODE = "SyncTest_X1";
+$X2_ITEMCODE = "SyncTest_X2";
+$X3_ITEMCODE = "SyncTest_X3";
+$X4_ITEMCODE = "SyncTest_X4";
 
+#region prepare Item Master Data
+[ItemMasterData] $CoD = [ItemMasterData]::getNewCoproductDummy($COD_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $FoD = [ItemMasterData]::getNewFinalDummy($FOD_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $PH = [ItemMasterData]::getNewPhantom($PH_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $A = [ItemMasterData]::getNewRegularItem($A_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $B = [ItemMasterData]::getNewRegularItem($B_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $C = [ItemMasterData]::getNewRegularItem($C_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $D = [ItemMasterData]::getNewRegularItem($D_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $F = [ItemMasterData]::getNewRegularItem($F_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $H = [ItemMasterData]::getNewRegularItem($H_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $X1 = [ItemMasterData]::getNewRegularItem($X1_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $X2 = [ItemMasterData]::getNewRegularItem($X2_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $X3 = [ItemMasterData]::getNewRegularItem($X3_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $X4 = [ItemMasterData]::getNewRegularItem($X4_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+#endregion
+	
+#region prepare Bill Of Materials
+[BillOfMaterials] $BOMFoD = New-Object 'BillOfMaterials'($FoD.ItemCode, $FoD.DefaultWarehouseCode, 1);
+$BOMFoD.addLine($CoD.ItemCode, $CoD.DefaultWarehouseCode, 1);
+
+[BillOfMaterials] $BOMA = New-Object 'BillOfMaterials'($A.ItemCode, $A.DefaultWarehouseCode, 1);
+$BOMA.addLine($B.ItemCode, $B.DefaultWarehouseCode, 1);
+$BOMA.addLine($C.ItemCode, $C.DefaultWarehouseCode, 1);
+	
+[BillOfMaterials] $BOMPH = New-Object 'BillOfMaterials'($PH.ItemCode, $PH.DefaultWarehouseCode, 1);
+$BOMPH.addLine($X1.ItemCode, $X1.DefaultWarehouseCode, 1);
+	
+[BillOfMaterials] $BOMD = New-Object 'BillOfMaterials'($D.ItemCode, $D.DefaultWarehouseCode, 1);
+$BOMD.addLine($PH.ItemCode, $PH.DefaultWarehouseCode, 1);
+$BOMD.addLine($A.ItemCode, $A.DefaultWarehouseCode, 1);
+$BOMD.addLine($F.ItemCode, $F.DefaultWarehouseCode, 1);
+$BOMD.addLine($H.ItemCode, $H.DefaultWarehouseCode, 1);
+#endregion
+
+$TEST_RESULT = New-Object 'Result';
 $csvImportCatalog = $PSScriptRoot + "\"
-
+$TEMP_XML_FILE = -join ($csvImportCatalog, "Temp.xml");
 # $csvBomFilePath = -join ($csvImportCatalog, "BOMs.csv")
 # $csvBomItemsFilePath = -join ($csvImportCatalog, "BOM_Items.csv")
 # $csvBomscrapsFilePath = -join ($csvImportCatalog, "BOM_Scraps.csv")
@@ -47,7 +99,7 @@ write-host -backgroundcolor yellow -foregroundcolor black  "Trying connect..."
  
 try {
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'code')]
-	$code = $sapCompany.Connect()
+	$code = $sapCompany.Connect();
  
 	write-host -backgroundcolor green -foregroundcolor black "Connected to:" $sapCompany.CompanyName "/ " $sapCompany.CompanyDB"" "Sap Company version: " $sapCompany.Version
 	#If company is not connected - stops the script
@@ -65,7 +117,18 @@ catch {
 	write-host "UserName:" $sapCompany.UserName
 	return
 }
+#endregion
 
+Enum TransactionTask {
+	Add = 1;
+	Update = 2;
+}
+
+Enum TransactionType {
+	DI = 1;
+	XML = 2;
+}
+$canWeChangeHeaderWarehouseWhenCreatingProductionOrder = "Can We Change Header Warehouse When Creating Production Order"
 function convertYesNoToBool([SAPbobsCOM.BoYesNoEnum] $value) {
 	if ($value -eq [SAPbobsCOM.BoYesNoEnum]::tYES) {
 		return $true;
@@ -123,16 +186,49 @@ function prepareItem([ItemMasterData] $ItemMasterData) {
 					throw [System.Exception] ([string]::Format("Default warehouse is set in SAP to {0} when it should be {1}", [string]$item.DefaultWarehouse, [string]$ItemMasterData.DefaultWarehouseCode));
 				}
 				if ($ItemMasterData.StandardValuationMethod) {
-					foreach ($whs in $item.WhsInfo) {
+					for ($wi = 0; $wi -lt $item.WhsInfo.Count; $wi++) {
+						$item.WhsInfo.SetCurrentLine($wi);
+						$whs = $item.WhsInfo;
 						if ($whs.WarehouseCode -eq $ItemMasterData.DefaultWarehouseCode) {
 							if ($ItemMasterData.AvgStdPrice -ne $whs.StandardAveragePrice) {
 								throw [System.Exception] ([string]::Format("Item Cost is set in SAP to {0} on Warehouse {1} when it should be {2}", [string]$whs.StandardAveragePrice, [string]$ItemMasterData.DefaultWarehouseCode, [string]$ItemMasterData.AvgStdPrice));
 							}
-							break;
+						}
+						if ($whs.WarehouseCode -eq $ItemMasterData.SecondWarehouseCode) {
+							if ($ItemMasterData.AvgStdPrice -ne $whs.StandardAveragePrice) {
+								throw [System.Exception] ([string]::Format("Item Cost is set in SAP to {0} on Warehouse {1} when it should be {2}", [string]$whs.StandardAveragePrice, [string]$ItemMasterData.SecondWarehouseCode, [string]$ItemMasterData.AvgStdPrice));
+							}
 						}
 					}
 				}
+				#region check if required warehouses exists
+				$firstWhsExists = $false;
+				$secondWhsExists = $false;
+				for ($wi = 0; $wi -lt $item.WhsInfo.Count; $wi++) {
+					$item.WhsInfo.SetCurrentLine($wi);
+					$whs = $item.WhsInfo;
+					if ($whs.WarehouseCode -eq $ItemMasterData.DefaultWarehouseCode) {
+						$firstWhsExists = $true;
+					}
+					if ($whs.WarehouseCode -eq $ItemMasterData.SecondWarehouseCode) {
+						$secondWhsExists = $true;
+					}
+				}
+				if (-not ($firstWhsExists -and $secondWhsExists)) {
+					
+					if (-not $firstWhsExists -and -not $secondWhsExists) {
+						$missingWarehouses = [string]::Format("Missing warehouses: {0}, {1}.", [string] $ItemMasterData.DefaultWarehouseCode, [string]$ItemMasterData.SecondWarehouseCode);
+					}
+					elseif (-not $firstWhsExists) {
+						$missingWarehouses = [string]::Format("Missing warehouse: {0}", [string] $ItemMasterData.DefaultWarehouseCode);
+					}
+					else {
+						$missingWarehouses = [string]::Format("Missing warehouse: {0}", [string] $ItemMasterData.SecondWarehouseCode);
+					}
+					throw [System.Exception] ($missingWarehouses);
+				}
 
+				#endregion
 			}
 			catch {
 				$err = [string]$_.Exception.Message;
@@ -154,28 +250,47 @@ function prepareItem([ItemMasterData] $ItemMasterData) {
 				$item.ManageSerialNumbers = convertBoolToYesNo($ItemMasterData.ManageBySerialNumbers);
 				if ($ItemMasterData.StandardValuationMethod) {
 					$item.CostAccountingMethod = [SAPbobsCOM.BoInventorySystem]::bis_Standard;
-					if(-not $ItemMasterData.InventoryItem){
+					if (-not $ItemMasterData.InventoryItem) {
 						$item.AvgStdPrice = $ItemMasterData.AvgStdPrice;
 					}
 				}
-				
-				$whsExists = $false;
-				foreach ($whs in $item.WhsInfo) {
-					if ($whs.WarehouseCode -eq $ItemMasterData.DefaultWarehouseCode) {
-						$whsExists = $true;
-						if(-not $ItemMasterData.InventoryItem) {
+
+
+				$firstWhsExists = $false;
+				$secondWhsExists = $false;
+				for ($wi = 0; $wi -lt $item.WhsInfo.Count; $wi++) {
+					$item.WhsInfo.SetCurrentLine($wi);
+					$whs = $item.WhsInfo;
+					if ($whs.WarehouseCode -eq $ItemMasterData.DefaultWarehouseCode -or $whs.WarehouseCode -eq $ItemMasterData.SecondWarehouseCode) {
+						if ($whs.WarehouseCode -eq $ItemMasterData.DefaultWarehouseCode) {
+							$firstWhsExists = $true;
+						}
+						else {
+							$secondWhsExists = $true;
+						}
+						if (-not $ItemMasterData.InventoryItem) {
 							$whs.StandardAveragePrice = $ItemMasterData.AvgStdPrice;
 						}
 					}
 				}
-				if (-not $whsExists) {
+				if (-not $firstWhsExists) {
 					$item.WhsInfo.SetCurrentLine($item.WhsInfo.Count - 1);
 					if (-not [string]::IsNullOrWhiteSpace($item.WhsInfo.WarehouseCode)) {
 						$item.WhsInfo.Add();
 					}
 					$item.WhsInfo.WarehouseCode = $ItemMasterData.DefaultWarehouseCode;
-					if(-not $ItemMasterData.InventoryItem) {
-						$whs.StandardAveragePrice = $ItemMasterData.AvgStdPrice;
+					if (-not $ItemMasterData.InventoryItem) {
+						$item.WhsInfo.StandardAveragePrice = $ItemMasterData.AvgStdPrice;
+					}
+				}
+				if (-not $secondWhsExists) {
+					$item.WhsInfo.SetCurrentLine($item.WhsInfo.Count - 1);
+					if (-not [string]::IsNullOrWhiteSpace($item.WhsInfo.WarehouseCode)) {
+						$item.WhsInfo.Add();
+					}
+					$item.WhsInfo.WarehouseCode = $ItemMasterData.SecondWarehouseCode;
+					if (-not $ItemMasterData.InventoryItem) {
+						$item.WhsInfo.StandardAveragePrice = $ItemMasterData.AvgStdPrice;
 					}
 				}
 				
@@ -193,6 +308,10 @@ function prepareItem([ItemMasterData] $ItemMasterData) {
 					$oMR.RevalType = "P";
 					$oMR.Lines.ItemCode = $ItemMasterData.ItemCode;
 					$oMR.Lines.WarehouseCode = $ItemMasterData.DefaultWarehouseCode;
+					$oMR.Lines.Price = $ItemMasterData.AvgStdPrice;
+					$oMR.Lines.Add()
+					$oMR.Lines.ItemCode = $ItemMasterData.ItemCode;
+					$oMR.Lines.WarehouseCode = $ItemMasterData.SecondWarehouseCode;
 					$oMR.Lines.Price = $ItemMasterData.AvgStdPrice;
 					$oMR.Lines.Add()
 
@@ -291,71 +410,246 @@ function prepareBOM([BillOfMaterials] $BillOfMaterials) {
 		throw ($msg);
 	}
 }
+function createProductionOrderUsingDI($po) {
+	try {
+		$result = $po.Add();
+		if ($result -ne 0) {
+			$err = [string] $sapCompany.GetLastErrorDescription();
+			throw [System.Exception] ($err);
+		}
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception while adding Production Order by DI. Details: {0}", $err);
+		throw ($msg);
+	}
+}
 
-function canWeChangeHeaderWarehouseWhenCreatingProductionOrder([bool]OnlyUpdate)
+function createProductionOrderUsingXML($po) {
+	try {
+		if (Test-Path -Path $TEMP_XML_FILE) {
+			Remove-Item -Path $TEMP_XML_FILE
+		}
+		$po.SaveXML($TEMP_XML_FILE);
+		$prodOrder = $sapCompany.GetBusinessObjectFromXML($TEMP_XML_FILE, 0);
+		$result = $prodOrder.Add();
+		
+		if ($result -ne 0) {
+			$err = [string] $sapCompany.GetLastErrorDescription();
+			throw [System.Exception] ($err);
+		}
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception while adding Production Order by XML. Details: {0}", $err);
+		throw ($msg);
+	} finally {
+		if (Test-Path -Path $TEMP_XML_FILE) {
+			Remove-Item -Path $TEMP_XML_FILE
+		}
+	}
+}
+
+function createProductionOrder([ProductionOrder] $ProductionOrder, $type) {
+	try {
+		$po = $sapCompany.GetBusinessObject([SAPbobsCOM.BoObjectTypes]::oProductionOrders);
+		$po.ItemNo = $ProductionOrder.ItemCode;
+		$po.PlannedQuantity = $ProductionOrder.PlannedQuantity;
+		$po.Warehouse = $ProductionOrder.WarehouseCode;
+	
+		$linesToDelete = New-Object  'System.Collections.Generic.List[int]';
+		for ($i = 0; $i -lt $po.Lines.Count; $i++) {
+			if ($ProductionOrder.Lines.Where( { $_.LineNum -eq $i }).Count -eq 0) {
+				$linesToDelete = $i;
+			}
+		}
+
+		for ($i = 0; $i -lt $po.Lines.Count; $i++) {
+			$poLines = $ProductionOrder.Lines.Where( { $_.LineNum -eq $i });
+
+			if ($poLines.Count -eq 0) {
+				$linesToDelete.Add($i);
+				break;
+			}
+			elseif ($poLines.Count -gt 1) {
+				throw [System.Exception] (([string]::Format("Incorrect definition of Production Order. LineNum: {0} occures more than once", $i)));
+			}
+			$poLine = $poLines[0];
+			$po.Lines.SetCurrentLine($i);
+			try {
+				if ($po.Lines.ItemNo -ne $poLine.ItemCode) {
+					$po.Lines.ItemNo = $poLine.ItemCode;
+				}
+			}
+			catch {
+				$err = [string]$_.Exception.Message;
+				$msg = [string]::Format("Exception while changing Item Code from: {0} to: {1}. Details: {2}", [string] $po.Lines.ItemNo, [string] $poLine.ItemCode, $err);
+				throw ($msg);
+			}
+			try {
+				if ($po.Lines.Warehouse -ne $poLine.WarehouseCode) {
+					$po.Lines.Warehouse = $poLine.WarehouseCode;
+				}
+			}
+			catch {
+				$err = [string]$_.Exception.Message;
+				$msg = [string]::Format("Exception while changing Warehouse from: {0} to: {1}. Details: {2}", [string] $po.Lines.Warehouse, [string] $poLine.WarehouseCode, $err);
+				throw ($msg);
+			}
+			try {
+				if ($po.Lines.PlannedQuantity -ne $poLine.PlannedQuantity) {
+					$po.Lines.PlannedQuantity = $poLine.Quantity;
+				}
+			}
+			catch {
+				$err = [string]$_.Exception.Message;
+				$msg = [string]::Format("Exception while changing Quantity from: {0} to: {1}. Details: {2}", [string] $po.Lines.PlannedQuantity, [string] $poLine.Quantity, $err);
+				throw ($msg);
+			}
+		}
+		$po.Lines.SetCurrentLine($po.Lines.Count - 1);
+
+		foreach ($poLine in $ProductionOrder.Lines.Where( { $_.LineNum -eq -1 })) {
+			if (-not [stirng]::IsNullOrWhiteSpace($po.Lines.ItemNo)) {
+				$po.Lines.Add();
+			}
+			$po.Lines.ItemNo = $poLine.ItemCode;
+			$po.Lines.Warehouse = $poLine.WarehouseCode;
+			$po.Lines.PlannedQuantity = $poLine.Quantity;
+		}
+
+		#remove lines
+		if ($linesToDelete -gt 0) {
+			$linesToDelete.Sort();
+			$linesToDelete.Reverse();
+			foreach ($LineNum in $linesToDelete) {
+				$po.Lines.SetCurrentLine($LineNum);
+				try {
+					$po.lines.Delete();
+				}
+				catch {
+					$err = [string]$_.Exception.Message;
+					throw [System.Exception] (([string]::Format("Couldn't delete line with LineNum: {0}", $LineNum)));
+				}
+			}
+		}
+		if ($type -eq [TransactionType]::DI) {
+			createProductionOrderUsingDI -po $po;
+		}
+		elseif ($type -eq [TransactionType]::XML) {
+			createProductionOrderUsingXML -po $po;
+		}
+		else {
+			throw [System.Exception](([string]::Format("Transaction Type {0} is not supported.", $type)));
+		}
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception while creating production order with ItemCode: {0}. Details: {1}", [string] $ProductionOrder.ItemCode, $err);
+		throw ($msg);
+	}
+}
+
+function createProductionOrderFromBOM([BillOfMaterials] $bom) {
+	[ProductionOrder] $ProductionOrder = New-Object 'ProductionOrder'($bom.ItemCode, $bom.WarehouseCode, $bom.Quantity);
+
+	$i = 0;
+	foreach ($bomLine in $bom.Lines) {
+		$ProductionOrder.addLine($bomLine.ItemCode, $bomLine.WarehouseCode, $bomLine.Quantity, $i);
+		$i++;
+	}
+	return $ProductionOrder;
+}
+function canWeChangeHeaderWarehouseWhenCreatingProductionOrder([BillOfMaterials] $bom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		$ProductionOrder.WarehouseCode = $WHS_CODE_2;
+		createProductionOrder -type $type -ProductionOrder $ProductionOrder
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $canWeChangeHeaderWarehouseWhenCreatingProductionOrder, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
 
 # setup and check - preapare master data for test, check warehouses, check if it is possible to add standard Production Order and BOM - DI and XML
 #check FOD 
-function setupSAPMasterData() {
+function setupSAPMasterData($test) {
 	#TODO check warehouses
 
-
-
 	#region prepare Item Master Data
-	[ItemMasterData] $CoD = [ItemMasterData]::getNewCoproductDummy("SyncTest_CoD", "01");
 	prepareItem -ItemMasterData $CoD;
-	[ItemMasterData] $FoD = [ItemMasterData]::getNewFinalDummy("SyncTest_FoD", "01");
 	prepareItem -ItemMasterData $FoD;
-	[ItemMasterData] $PH = [ItemMasterData]::getNewPhantom("SyncTest_PH", "01");
 	prepareItem -ItemMasterData $PH;
-	[ItemMasterData] $A = [ItemMasterData]::getNewRegularItem("SyncTest_A", "01");
 	prepareItem -ItemMasterData $A;
-	[ItemMasterData] $B = [ItemMasterData]::getNewRegularItem("SyncTest_B", "01");
 	prepareItem -ItemMasterData $B;
-	[ItemMasterData] $C = [ItemMasterData]::getNewRegularItem("SyncTest_C", "01");
 	prepareItem -ItemMasterData $C;
-	[ItemMasterData] $D = [ItemMasterData]::getNewRegularItem("SyncTest_D", "01");
 	prepareItem -ItemMasterData $D;
-	[ItemMasterData] $F = [ItemMasterData]::getNewRegularItem("SyncTest_F", "01");
 	prepareItem -ItemMasterData $F;
-	[ItemMasterData] $H = [ItemMasterData]::getNewRegularItem("SyncTest_H", "01");
 	prepareItem -ItemMasterData $H;
-	[ItemMasterData] $X1 = [ItemMasterData]::getNewRegularItem("SyncTest_X1", "01");
 	prepareItem -ItemMasterData $X1;
-	[ItemMasterData] $X2 = [ItemMasterData]::getNewRegularItem("SyncTest_X2", "01");
 	prepareItem -ItemMasterData $X2;
-	[ItemMasterData] $X3 = [ItemMasterData]::getNewRegularItem("SyncTest_X3", "01");
 	prepareItem -ItemMasterData $X3;
-	[ItemMasterData] $X4 = [ItemMasterData]::getNewRegularItem("SyncTest_X4", "01");
 	prepareItem -ItemMasterData $X4;
 	#endregion
 	
 	#region prepare Bill Of Materials
-	$BOMFoD = New-Object 'BillOfMaterials'($FoD.ItemCode, $FoD.DefaultWarehouseCode, 1);
-	$BOMFoD.addLine($CoD.ItemCode, $CoD.DefaultWarehouseCode, 1);
 	prepareBOM -BillOfMaterials $BOMFoD;
-
-	$BOMA = New-Object 'BillOfMaterials'($A.ItemCode, $A.DefaultWarehouseCode, 1);
-	$BOMA.addLine($B.ItemCode, $B.DefaultWarehouseCode, 1);
-	$BOMA.addLine($C.ItemCode, $C.DefaultWarehouseCode, 1);
 	prepareBOM -BillOfMaterials $BOMA;
-	
-	$BOMPH = New-Object 'BillOfMaterials'($PH.ItemCode, $PH.DefaultWarehouseCode, 1);
-	$BOMPH.addLine($X1.ItemCode, $X1.DefaultWarehouseCode, 1);
 	prepareBOM -BillOfMaterials $BOMPH;
-	
-	$BOMD = New-Object 'BillOfMaterials'($D.ItemCode, $D.DefaultWarehouseCode, 1);
-	$BOMD.addLine($PH.ItemCode, $PH.DefaultWarehouseCode, 1);
-	$BOMD.addLine($A.ItemCode, $A.DefaultWarehouseCode, 1);
-	$BOMD.addLine($F.ItemCode, $F.DefaultWarehouseCode, 1);
-	$BOMD.addLine($H.ItemCode, $H.DefaultWarehouseCode, 1);
 	prepareBOM -BillOfMaterials $BOMD;
 	#endregion
 	
 }
 
+function runTests() {
+	$transactionTypeDI = [TransactionType]::DI;
+	$transactionTypeXML = [TransactionType]::XML;
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMA -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+
+		try {
+			$SuccessXML = canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($canWeChangeHeaderWarehouseWhenCreatingProductionOrder, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+
+	# [TransactionType]::DI
+	
+	# canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMA -type [TransactionType
+	#	canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom
+	#canWeChangeHeaderWarehouseWhenCreatingProductionOrder - update, add 
+}
+
+
 setupSAPMasterData
-# perform tests
+runTests
+
+
 
 
 

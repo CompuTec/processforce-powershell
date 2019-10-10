@@ -10,6 +10,7 @@ class ItemMasterData {
 	[bool] $StandardValuationMethod = $true;
 	[double] $AvgStdPrice = 1;
 	[string] $DefaultWarehouseCode = "";
+	[string] $SecondWarehouseCode = "";
 
 	ItemMasterData(){}
 
@@ -18,7 +19,7 @@ class ItemMasterData {
 		$this.DefaultWarehouseCode = $DefaultWarehouseCode;
 	}
 
-	ItemMasterData([string]$ItemCode, [bool] $InventoryItem, [bool] $SalesItem, [bool] $PurchaseItem, [bool] $PhantomItem, [bool] $AssetItem, [bool] $ManageByBatches, [bool] $ManageBySerialNumbers, [bool]$StandardValuationMethod, [double] $AvgStdPrice, [string] $DefaultWarehouseCode) {
+	ItemMasterData([string]$ItemCode, [bool] $InventoryItem, [bool] $SalesItem, [bool] $PurchaseItem, [bool] $PhantomItem, [bool] $AssetItem, [bool] $ManageByBatches, [bool] $ManageBySerialNumbers, [bool]$StandardValuationMethod, [double] $AvgStdPrice, [string] $DefaultWarehouseCode, [string] $SecondWarehouseCode) {
 		$this.ItemCode = $ItemCode;
 		$this.InventoryItem = $InventoryItem;
 		$this.SalesItem = $SalesItem;
@@ -30,11 +31,13 @@ class ItemMasterData {
 		$this.StandardValuationMethod = $StandardValuationMethod;
 		$this.AvgStdPrice = $AvgStdPrice;
 		$this.DefaultWarehouseCode = $DefaultWarehouseCode;
+		$this.SecondWarehouseCode = $SecondWarehouseCode;
 	}
 
-	static [ItemMasterData] getNewRegularItem([string]$ItemCode, [string] $DefaultWarehouseCode)
+	static [ItemMasterData] getNewRegularItem([string]$ItemCode, [string] $DefaultWarehouseCode, [string] $SecondWarehouseCode)
 	{
 		$imd = New-Object ItemMasterData($ItemCode, $DefaultWarehouseCode);
+		$imd.SecondWarehouseCode = $SecondWarehouseCode;
 		$imd.InventoryItem = $true;
 		$imd.SalesItem = $true;
 		$imd.PurchaseItem = $true;
@@ -47,9 +50,10 @@ class ItemMasterData {
 		return $imd;
 	}
 
-	static [ItemMasterData] getNewCoproductDummy([string]$ItemCode, [string] $DefaultWarehouseCode)
+	static [ItemMasterData] getNewCoproductDummy([string]$ItemCode, [string] $DefaultWarehouseCode, [string] $SecondWarehouseCode)
 	{
 		$imd = New-Object ItemMasterData($ItemCode, $DefaultWarehouseCode);
+		$imd.SecondWarehouseCode = $SecondWarehouseCode;
 		$imd.InventoryItem = $false;
 		$imd.SalesItem = $false;
 		$imd.PurchaseItem = $false;
@@ -62,9 +66,10 @@ class ItemMasterData {
 		return $imd;
 	}
 
-	static [ItemMasterData] getNewFinalDummy([string]$ItemCode, [string] $DefaultWarehouseCode)
+	static [ItemMasterData] getNewFinalDummy([string]$ItemCode, [string] $DefaultWarehouseCode, [string] $SecondWarehouseCode)
 	{
 		$imd = New-Object ItemMasterData($ItemCode, $DefaultWarehouseCode);
+		$imd.SecondWarehouseCode = $SecondWarehouseCode;
 		$imd.InventoryItem = $true;
 		$imd.SalesItem = $false;
 		$imd.PurchaseItem = $false;
@@ -76,9 +81,10 @@ class ItemMasterData {
 		$imd.AvgStdPrice = 1;
 		return $imd;
 	}
-	static [ItemMasterData] getNewPhantom([string]$ItemCode, [string] $DefaultWarehouseCode)
+	static [ItemMasterData] getNewPhantom([string]$ItemCode, [string] $DefaultWarehouseCode, [string] $SecondWarehouseCode)
 	{
 		$imd = New-Object ItemMasterData($ItemCode, $DefaultWarehouseCode);
+		$imd.SecondWarehouseCode = $SecondWarehouseCode;
 		$imd.InventoryItem = $false;
 		$imd.SalesItem = $true;
 		$imd.PurchaseItem = $true;
