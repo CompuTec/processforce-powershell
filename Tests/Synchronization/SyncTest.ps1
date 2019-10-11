@@ -128,7 +128,15 @@ Enum TransactionType {
 	DI = 1;
 	XML = 2;
 }
-$canWeChangeHeaderWarehouseWhenCreatingProductionOrder = "Can We Change Header Warehouse When Creating Production Order"
+#region test names
+$canWeChangeHeaderWarehouseWhenCreatingProductionOrder = "Can We Change Header Warehouse When Creating Production Order";
+$canWeChangeLinesWhenCreatingProducionOrder_ItemCode = "Can We Change Lines when creating Production Order - Item Code";
+$canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode = "Can We Change Lines when creating Production Order - Warehouse Code";
+$canWeChangeLinesWhenCreatingProducionOrder_Quantity = "Can We Change Lines when creating Production Order - Quantity";
+$canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT = "Can We Change Lines when creating Production Order - Add Line not from OITT";
+$canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT = "Can We Change Lines when creating Production Order - Delete Line from OITT";
+$CanWeAddProductionOrderInReleasedStatus = "Can We Add Production Order in Released Status";
+#endregion
 function convertYesNoToBool([SAPbobsCOM.BoYesNoEnum] $value) {
 	if ($value -eq [SAPbobsCOM.BoYesNoEnum]::tYES) {
 		return $true;
@@ -425,12 +433,49 @@ function createProductionOrderUsingDI($po) {
 	}
 }
 
+function prepareProductionOrderXML() {
+	try {
+		$nodesToBeRemovedFromOWOR = @("OriginAbs", "OriginNum", "UserSign");
+		$nodesToBeRemovedFromWOR1 = @("ResAlloc", "StageId");
+
+		[xml] $ProductionOrderXml = Get-Content -Encoding UTF8 $TEMP_XML_FILE;
+		$xmlOWOR = $ProductionOrderXml.SelectSingleNode("/BOM/BO/OWOR/row");
+
+		foreach ($nodeName in $nodesToBeRemovedFromOWOR) {
+			$node = $xmlOWOR.SelectSingleNode($nodeName);
+			if ($node) {
+				$xmlOWOR.RemoveChild($node);
+			}
+		}
+		$xmlWOR1s = $ProductionOrderXml.SelectNodes("/BOM/BO/WOR1/row");
+	
+		foreach ($xmlWOR1 in $xmlWOR1s) {
+			foreach ($nodeName in $nodesToBeRemovedFromWOR1) {
+				$node = $xmlWOR1.SelectSingleNode($nodeName);
+				if ($node) {
+					$xmlWOR1.RemoveChild($node);
+				}
+			}
+		}
+		if (Test-Path -Path $TEMP_XML_FILE) {
+			Remove-Item -Path $TEMP_XML_FILE
+		}
+		Add-Content -Path $TEMP_XML_FILE $ProductionOrderXml.OuterXml;	
+	}
+ catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception while preparing xml file for Production Order. Details: {0}", $err);
+		throw ($msg);
+	}
+}
+
 function createProductionOrderUsingXML($po) {
 	try {
 		if (Test-Path -Path $TEMP_XML_FILE) {
 			Remove-Item -Path $TEMP_XML_FILE
 		}
 		$po.SaveXML($TEMP_XML_FILE);
+		prepareProductionOrderXML
 		$prodOrder = $sapCompany.GetBusinessObjectFromXML($TEMP_XML_FILE, 0);
 		$result = $prodOrder.Add();
 		
@@ -443,10 +488,11 @@ function createProductionOrderUsingXML($po) {
 		$err = [string]$_.Exception.Message;
 		$msg = [string]::Format("Exception while adding Production Order by XML. Details: {0}", $err);
 		throw ($msg);
-	} finally {
-		if (Test-Path -Path $TEMP_XML_FILE) {
-			Remove-Item -Path $TEMP_XML_FILE
-		}
+	}
+ finally {
+		# if (Test-Path -Path $TEMP_XML_FILE) {
+		# 	Remove-Item -Path $TEMP_XML_FILE
+		# }
 	}
 }
 
@@ -454,8 +500,11 @@ function createProductionOrder([ProductionOrder] $ProductionOrder, $type) {
 	try {
 		$po = $sapCompany.GetBusinessObject([SAPbobsCOM.BoObjectTypes]::oProductionOrders);
 		$po.ItemNo = $ProductionOrder.ItemCode;
-		$po.PlannedQuantity = $ProductionOrder.PlannedQuantity;
+		$po.PlannedQuantity = $ProductionOrder.Quantity;
 		$po.Warehouse = $ProductionOrder.WarehouseCode;
+		if ($ProductionOrder.IsReleased) {
+			$po.ProductionOrderStatus = [SAPbobsCOM.BoProductionOrderStatusEnum]::boposReleased;
+		}
 	
 		$linesToDelete = New-Object  'System.Collections.Generic.List[int]';
 		for ($i = 0; $i -lt $po.Lines.Count; $i++) {
@@ -497,7 +546,7 @@ function createProductionOrder([ProductionOrder] $ProductionOrder, $type) {
 				throw ($msg);
 			}
 			try {
-				if ($po.Lines.PlannedQuantity -ne $poLine.PlannedQuantity) {
+				if ($po.Lines.PlannedQuantity -ne $poLine.Quantity) {
 					$po.Lines.PlannedQuantity = $poLine.Quantity;
 				}
 			}
@@ -510,7 +559,7 @@ function createProductionOrder([ProductionOrder] $ProductionOrder, $type) {
 		$po.Lines.SetCurrentLine($po.Lines.Count - 1);
 
 		foreach ($poLine in $ProductionOrder.Lines.Where( { $_.LineNum -eq -1 })) {
-			if (-not [stirng]::IsNullOrWhiteSpace($po.Lines.ItemNo)) {
+			if (-not [string]::IsNullOrWhiteSpace($po.Lines.ItemNo)) {
 				$po.Lines.Add();
 			}
 			$po.Lines.ItemNo = $poLine.ItemCode;
@@ -564,7 +613,7 @@ function canWeChangeHeaderWarehouseWhenCreatingProductionOrder([BillOfMaterials]
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
 		$ProductionOrder.WarehouseCode = $WHS_CODE_2;
-		createProductionOrder -type $type -ProductionOrder $ProductionOrder
+		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
 		return $true;
 	}
 	catch {
@@ -573,6 +622,85 @@ function canWeChangeHeaderWarehouseWhenCreatingProductionOrder([BillOfMaterials]
 		throw ($msg);
 	}
 }
+function canWeChangeLinesWhenCreatingProducionOrder_ItemCode([BillOfMaterials] $bom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		$ProductionOrder.Lines[0].ItemCode = $X1.ItemCode;
+		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $canWeChangeLinesWhenCreatingProducionOrder_ItemCode, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+function canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode([BillOfMaterials] $bom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		$ProductionOrder.Lines[0].WarehouseCode = $WHS_CODE_2;
+		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+function canWeChangeLinesWhenCreatingProducionOrder_Quantity([BillOfMaterials] $bom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		$ProductionOrder.Lines[0].Quantity = $ProductionOrder.Lines[0].Quantity + 1;
+		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $canWeChangeLinesWhenCreatingProducionOrder_Quantity, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+function canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT([BillOfMaterials] $bom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		$ProductionOrder.addLine($X1.ItemCode, $X1.DefaultWarehouseCode, 1, -1);
+		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+function canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT([BillOfMaterials] $bom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		$ProductionOrder.Lines.RemoveAt($ProductionOrder.Lines.Count - 1);
+		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+function CanWeAddProductionOrderInReleasedStatus([BillOfMaterials] $bom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		$ProductionOrder.IsReleased = $true;
+		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $CanWeAddProductionOrderInReleasedStatus, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+
 
 # setup and check - preapare master data for test, check warehouses, check if it is possible to add standard Production Order and BOM - DI and XML
 #check FOD 
@@ -607,6 +735,8 @@ function setupSAPMasterData($test) {
 function runTests() {
 	$transactionTypeDI = [TransactionType]::DI;
 	$transactionTypeXML = [TransactionType]::XML;
+	
+	#region canWeChangeHeaderWarehouseWhenCreatingProductionOrder
 	try {
 		$SuccessDI = $false;
 		$SuccessXML = $false;
@@ -620,7 +750,6 @@ function runTests() {
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
-
 		try {
 			$SuccessXML = canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMA -type $transactionTypeXML;
 		}
@@ -629,7 +758,6 @@ function runTests() {
 			$errXML = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
-
 	}
 	catch {
 		
@@ -637,12 +765,188 @@ function runTests() {
 	finally {
 		$TEST_RESULT.AddTestResult($canWeChangeHeaderWarehouseWhenCreatingProductionOrder, $SuccessDI, $SuccessXML, $errDI, $errXML);
 	}
+	#endregion
+	#region canWeChangeLinesWhenCreatingProducionOrder_ItemCode
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_ItemCode -bom $BOMA -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_ItemCode -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_ItemCode, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
+	#region canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMA -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
+	#region canWeChangeLinesWhenCreatingProducionOrder_Quantity
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_Quantity -bom $BOMA -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_Quantity -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_Quantity, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
+	#region canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT -bom $BOMA -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
+	#region canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT -bom $BOMA -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
+	#region CanWeAddProductionOrderInReleasedStatus
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = CanWeAddProductionOrderInReleasedStatus -bom $BOMA -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = CanWeAddProductionOrderInReleasedStatus -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($CanWeAddProductionOrderInReleasedStatus, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
 
-	# [TransactionType]::DI
-	
-	# canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMA -type [TransactionType
-	#	canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom
-	#canWeChangeHeaderWarehouseWhenCreatingProductionOrder - update, add 
 }
 
 
