@@ -4,6 +4,7 @@ class ProductionOrder {
 	[string] $WarehouseCode = "";
 	[double] $Quantity = 1;
 	[bool] $IsReleased = $false;
+	[bool] $IsClosed = $false;
 	[System.Collections.Generic.List[ProductionOrderLine]] $Lines;
 	
 	ProductionOrder([string]$ItemCode, [string] $WarehouseCode, [double] $Quantity){
