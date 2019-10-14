@@ -14,6 +14,7 @@ $A_ITEMCODE = "SyncTest_A";
 $B_ITEMCODE = "SyncTest_B";
 $C_ITEMCODE = "SyncTest_C";
 $D_ITEMCODE = "SyncTest_D";
+$E_ITEMCODE = "SyncTest_E";
 $F_ITEMCODE = "SyncTest_F";
 $H_ITEMCODE = "SyncTest_H";
 $X1_ITEMCODE = "SyncTest_X1";
@@ -29,6 +30,7 @@ $X4_ITEMCODE = "SyncTest_X4";
 [ItemMasterData] $B = [ItemMasterData]::getNewRegularItem($B_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
 [ItemMasterData] $C = [ItemMasterData]::getNewRegularItem($C_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
 [ItemMasterData] $D = [ItemMasterData]::getNewRegularItem($D_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
+[ItemMasterData] $E = [ItemMasterData]::getNewRegularItem($E_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
 [ItemMasterData] $F = [ItemMasterData]::getNewRegularItem($F_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
 [ItemMasterData] $H = [ItemMasterData]::getNewRegularItem($H_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
 [ItemMasterData] $X1 = [ItemMasterData]::getNewRegularItem($X1_ITEMCODE, $WHS_CODE_1, $WHS_CODE_2);
@@ -53,6 +55,9 @@ $BOMD.addLine($PH.ItemCode, $PH.DefaultWarehouseCode, 1);
 $BOMD.addLine($A.ItemCode, $A.DefaultWarehouseCode, 1);
 $BOMD.addLine($F.ItemCode, $F.DefaultWarehouseCode, 1);
 $BOMD.addLine($H.ItemCode, $H.DefaultWarehouseCode, 1);
+
+[BillOfMaterials] $BOME = New-Object 'BillOfMaterials'($E.ItemCode, $E.DefaultWarehouseCode, 10000);
+$BOME.addLine($F.ItemCode, $F.DefaultWarehouseCode, 0.001);
 #endregion
 
 $TEST_RESULT = New-Object 'Result';
@@ -136,11 +141,15 @@ $canWeChangeLinesWhenCreatingProducionOrder_Quantity = "Can We Change Lines when
 $canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT = "Can We Change Lines when creating Production Order - Add Line not from OITT";
 $canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT = "Can We Change Lines when creating Production Order - Delete Line from OITT";
 $CanWeAddProductionOrderInReleasedStatus = "Can We Add Production Order in Released Status";
-$CanWeChangeStatusFromPlannedToClosed = "Can We change status from Planned to Closed";
+$CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding = "Can We Add Production Order With Fraction BaseQuantity Resulting In Quantity Rounding To Zero";
+$CanWeChangeStatusFromPlannedToClosed = "Can We Change status from Planned to Closed";
 $CanWeChangeHeaderItemCodeWhenStausIsReleased = "Can We Change Header Item Code when Staus is Released";
 $CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode = "Can We Change Header Warehouse when Changing Header Item Code";
 $CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode = "Can We Change Lines when Changing Header Item Code - Item Code";
 $CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode = "Can We Change Lines when Changing Header Item Code - Warehouse Code";
+$CanWeChangeLinesWhenChangingHeaderItemCode_Quantity = "Can We Change Lines when Changing Header Item Code - Quantity";
+$CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT = "Can We Change Lines when Changing Header Item Code - Add Line not from OITT";
+$CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT = "Can We Change Lines when Changing Header Item Code - Delete Line from OITT";
 #endregion
 function convertYesNoToBool([SAPbobsCOM.BoYesNoEnum] $value) {
 	if ($value -eq [SAPbobsCOM.BoYesNoEnum]::tYES) {
@@ -480,7 +489,7 @@ function prepareProductionOrderXML() {
 		foreach ($nodeName in $nodesToBeRemovedFromOWOR) {
 			$node = $xmlOWOR.SelectSingleNode($nodeName);
 			if ($node) {
-				$xmlOWOR.RemoveChild($node);
+				$dummy = $xmlOWOR.RemoveChild($node);
 			}
 		}
 		$xmlWOR1s = $ProductionOrderXml.SelectNodes("/BOM/BO/WOR1/row");
@@ -489,7 +498,7 @@ function prepareProductionOrderXML() {
 			foreach ($nodeName in $nodesToBeRemovedFromWOR1) {
 				$node = $xmlWOR1.SelectSingleNode($nodeName);
 				if ($node) {
-					$xmlWOR1.RemoveChild($node);
+					$dummy = $xmlWOR1.RemoveChild($node);
 				}
 			}
 		}
@@ -529,7 +538,7 @@ function saveProductionOrderUsingXML($po, $task) {
 		}
 		if ($task -eq [TransactionTask]::Add) {
 			$DocEntry = $sapCompany.GetNewObjectKey();
-			return $DocEntry;
+			return [int] $DocEntry;
 		}
 		return $null;
 	}
@@ -538,7 +547,7 @@ function saveProductionOrderUsingXML($po, $task) {
 		$msg = [string]::Format("Exception while adding/updating Production Order by XML. Details: {0}", $err);
 		throw ($msg);
 	}
- finally {
+	finally {
 		if (Test-Path -Path $TEMP_XML_FILE) {
 			Remove-Item -Path $TEMP_XML_FILE
 		}
@@ -547,12 +556,74 @@ function saveProductionOrderUsingXML($po, $task) {
 
 function createProductionOrder([ProductionOrder] $ProductionOrder, $type) {
 	$task = [TransactionTask]::Add;
-	return changeProductionOrder -ProductionOrder $ProductionOrder -type $type -task $task;
+	$DocEntry = changeProductionOrder -ProductionOrder $ProductionOrder -type $type -task $task;
+	return $DocEntry;
 }
 
 function updateProductionOrder([ProductionOrder] $ProductionOrder, $type, $po) {
 	$task = [TransactionTask]::Update;
 	return changeProductionOrder -ProductionOrder $ProductionOrder -type $type -task $task -po $po;
+}
+
+function compareProductionOrder([ProductionOrder] $ProductionOrder, $DocEntry) {
+	try {
+		$po = getProductionOrder -key $DocEntry;
+		if ($po.ItemNo -ne $ProductionOrder.ItemCode) {
+			throw [System.Exception] (([string]::Format("Header Item Code don't match. Received: {0}, Required: {1}", [string]$po.ItemNo, [string]$ProductionOrder.ItemCode)));
+		}
+		if ($po.PlannedQuantity -ne $ProductionOrder.Quantity) {
+			throw [System.Exception] (([string]::Format("Header Quantity don't match. Received: {0}, Required: {1}", [string]$po.ItemNo, [string]$ProductionOrder.Quantity)));
+		}
+		if ($po.Warehouse -ne $ProductionOrder.WarehouseCode) {
+			throw [System.Exception] (([string]::Format("Header Warehouse don't match. Received: {0}, Required: {1}", [string]$po.Warehouse, [string]$ProductionOrder.WarehouseCode)));
+		}
+
+		if ($ProductionOrder.IsReleased) {
+			$orderStatus = [SAPbobsCOM.BoProductionOrderStatusEnum]::boposReleased;
+		}
+		elseif ($ProductionOrder.IsClosed) {
+			$orderStatus = [SAPbobsCOM.BoProductionOrderStatusEnum]::boposClosed;
+		}
+		else {
+			$orderStatus = [SAPbobsCOM.BoProductionOrderStatusEnum]::boposPlanned;
+		}
+		if ($po.ProductionOrderStatus -ne $orderStatus) {
+			throw [System.Exception] (([string]::Format("Header Status don't match. Received: {0}, Required: {1}", [string]$po.ProductionOrderStatus, [string]$orderStatus)));
+		}
+
+		$poIndex = 0;
+		foreach ($poLine in $ProductionOrder.Lines) {
+
+			if ($poIndex -ge $po.Lines.Count) {
+				throw [System.Exception] (([string]::Format("Line: {0} don't exists.", ($poIndex + 1))));
+			}
+
+			$po.Lines.SetCurrentLine($poIndex);
+
+			if ($po.Lines.ItemNo -ne $poLine.ItemCode) {
+				throw [System.Exception] (([string]::Format("Item Code don't match at Line: {0}. Received: {1}, Required: {2}", [string]($poIndex + 1), [string]$po.Lines.ItemNo, [string]$poLine.ItemCode)));
+			}
+			if ($po.Lines.Warehouse -ne $poLine.WarehouseCode) {
+				throw [System.Exception] (([string]::Format("Warehouse don't match at Line: {0}. Received: {1}, Required: {2}", [string]($poIndex + 1), [string]$po.Lines.Warehouse, [string]$poLine.WarehouseCode)));
+			}
+			if ($po.Lines.PlannedQuantity -ne $poLine.Quantity) {
+				throw [System.Exception] (([string]::Format("Planned Quantity don't match at Line: {0}. Received: {1}, Required: {2}", [string]($poIndex + 1), [string]$po.Lines.PlannedQuantity, [string]$poLine.Quantity)));
+			}
+			$poIndex++;
+		}
+
+		if ($po.Lines.Count -gt $ProductionOrder.Lines.Count) {
+			$po.Lines.SetCurrentLine($po.Lines.Count - 1) 
+			if (-not [string]::IsNullOrWhiteSpace()) {
+				throw [System.Exception] (([string]::Format("Thera are more lines on Received ({0}) document then on Required ({1})", [string]$po.Lines.Count, [string]$ProductionOrder.Lines.Count)));
+			}
+		}
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception while comparing result. Details: {1}", [string] $ProductionOrder.ItemCode, $err);
+		throw ($msg);
+	}
 }
 
 function changeProductionOrder([ProductionOrder] $ProductionOrder, $type, $task, $po = $null) {
@@ -577,84 +648,103 @@ function changeProductionOrder([ProductionOrder] $ProductionOrder, $type, $task,
 		if ($ProductionOrder.IsClosed) {
 			$po.ProductionOrderStatus = [SAPbobsCOM.BoProductionOrderStatusEnum]::boposClosed;
 		}
-	
-		$linesToDelete = New-Object  'System.Collections.Generic.List[int]';
-		for ($i = 0; $i -lt $po.Lines.Count; $i++) {
-			if ($ProductionOrder.Lines.Where( { $_.LineNum -eq $i }).Count -eq 0) {
-				$linesToDelete = $i;
-			}
+		
+		#check if lines are filed in - change from version to version
+		$emptyLines = $false;
+		$po.Lines.SetCurrentLine(0);
+		if ([string]::IsNullOrWhiteSpace($po.Lines.ItemNo)) {
+			$emptyLines = $true;
 		}
 
-		for ($i = 0; $i -lt $po.Lines.Count; $i++) {
-			$poLines = $ProductionOrder.Lines.Where( { $_.LineNum -eq $i });
-
-			if ($poLines.Count -eq 0) {
-				$linesToDelete.Add($i);
-				break;
-			}
-			elseif ($poLines.Count -gt 1) {
-				throw [System.Exception] (([string]::Format("Incorrect definition of Production Order. LineNum: {0} occures more than once", $i)));
-			}
-			$poLine = $poLines[0];
-			$po.Lines.SetCurrentLine($i);
-			try {
-				if ($po.Lines.ItemNo -ne $poLine.ItemCode) {
-					$po.Lines.ItemNo = $poLine.ItemCode;
+		if ($emptyLines) {
+			foreach ($poLine in $ProductionOrder.Lines) {
+				if (-not [string]::IsNullOrWhiteSpace($po.Lines.ItemNo)) {
+					$po.Lines.Add();
 				}
-			}
-			catch {
-				$err = [string]$_.Exception.Message;
-				$msg = [string]::Format("Exception while changing Item Code from: {0} to: {1}. Details: {2}", [string] $po.Lines.ItemNo, [string] $poLine.ItemCode, $err);
-				throw ($msg);
-			}
-			try {
-				if ($po.Lines.Warehouse -ne $poLine.WarehouseCode) {
-					$po.Lines.Warehouse = $poLine.WarehouseCode;
-				}
-			}
-			catch {
-				$err = [string]$_.Exception.Message;
-				$msg = [string]::Format("Exception while changing Warehouse from: {0} to: {1}. Details: {2}", [string] $po.Lines.Warehouse, [string] $poLine.WarehouseCode, $err);
-				throw ($msg);
-			}
-			try {
-				if ($po.Lines.PlannedQuantity -ne $poLine.Quantity) {
-					$po.Lines.PlannedQuantity = $poLine.Quantity;
-				}
-			}
-			catch {
-				$err = [string]$_.Exception.Message;
-				$msg = [string]::Format("Exception while changing Quantity from: {0} to: {1}. Details: {2}", [string] $po.Lines.PlannedQuantity, [string] $poLine.Quantity, $err);
-				throw ($msg);
+				$po.Lines.ItemNo = $poLine.ItemCode;
+				$po.Lines.Warehouse = $poLine.WarehouseCode;
+				$po.Lines.PlannedQuantity = $poLine.Quantity;
 			}
 		}
-		$po.Lines.SetCurrentLine($po.Lines.Count - 1);
+		else {
 
-		foreach ($poLine in $ProductionOrder.Lines.Where( { $_.LineNum -eq -1 })) {
-			if (-not [string]::IsNullOrWhiteSpace($po.Lines.ItemNo)) {
-				$po.Lines.Add();
-			}
-			$po.Lines.ItemNo = $poLine.ItemCode;
-			$po.Lines.Warehouse = $poLine.WarehouseCode;
-			$po.Lines.PlannedQuantity = $poLine.Quantity;
-		}
+			$linesToDelete = New-Object  'System.Collections.Generic.List[int]';
+			# for ($i = 0; $i -lt $po.Lines.Count; $i++) {
+			# 	if ($ProductionOrder.Lines.Where( { $_.LineNum -eq $i }).Count -eq 0) {
+			# 		$linesToDelete.Add($i);
+			# 	}
+			# }
 
-		#remove lines
-		if ($linesToDelete -gt 0) {
-			$linesToDelete.Sort();
-			$linesToDelete.Reverse();
-			foreach ($LineNum in $linesToDelete) {
-				$po.Lines.SetCurrentLine($LineNum);
+			for ($i = 0; $i -lt $po.Lines.Count; $i++) {
+				$poLines = $ProductionOrder.Lines.Where( { $_.LineNum -eq $i });
+
+				if ($poLines.Count -eq 0) {
+					$linesToDelete.Add($i);
+					continue;
+				}
+				elseif ($poLines.Count -gt 1) {
+					throw [System.Exception] (([string]::Format("Incorrect definition of Production Order. LineNum: {0} occures more than once", $i)));
+				}
+				$poLine = $poLines[0];
+				$po.Lines.SetCurrentLine($i);
 				try {
-					$po.lines.Delete();
+					if ($po.Lines.ItemNo -ne $poLine.ItemCode) {
+						$po.Lines.ItemNo = $poLine.ItemCode;
+					}
 				}
 				catch {
 					$err = [string]$_.Exception.Message;
-					throw [System.Exception] (([string]::Format("Couldn't delete line with LineNum: {0}", $LineNum)));
+					$msg = [string]::Format("Exception while changing Item Code from: {0} to: {1}. Details: {2}", [string] $po.Lines.ItemNo, [string] $poLine.ItemCode, $err);
+					throw ($msg);
+				}
+				try {
+					if ($po.Lines.Warehouse -ne $poLine.WarehouseCode) {
+						$po.Lines.Warehouse = $poLine.WarehouseCode;
+					}
+				}
+				catch {
+					$err = [string]$_.Exception.Message;
+					$msg = [string]::Format("Exception while changing Warehouse from: {0} to: {1}. Details: {2}", [string] $po.Lines.Warehouse, [string] $poLine.WarehouseCode, $err);
+					throw ($msg);
+				}
+				try {
+					if ($po.Lines.PlannedQuantity -ne $poLine.Quantity) {
+						$po.Lines.PlannedQuantity = $poLine.Quantity;
+					}
+				}
+				catch {
+					$err = [string]$_.Exception.Message;
+					$msg = [string]::Format("Exception while changing Quantity from: {0} to: {1}. Details: {2}", [string] $po.Lines.PlannedQuantity, [string] $poLine.Quantity, $err);
+					throw ($msg);
+				}
+			}
+			$po.Lines.SetCurrentLine($po.Lines.Count - 1);
+
+			foreach ($poLine in $ProductionOrder.Lines.Where( { $_.LineNum -eq -1 })) {
+				if (-not [string]::IsNullOrWhiteSpace($po.Lines.ItemNo)) {
+					$po.Lines.Add();
+				}
+				$po.Lines.ItemNo = $poLine.ItemCode;
+				$po.Lines.Warehouse = $poLine.WarehouseCode;
+				$po.Lines.PlannedQuantity = $poLine.Quantity;
+			}
+
+			#remove lines
+			if ($linesToDelete.Count -gt 0) {
+				$linesToDelete.Sort();
+				$linesToDelete.Reverse();
+				foreach ($LineNum in $linesToDelete) {
+					$po.Lines.SetCurrentLine($LineNum);
+					try {
+						$po.lines.Delete();
+					}
+					catch {
+						$err = [string]$_.Exception.Message;
+						throw [System.Exception] (([string]::Format("Couldn't delete line with LineNum: {0}", $LineNum)));
+					}
 				}
 			}
 		}
-		
 		if ($type -eq [TransactionType]::DI) {
 			$DocEntry = ( saveProductionOrderUsingDI -po $po -task $task );
 			return $DocEntry;
@@ -688,7 +778,8 @@ function canWeChangeHeaderWarehouseWhenCreatingProductionOrder([BillOfMaterials]
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
 		$ProductionOrder.WarehouseCode = $WHS_CODE_2;
-		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		$DocEntry = createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		compareProductionOrder -ProductionOrder $ProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -701,7 +792,8 @@ function canWeChangeLinesWhenCreatingProducionOrder_ItemCode([BillOfMaterials] $
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
 		$ProductionOrder.Lines[0].ItemCode = $X1.ItemCode;
-		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		$DocEntry = createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		compareProductionOrder -ProductionOrder $ProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -714,7 +806,8 @@ function canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode([BillOfMateria
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
 		$ProductionOrder.Lines[0].WarehouseCode = $WHS_CODE_2;
-		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		$DocEntry = createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		compareProductionOrder -ProductionOrder $ProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -727,7 +820,8 @@ function canWeChangeLinesWhenCreatingProducionOrder_Quantity([BillOfMaterials] $
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
 		$ProductionOrder.Lines[0].Quantity = $ProductionOrder.Lines[0].Quantity + 1;
-		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		$DocEntry = createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		compareProductionOrder -ProductionOrder $ProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -740,7 +834,8 @@ function canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT([BillOfMa
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
 		$ProductionOrder.addLine($X1.ItemCode, $X1.DefaultWarehouseCode, 1, -1);
-		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		$DocEntry = createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		compareProductionOrder -ProductionOrder $ProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -753,7 +848,8 @@ function canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT([BillOfMa
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
 		$ProductionOrder.Lines.RemoveAt($ProductionOrder.Lines.Count - 1);
-		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		$DocEntry = createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		compareProductionOrder -ProductionOrder $ProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -766,12 +862,27 @@ function CanWeAddProductionOrderInReleasedStatus([BillOfMaterials] $bom, $type) 
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
 		$ProductionOrder.IsReleased = $true;
-		createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		$DocEntry = createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		compareProductionOrder -ProductionOrder $toProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
 		$err = [string]$_.Exception.Message;
 		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $CanWeAddProductionOrderInReleasedStatus, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+function CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding([BillOfMaterials] $bom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		$ProductionOrder.Quantity = 1;
+		$DocEntry = createProductionOrder -type $type -ProductionOrder $ProductionOrder;
+		compareProductionOrder -ProductionOrder $ProductionOrder -DocEntry $DocEntry;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding, [string] $type, [string] $err);
 		throw ($msg);
 	}
 }
@@ -794,6 +905,7 @@ function CanWeChangeStatusFromPlannedToClosed([BillOfMaterials] $bom, $type) {
 		}
 		$ProductionOrder.IsClosed = $true;
 		updateProductionOrder -ProductionOrder $ProductionOrder -type $type -po $po;
+		compareProductionOrder -ProductionOrder $ProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -802,14 +914,16 @@ function CanWeChangeStatusFromPlannedToClosed([BillOfMaterials] $bom, $type) {
 		throw ($msg);
 	}
 }
-function CanWeChangeHeaderItemCodeWhenStausIsReleased([BillOfMaterials] $bom, $type) {
+function CanWeChangeHeaderItemCodeWhenStausIsReleased([BillOfMaterials] $bom, [BillOfMaterials] $toBom, $type) {
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		[ProductionOrder] $toProductionOrder = createProductionOrderFromBOM($toBom);
 		try {
 			$prepareDocType = [TransactionType]::DI;
 			$DocEntry = createProductionOrder -type $prepareDocType -ProductionOrder $ProductionOrder;
 			$po = getProductionOrder -key $DocEntry;
 			$ProductionOrder.IsReleased = $true;
+			$toProductionOrder.IsReleased = $true;
 			updateProductionOrder -ProductionOrder $ProductionOrder -type $prepareDocType -po $po;
 		}
 		catch {
@@ -817,8 +931,9 @@ function CanWeChangeHeaderItemCodeWhenStausIsReleased([BillOfMaterials] $bom, $t
 			$msg = [string]::Format("Exception while preparing to Production Order to test. Details: {0}", [string] $err);
 			throw ($msg);
 		}
-		$ProductionOrder.ItemCode = $FoD.ItemCode;
-		updateProductionOrder -ProductionOrder $ProductionOrder -type $type -po $po;
+		# $ProductionOrder.ItemCode = $toProductionOrder.ItemCode;
+		updateProductionOrder -ProductionOrder $toProductionOrder -type $type -po $po;
+		compareProductionOrder -ProductionOrder $toProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -827,9 +942,10 @@ function CanWeChangeHeaderItemCodeWhenStausIsReleased([BillOfMaterials] $bom, $t
 		throw ($msg);
 	}
 }
-function CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode([BillOfMaterials] $bom, $type) {
+function CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode([BillOfMaterials] $bom, [BillOfMaterials] $toBom, $type) {
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		[ProductionOrder] $toProductionOrder = createProductionOrderFromBOM($toBom);
 		try {
 			$prepareDocType = [TransactionType]::DI;
 			$DocEntry = createProductionOrder -type $prepareDocType -ProductionOrder $ProductionOrder;
@@ -840,9 +956,10 @@ function CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode([BillOfMaterials] 
 			$msg = [string]::Format("Exception while preparing to Production Order to test. Details: {0}", [string] $err);
 			throw ($msg);
 		}
-		$ProductionOrder.ItemCode = $FoD.ItemCode;
-		$ProductionOrder.WarehouseCode = $Fod.SecondWarehouseCode;
-		updateProductionOrder -ProductionOrder $ProductionOrder -type $type -po $po;
+		
+		$toProductionOrder.WarehouseCode = $WHS_CODE_2;
+		updateProductionOrder -ProductionOrder $toProductionOrder -type $type -po $po;
+		compareProductionOrder -ProductionOrder $toProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -851,9 +968,10 @@ function CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode([BillOfMaterials] 
 		throw ($msg);
 	}
 }
-function CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode([BillOfMaterials] $bom, $type) {
+function CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode([BillOfMaterials] $bom, [BillOfMaterials] $toBom, $type) {
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		[ProductionOrder] $toProductionOrder = createProductionOrderFromBOM($toBom);
 		try {
 			$prepareDocType = [TransactionType]::DI;
 			$DocEntry = createProductionOrder -type $prepareDocType -ProductionOrder $ProductionOrder;
@@ -864,9 +982,9 @@ function CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode([BillOfMaterials] $
 			$msg = [string]::Format("Exception while preparing to Production Order to test. Details: {0}", [string] $err);
 			throw ($msg);
 		}
-		$ProductionOrder.ItemCode = $FoD.ItemCode;
-		$ProductionOrder.Lines[0].ItemCode = $CoD.ItemCode;
-		updateProductionOrder -ProductionOrder $ProductionOrder -type $type -po $po;
+		$toProductionOrder.Lines[0].ItemCode = $X1.ItemCode;
+		updateProductionOrder -ProductionOrder $toProductionOrder -type $type -po $po;
+		compareProductionOrder -ProductionOrder $toProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
@@ -875,9 +993,10 @@ function CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode([BillOfMaterials] $
 		throw ($msg);
 	}
 }
-function CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode([BillOfMaterials] $bom, $type) {
+function CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode([BillOfMaterials] $bom, [BillOfMaterials] $toBom, $type) {
 	try {
 		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		[ProductionOrder] $toProductionOrder = createProductionOrderFromBOM($toBom);
 		try {
 			$prepareDocType = [TransactionType]::DI;
 			$DocEntry = createProductionOrder -type $prepareDocType -ProductionOrder $ProductionOrder;
@@ -888,14 +1007,89 @@ function CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode([BillOfMateria
 			$msg = [string]::Format("Exception while preparing to Production Order to test. Details: {0}", [string] $err);
 			throw ($msg);
 		}
-		$ProductionOrder.ItemCode = $FoD.ItemCode;
-		$ProductionOrder.Lines[0].WarehouseCode = $WHS_CODE_2;
-		updateProductionOrder -ProductionOrder $ProductionOrder -type $type -po $po;
+		$toProductionOrder.Lines[0].WarehouseCode = $WHS_CODE_2;
+		updateProductionOrder -ProductionOrder $toProductionOrder -type $type -po $po;
+		compareProductionOrder -ProductionOrder $toProductionOrder -DocEntry $DocEntry;
 		return $true;
 	}
 	catch {
 		$err = [string]$_.Exception.Message;
 		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+function CanWeChangeLinesWhenChangingHeaderItemCode_Quantity([BillOfMaterials] $bom, [BillOfMaterials] $toBom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		[ProductionOrder] $toProductionOrder = createProductionOrderFromBOM($toBom);
+		try {
+			$prepareDocType = [TransactionType]::DI;
+			$DocEntry = createProductionOrder -type $prepareDocType -ProductionOrder $ProductionOrder;
+			$po = getProductionOrder -key $DocEntry;
+		}
+		catch {
+			$err = [string]$_.Exception.Message;
+			$msg = [string]::Format("Exception while preparing to Production Order to test. Details: {0}", [string] $err);
+			throw ($msg);
+		}
+		$toProductionOrder.Lines[0].Quantity = $toProductionOrder.Lines[0].Quantity + 1;
+		updateProductionOrder -ProductionOrder $toProductionOrder -type $type -po $po;
+		compareProductionOrder -ProductionOrder $toProductionOrder -DocEntry $DocEntry;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $CanWeChangeLinesWhenChangingHeaderItemCode_Quantity, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+function CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT([BillOfMaterials] $bom, [BillOfMaterials] $toBom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		[ProductionOrder] $toProductionOrder = createProductionOrderFromBOM($toBom);
+		try {
+			$prepareDocType = [TransactionType]::DI;
+			$DocEntry = createProductionOrder -type $prepareDocType -ProductionOrder $ProductionOrder;
+			$po = getProductionOrder -key $DocEntry;
+		}
+		catch {
+			$err = [string]$_.Exception.Message;
+			$msg = [string]::Format("Exception while preparing to Production Order to test. Details: {0}", [string] $err);
+			throw ($msg);
+		}
+		$toProductionOrder.addLine($X1.ItemCode, $X1.DefaultWarehouseCode, 1, -1);
+		updateProductionOrder -ProductionOrder $toProductionOrder -type $type -po $po;
+		compareProductionOrder -ProductionOrder $toProductionOrder -DocEntry $DocEntry;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT, [string] $type, [string] $err);
+		throw ($msg);
+	}
+}
+function CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT([BillOfMaterials] $bom, [BillOfMaterials] $toBom, $type) {
+	try {
+		[ProductionOrder] $ProductionOrder = createProductionOrderFromBOM($bom);
+		[ProductionOrder] $toProductionOrder = createProductionOrderFromBOM($toBom);
+		try {
+			$prepareDocType = [TransactionType]::DI;
+			$DocEntry = createProductionOrder -type $prepareDocType -ProductionOrder $ProductionOrder;
+			$po = getProductionOrder -key $DocEntry;
+		}
+		catch {
+			$err = [string]$_.Exception.Message;
+			$msg = [string]::Format("Exception while preparing to Production Order to test. Details: {0}", [string] $err);
+			throw ($msg);
+		}
+		$toProductionOrder.Lines.RemoveAt($toProductionOrder.Lines.Count - 1);
+		updateProductionOrder -ProductionOrder $toProductionOrder -type $type -po $po;
+		compareProductionOrder -ProductionOrder $toProductionOrder -DocEntry $DocEntry;
+		return $true;
+	}
+	catch {
+		$err = [string]$_.Exception.Message;
+		$msg = [string]::Format("Exception at test '{0}' using {1}. Details: {2}", $CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT, [string] $type, [string] $err);
 		throw ($msg);
 	}
 }
@@ -914,6 +1108,7 @@ function setupSAPMasterData($test) {
 	prepareItem -ItemMasterData $B;
 	prepareItem -ItemMasterData $C;
 	prepareItem -ItemMasterData $D;
+	prepareItem -ItemMasterData $E;
 	prepareItem -ItemMasterData $F;
 	prepareItem -ItemMasterData $H;
 	prepareItem -ItemMasterData $X1;
@@ -927,6 +1122,7 @@ function setupSAPMasterData($test) {
 	prepareBOM -BillOfMaterials $BOMA;
 	prepareBOM -BillOfMaterials $BOMPH;
 	prepareBOM -BillOfMaterials $BOMD;
+	prepareBOM -BillOfMaterials $BOME;
 	#endregion
 	
 }
@@ -1145,6 +1341,36 @@ function runTests() {
 		$TEST_RESULT.AddTestResult($CanWeAddProductionOrderInReleasedStatus, $SuccessDI, $SuccessXML, $errDI, $errXML);
 	}
 	#endregion
+	#region CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding -bom $BOME -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding -bom $BOME -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
 	#region CanWeChangeStatusFromPlannedToClosed
 	try {
 		$SuccessDI = $false;
@@ -1182,7 +1408,7 @@ function runTests() {
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
 			$SuccessDI = $false;
@@ -1190,7 +1416,7 @@ function runTests() {
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMA -type $transactionTypeXML;
+			$SuccessXML = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
 		}
 		catch {
 			$SuccessXML = $false;
@@ -1212,7 +1438,7 @@ function runTests() {
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
 			$SuccessDI = $false;
@@ -1220,7 +1446,7 @@ function runTests() {
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMA -type $transactionTypeXML;
+			$SuccessXML = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
 		}
 		catch {
 			$SuccessXML = $false;
@@ -1242,7 +1468,7 @@ function runTests() {
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
 			$SuccessDI = $false;
@@ -1250,7 +1476,7 @@ function runTests() {
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMA -type $transactionTypeXML;
+			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
 		}
 		catch {
 			$SuccessXML = $false;
@@ -1272,7 +1498,7 @@ function runTests() {
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
 			$SuccessDI = $false;
@@ -1280,7 +1506,7 @@ function runTests() {
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMA -type $transactionTypeXML;
+			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
 		}
 		catch {
 			$SuccessXML = $false;
@@ -1295,23 +1521,107 @@ function runTests() {
 		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode, $SuccessDI, $SuccessXML, $errDI, $errXML);
 	}
 	#endregion
-
-
-
-
-
-
-
-
-
+	#region CanWeChangeLinesWhenChangingHeaderItemCode_Quantity
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_Quantity -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_Quantity -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_Quantity, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
+	#region CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
+	#region CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT
+	try {
+		$SuccessDI = $false;
+		$SuccessXML = $false;
+		$errDI = [string]::Empty;
+		$errXML = [string]::Empty;
+		try {
+			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT -bom $BOMA -toBom $BOMD -type $transactionTypeDI;
+		}
+		catch {
+			$SuccessDI = $false;
+			$errDI = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT -bom $BOMA -toBom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+	}
+	catch {
+		
+	}
+	finally {
+		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT, $SuccessDI, $SuccessXML, $errDI, $errXML);
+	}
+	#endregion
 }
 
 
 setupSAPMasterData
 runTests
-
-
-
-
+$resHeadMsg = [string]::Format("Test Results for SAP version: {0}", $sapCompany.Version);
+Write-Host -ForegroundColor Yellow $resHeadMsg;
+foreach ($res in $TEST_RESULT.TestResults) {
+	$msg = [string]::Format("{0}`t`t`t`t`t`t`t`t`t`t{1}`t{2}", $res.TestName, $res.SuccessDI, $res.SuccessXML)
+	Write-Host $msg;
+}
+$TEST_RESULT.TestResults | Format-Table -ShowError 
 
 
