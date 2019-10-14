@@ -1133,24 +1133,42 @@ function runTests() {
 	
 	#region canWeChangeHeaderWarehouseWhenCreatingProductionOrder
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI_A = canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMA -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMA -type $transactionTypeXML;
+			$SuccessDI_D = canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = canWeChangeHeaderWarehouseWhenCreatingProductionOrder -bom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1158,28 +1176,46 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($canWeChangeHeaderWarehouseWhenCreatingProductionOrder, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($canWeChangeHeaderWarehouseWhenCreatingProductionOrder, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region canWeChangeLinesWhenCreatingProducionOrder_ItemCode
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_ItemCode -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI_A = canWeChangeLinesWhenCreatingProducionOrder_ItemCode -bom $BOMA -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_ItemCode -bom $BOMA -type $transactionTypeXML;
+			$SuccessDI_D = canWeChangeLinesWhenCreatingProducionOrder_ItemCode -bom $BOMD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = canWeChangeLinesWhenCreatingProducionOrder_ItemCode -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = canWeChangeLinesWhenCreatingProducionOrder_ItemCode -bom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
 			$errXML = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
@@ -1188,29 +1224,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_ItemCode, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_ItemCode, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessDI_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI_A = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMA -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMA -type $transactionTypeXML;
+			$SuccessDI_D = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessDI_D = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessDI_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1218,29 +1272,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region canWeChangeLinesWhenCreatingProducionOrder_Quantity
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_Quantity -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI_A = canWeChangeLinesWhenCreatingProducionOrder_Quantity -bom $BOMA -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_Quantity -bom $BOMA -type $transactionTypeXML;
+			$SuccessDI_D = canWeChangeLinesWhenCreatingProducionOrder_Quantity -bom $BOMD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = canWeChangeLinesWhenCreatingProducionOrder_Quantity -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = canWeChangeLinesWhenCreatingProducionOrder_Quantity -bom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1248,29 +1320,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_Quantity, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_Quantity, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI_A = canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT -bom $BOMA -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT -bom $BOMA -type $transactionTypeXML;
+			$SuccessDI_D = canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT -bom $BOMD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT -bom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1278,28 +1368,46 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_AddLineNotFromOITT, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI_A = canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT -bom $BOMA -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT -bom $BOMA -type $transactionTypeXML;
+			$SuccessDI_D = canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT -bom $BOMD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT -bom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
 			$errXML = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
@@ -1308,29 +1416,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($canWeChangeLinesWhenCreatingProducionOrder_DeleteLineFromOITT, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeAddProductionOrderInReleasedStatus
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeAddProductionOrderInReleasedStatus -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI_A = CanWeAddProductionOrderInReleasedStatus -bom $BOMA -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeAddProductionOrderInReleasedStatus -bom $BOMA -type $transactionTypeXML;
+			$SuccessDI_D = CanWeAddProductionOrderInReleasedStatus -bom $BOMD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = CanWeAddProductionOrderInReleasedStatus -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = CanWeAddProductionOrderInReleasedStatus -bom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1338,28 +1464,30 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeAddProductionOrderInReleasedStatus, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeAddProductionOrderInReleasedStatus, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding -bom $BOME -type $transactionTypeDI;
+			$SuccessDI_A = CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding -bom $BOME -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding -bom $BOME -type $transactionTypeXML;
+			$SuccessXML_A = CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding -bom $BOME -type $transactionTypeXML;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
@@ -1368,29 +1496,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeAddProductionOrderWithFractionBaseQuantityResultingInQuantityZeroRounding, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeChangeStatusFromPlannedToClosed
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeStatusFromPlannedToClosed -bom $BOMA -type $transactionTypeDI;
+			$SuccessDI_A = CanWeChangeStatusFromPlannedToClosed -bom $BOMA -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeStatusFromPlannedToClosed -bom $BOMA -type $transactionTypeXML;
+			$SuccessDI_D = CanWeChangeStatusFromPlannedToClosed -bom $BOMD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = CanWeChangeStatusFromPlannedToClosed -bom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = CanWeChangeStatusFromPlannedToClosed -bom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1398,29 +1544,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeChangeStatusFromPlannedToClosed, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeChangeStatusFromPlannedToClosed, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeChangeHeaderItemCodeWhenStausIsReleased
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
+			$SuccessDI_A = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+			$SuccessDI_D = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMD -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = CanWeChangeHeaderItemCodeWhenStausIsReleased -bom $BOMD -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1428,29 +1592,39 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeChangeHeaderItemCodeWhenStausIsReleased, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeChangeHeaderItemCodeWhenStausIsReleased, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
+			$SuccessDI_A = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
-			$errDI = [string]$_.Exception.Message;
+			$SuccessDI_A = $false;
+			$errDI += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+			$SuccessDI_D = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMD -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
-			$errXML = [string]$_.Exception.Message;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_D = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMD -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1458,29 +1632,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
+			$SuccessDI_A = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+			$SuccessDI_D = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMD -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode -bom $BOMD -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1488,28 +1680,46 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_ItemCode, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
+			$SuccessDI_A = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+			$SuccessDI_D = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMD -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
+			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode -bom $BOMD -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
 			$errXML = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
@@ -1518,29 +1728,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCode, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeadeCanWeChangeLinesWhenChangingHeaderItemCode_WarehouseCoderItemCode_DeleteLineFromOITT, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeChangeLinesWhenChangingHeaderItemCode_Quantity
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_Quantity -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
+			$SuccessDI_A = CanWeChangeLinesWhenChangingHeaderItemCode_Quantity -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
+			$SuccessDI_A = $false;
 			$errDI = [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_Quantity -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+			$SuccessDI_D = CanWeChangeLinesWhenChangingHeaderItemCode_Quantity -bom $BOMD -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = CanWeChangeLinesWhenChangingHeaderItemCode_Quantity -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
 			$errXML = [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = CanWeChangeLinesWhenChangingHeaderItemCode_Quantity -bom $BOMD -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1548,29 +1776,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_Quantity, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_Quantity, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
+			$SuccessDI_A = CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT -bom $BOMA -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
-			$errDI = [string]$_.Exception.Message;
+			$SuccessDI_A = $false;
+			$errDI += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+			$SuccessDI_D = CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT -bom $BOMD -toBom $BOMFoD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
-			$errXML = [string]$_.Exception.Message;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
+			$errXML += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT -bom $BOMD -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1578,29 +1824,47 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_AddLineNotFromOITT, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 	#region CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT
 	try {
-		$SuccessDI = $false;
-		$SuccessXML = $false;
+		$SuccessDI_A = $false;
+		$SuccessXML_A = $false;
+		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
-			$SuccessDI = CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT -bom $BOMA -toBom $BOMD -type $transactionTypeDI;
+			$SuccessDI_A = CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT -bom $BOMA -toBom $BOMD -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessDI = $false;
-			$errDI = [string]$_.Exception.Message;
+			$SuccessDI_A = $false;
+			$errDI += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
 		}
 		try {
-			$SuccessXML = CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT -bom $BOMA -toBom $BOMD -type $transactionTypeXML;
+			$SuccessDI_D = CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT -bom $BOMD -toBom $BOMA -type $transactionTypeDI;
 		}
 		catch {
-			$SuccessXML = $false;
-			$errXML = [string]$_.Exception.Message;
+			$SuccessDI_D = $false;
+			$errDI += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT -bom $BOMA -toBom $BOMD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
+			$errXML += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
+		}
+		try {
+			$SuccessXML_D = CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT -bom $BOMD -toBom $BOMA -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_D = $false;
+			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 	}
@@ -1608,7 +1872,7 @@ function runTests() {
 		
 	}
 	finally {
-		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT, $SuccessDI, $SuccessXML, $errDI, $errXML);
+		$TEST_RESULT.AddTestResult($CanWeChangeLinesWhenChangingHeaderItemCode_DeleteLineFromOITT, $SuccessDI_A, $SuccessDI_D , $SuccessXML_A, $SuccessXML_D, $errDI, $errXML);
 	}
 	#endregion
 }
@@ -1618,10 +1882,7 @@ setupSAPMasterData
 runTests
 $resHeadMsg = [string]::Format("Test Results for SAP version: {0}", $sapCompany.Version);
 Write-Host -ForegroundColor Yellow $resHeadMsg;
-foreach ($res in $TEST_RESULT.TestResults) {
-	$msg = [string]::Format("{0}`t`t`t`t`t`t`t`t`t`t{1}`t{2}", $res.TestName, $res.SuccessDI, $res.SuccessXML)
-	Write-Host $msg;
-}
+
 $TEST_RESULT.TestResults | Format-Table -ShowError 
 
 
