@@ -6,7 +6,7 @@ class Result {
 		$this.TestResults = New-Object 'System.Collections.Generic.List[TestResult]';
 	}
 
-	AddTestResult([string]$TestName, [bool]$SuccessDI_BOMA, [bool]$SuccessXML_BOMA, [bool]$SuccessDI_BOMD, [bool]$SuccessXML_BOMD, [string]$ExceptionDI, [string]$ExceptionXML){
+	AddTestResult([string]$TestName, [bool]$SuccessDI_BOMA, [bool]$SuccessDI_BOMD, [bool]$SuccessXML_BOMA, [bool]$SuccessXML_BOMD, [string]$ExceptionDI, [string]$ExceptionXML) {
 		$TestResult = New-Object 'TestResult';
 		$TestResult.TestName = $TestName;
 		$TestResult.SuccessDI_BOM_A = $SuccessDI_BOMA;

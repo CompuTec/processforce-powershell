@@ -1232,7 +1232,7 @@ function runTests() {
 		$SuccessDI_A = $false;
 		$SuccessXML_A = $false;
 		$SuccessDI_D = $false;
-		$SuccessDI_D = $false;
+		$SuccessXML_D = $false;
 		$errDI = [string]::Empty;
 		$errXML = [string]::Empty;
 		try {
@@ -1260,10 +1260,10 @@ function runTests() {
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 		try {
-			$SuccessDI_D = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMD -type $transactionTypeXML;
+			$SuccessXML_D = canWeChangeLinesWhenCreatingProducionOrder_WarehouseCode -bom $BOMD -type $transactionTypeXML;
 		}
 		catch {
-			$SuccessDI_D = $false;
+			$SuccessXML_D = $false;
 			$errXML += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
@@ -1618,6 +1618,14 @@ function runTests() {
 			$SuccessDI_D = $false;
 			$errDI += [string]$_.Exception.Message;
 			Write-Host -BackgroundColor Red -ForegroundColor White $errDI;
+		}
+		try {
+			$SuccessXML_A = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMA -toBom $BOMFoD -type $transactionTypeXML;
+		}
+		catch {
+			$SuccessXML_A = $false;
+			$errXML += [string]$_.Exception.Message;
+			Write-Host -BackgroundColor Red -ForegroundColor White $errXML;
 		}
 		try {
 			$SuccessXML_D = CanWeChangeHeaderWarehouseWhenChangingHeaderItemCode -bom $BOMD -toBom $BOMFoD -type $transactionTypeXML;
