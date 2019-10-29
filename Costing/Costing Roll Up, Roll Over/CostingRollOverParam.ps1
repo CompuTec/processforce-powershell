@@ -73,7 +73,7 @@ if($code -eq 1)
 	};
 	
 	$listWhs = New-Object 'System.Collections.Generic.List`1[String]';
-	$rs.DoQuery([string]::Format("SELECT WhsCode FROM OWHS"));
+	$rs.DoQuery([string]::Format("SELECT ""WhsCode"" FROM OWHS"));
 	
 	
 	$listWhs = New-Object 'System.Collections.Generic.List`1[String]';
