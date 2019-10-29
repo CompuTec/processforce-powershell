@@ -1,7 +1,7 @@
-ResourceCode;CostCategory;CostType;OverheadTypeCode;OverheadType;OverheadSubType;Value
-01;001;RT;T1;F;F;2
-01;001;RT;T1;F;FP;20
-01;001;RT;T1;F;FO;3
-01;001;RT;T2;V;V;2
-01;001;RT;T2;V;VP;20
-01;001;RT;T2;V;VO;3
+ResourceCode;CostCategory;CostType;OverheadTypeCode;OverheadTypeName;OverheadType;OverheadSubType;Value
+01;001;RT;T1;Test1;F;F;2
+01;001;RT;T1;Test1;F;FP;20
+01;001;RT;T1;Test1;F;FO;3
+01;001;RT;T2;Test2;V;V;2
+01;001;RT;T2;Test2;V;VP;20
+01;001;RT;T2;Test2;V;VO;3

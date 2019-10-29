@@ -4,7 +4,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Item Costing
 ########################################################################
-$SCRIPT_VERSION = "3.0"
+$SCRIPT_VERSION = "3.1"
 # Last tested PF version: ProcessForce 9.3 (9.30.210) (64-bit)
 # Description:
 #      Import Item Costing. Script will update only existing Item Costing Data. Remember to run Restore Item Costing Details before running this script.
@@ -42,6 +42,7 @@ $csvImportCatalog = $PSScriptRoot + "\"
 
 $csvItemCostingsPath = -join ($csvImportCatalog, "ItemCosting.csv");
 $csvItemCostingDetailsPath = -join ($csvImportCatalog, "ItemCostingDetails.csv");
+$csvItemCostingOverheadsPath = -join ($csvImportCatalog, "ItemCostingOverheads.csv");
 
 #endregion
 
@@ -80,7 +81,7 @@ write-host -backgroundcolor green -foregroundcolor black "PF API Library:" $vers
  
 try {
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'code')]
-	$code = $pfcCompany.Connect()
+	$code = $pfcCompany.Connect();
  
 	write-host -backgroundcolor green -foregroundcolor black "Connected to:" $pfcCompany.SapCompany.CompanyName "/ " $pfcCompany.SapCompany.CompanyDB"" "Sap Company version: " $pfcCompany.SapCompany.Version
 }
@@ -102,18 +103,55 @@ if (-not $pfcCompany.IsConnected) {
 }
 #endregion
 
+#region addional functions
+function getOverheadType($Type) {
+	$OverheadType = $null;
+	switch ($Type) {
+		"F" { $OverheadType = [CompuTec.ProcessForce.API.Documents.Costing.ResourceCosting.OverheadType]::Fixed; break; }
+		"V" { $OverheadType = [CompuTec.ProcessForce.API.Documents.Costing.ResourceCosting.OverheadType]::Variable; break; }
+		Default {
+			$msg = [String]::Format("Incorrect Overhead Type: '{0}'. Allowed values: F - Fixed, V - Variable.", [string]$Type);
+			throw [System.Exception] ($msg);
+		}
+	}
+	return $OverheadType;
+}
+function getOverheadSubType($Type) {
+	$OverheadType = $null;
+	switch ($Type) {
+		"F" { $OverheadType = [CompuTec.ProcessForce.API.Documents.Costing.ResourceCosting.OverheadSubType]::Fixed; break; }
+		"FP" { $OverheadType = [CompuTec.ProcessForce.API.Documents.Costing.ResourceCosting.OverheadSubType]::FixedPercentage; break; }
+		"FO" { $OverheadType = [CompuTec.ProcessForce.API.Documents.Costing.ResourceCosting.OverheadSubType]::FixedOther; break; }
+		"V" { $OverheadType = [CompuTec.ProcessForce.API.Documents.Costing.ResourceCosting.OverheadSubType]::Variable; break; }
+		"VP" { $OverheadType = [CompuTec.ProcessForce.API.Documents.Costing.ResourceCosting.OverheadSubType]::VariablePercentage; break; }
+		"VO" { $OverheadType = [CompuTec.ProcessForce.API.Documents.Costing.ResourceCosting.OverheadSubType]::VariableOther; break; }
+		Default {
+			$msg = [String]::Format("Incorrect Overhead SubType: '{0}'. Allowed values: F - Fixed, FP - Fixed Percentage, FO - Fixed Other, V - Variable, VP - Variable Percentage, VO - Variable Other", [string]$Type);
+			throw [System.Exception] ($msg);
+		}
+	}
+	return $OverheadType;
+}
+#endregion
+
 
 try {
 
 	#Data loading from a csv file
-	Write-Host 'Preparing data: '
+	Write-Host 'Preparing data: ' -NoNewline;
 	#region import csv files
 	[array]$csvItemCostings = Import-Csv -Delimiter ';' -Path $csvItemCostingsPath;
 	[array]$csvItemCostingDetails = Import-Csv -Delimiter ';' -Path $csvItemCostingDetailsPath;
 
 	
+	if ((Test-Path -Path $csvItemCostingOverheadsPath -PathType leaf) -eq $true) {
+		[array] $csvItemCostingOverheads = Import-Csv -Delimiter ';' $csvItemCostingOverheadsPath;
+	}
+	else {
+		[array] $csvItemCostingOverheads = $null; write-host "Item Costing Overheads - csv not available."
+	}
 	
-	$totalRows = $csvItemCostings.Count + $csvItemCostingDetails.Count 
+	$totalRows = $csvItemCostings.Count + $csvItemCostingDetails.Count + $csvItemCostingOverheads.Count; 
 	
 	$dictionaryItemCosting = New-Object 'System.Collections.Generic.Dictionary[string,psobject]';
 
@@ -143,6 +181,7 @@ try {
 					Revision     = $row.Revision
 					CostCategory = $row.CostCategory
 					Details      = New-Object 'System.Collections.Generic.List[array]'
+					Overheads    = New-Object 'System.Collections.Generic.List[array]'
 				});
 		}
 	}
@@ -161,6 +200,21 @@ try {
 			$list.Add([array]$row);
 		}
 	}
+	
+	foreach ($row in $csvItemCostingOverheads) {
+		$key = $row.ItemCode + '__' + $row.Revision + '__' + $row.Category;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
+
+		if ($dictionaryItemCosting.ContainsKey($key)) {
+			$list = $dictionaryItemCosting[$key].Overheads;
+			$list.Add([array]$row);
+		}
+	}
 	#endregion
 
 	Write-Host '';
@@ -173,7 +227,7 @@ try {
 	if ($totalRows -gt 1) {
 		$total = $totalRows
 	}
- else {
+	else {
 		$total = 1
 	}
 	
@@ -197,11 +251,11 @@ try {
 			if (-Not $retValue) {
 				throw [System.Exception] ("Item Costing Details don't exists");
 			}
-   
+
 			#Data loading from the csv file - Costing Details for positions from ItemCosting.csv file
 			#[array]$csvCostingDetails = Import-Csv -Delimiter ';' -Path "C:\PS\PF\Costing\ItemCostingDetails.csv" | Where-Object {$_.ItemCode -eq $csvItemCosting.ItemCode -and $_.Revision -eq $csvItemCosting.Revision -and $_.Category -eq $csvItemCosting.CostCategory}
 			$csvCostingDetails = $csvItemCosting.Details
-			if($csvCostingDetails.Count -eq 0){
+			if ($csvCostingDetails.Count -eq 0) {
 				throw [System.Exception]("Item Costing Details are missing. Check your csv file.");
 			}
 			foreach ($csvCD in $csvCostingDetails) {
@@ -226,6 +280,41 @@ try {
 					}
 				}
 			}
+
+			#Multistructure Fixed and Variable Cost
+			$csvOverheads = $csvItemCosting.Overheads;
+			if ($csvOverheads) {
+				$newPositions = New-Object 'System.Collections.Generic.List[array]';
+				foreach ($csvCO in $csvOverheads) {
+					$OverheadType = getOverheadType -Type $csvCO.OverheadType;
+					$OverheadSubType = getOverheadSubType -Type $csvCO.OverheadSubType;
+					$count = $ic.OverheadCosts.Count;
+					$existingOverhead = $ic.OverheadCosts.Where( { $_.U_WhsCode -eq $csvCO.WhsCode -and $_.U_OverheadTypeCode -eq $csvCO.OverheadTypeCode -and $_.U_OverheadType -eq $OverheadType -and $_.U_OverheadSubtype -eq $OverheadSubType } );
+
+					if ($existingOverhead.Count -gt 0) {
+						$existingOverhead[0].U_Value = $csvCO.Value;
+						$existingOverhead[0].U_OverheadTypeName = $csvCO.OverheadTypeName;
+					}
+					else {
+						$newPositions.Add($csvCO);
+					}
+				}
+				$ic.OverheadCosts.SetCurrentLine($ic.OverheadCosts.Count - 1);
+				foreach ($csvCO in $newPositions) {
+					if ($ic.OverheadCosts.IsRowFilled()) {
+						$dummy = $ic.OverheadCosts.Add();
+					}
+					$OverheadType = getOverheadType -Type $csvCO.OverheadType;
+					$OverheadSubType = getOverheadSubType -Type $csvCO.OverheadSubType;
+					$ic.OverheadCosts.U_OverheadTypeCode = $csvCO.OverheadTypeCode;
+					$ic.OverheadCosts.U_OverheadTypeName = $csvCO.OverheadTypeName;
+					$ic.OverheadCosts.U_WhsCode = $csvCO.WhsCode
+					$ic.OverheadCosts.U_OverheadType = $OverheadType;
+					$ic.OverheadCosts.U_OverheadSubtype = $OverheadSubType;
+					$ic.OverheadCosts.U_Value = $csvCO.Value;
+				}
+			}
+
 			$ic.RecalculateCostingDetails()
 			$ic.RecalculateRolledCosts()
 
@@ -246,6 +335,7 @@ try {
 Catch {
 	$err = $_.Exception.Message;
 	$ms = [string]::Format("Exception occured: {0}", $err);
+	Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
 }
 Finally {
 	#region Close connection

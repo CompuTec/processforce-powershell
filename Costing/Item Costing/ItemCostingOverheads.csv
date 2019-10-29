@@ -1,0 +1,7 @@
+ItemCode;Revision;Category;WhsCode;CostType;OverheadTypeCode;OverheadTypeName;OverheadType;OverheadSubType;Value
+Product-A;code00;001;01;RT;T1;Test1;F;F;2
+Product-A;code00;001;01;RT;T1;Test1;F;FP;20
+Product-A;code00;001;01;RT;T1;Test1;F;FO;3
+Product-A;code00;001;01;RT;T2;Test2;V;V;2
+Product-A;code00;001;01;RT;T2;Test2;V;VP;20
+Product-A;code00;001;01;RT;T2;Test2;V;VO;3
