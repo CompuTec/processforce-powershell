@@ -2,7 +2,7 @@
 ########################################################################
 # CompuTec PowerShell Script - Import Quality Control Test Protocols
 ########################################################################
-$SCRIPT_VERSION = "3.4"
+$SCRIPT_VERSION = "3.5"
 # Last tested PF version: ProcessForce 9.3 (9.30.210) PL: MAIN (64-bit)
 # Description:
 #      Import Test Protocol. Script add new or will update existing data.
@@ -86,7 +86,7 @@ write-host -backgroundcolor green -foregroundcolor black "PF API Library:" $vers
  
 try {
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'code')]
-	$code = $pfcCompany.Connect()
+	$code = $pfcCompany.Connect();
  
 	write-host -backgroundcolor green -foregroundcolor black "Connected to:" $pfcCompany.SapCompany.CompanyName "/ " $pfcCompany.SapCompany.CompanyDB"" "Sap Company version: " $pfcCompany.SapCompany.Version
 }
@@ -407,7 +407,32 @@ try {
 				$test.U_FrqSpecDate = $csvTest.FrqSpecDate;
 			}
 			$test.U_FrqRemarks = $csvTest.FrqRemarks;
-		
+			$test.U_FrqAutoCreate = $csvTest.FrqAutoCreate;
+			$FrqInputQuantityFrom = $null;
+			if ([double]::TryParse($csvTest.FrqInputQuantityFrom, [ref] $FrqInputQuantityFrom)) {
+				$test.U_FrqInputQuantityFrom = $FrqInputQuantityFrom;
+			}
+			$FrqInputQuantityTo = $null;
+			if ([double]::TryParse($csvTest.FrqInputQuantityTo, [ref] $FrqInputQuantityTo)) {
+				$test.U_FrqInputQuantityTo = $FrqInputQuantityTo;
+			}
+			$test.U_FrqRefersTo = $csvTest.FrqRefersTo;
+			$test.U_FrqCreatePool = $csvTest.FrqCreatePool;
+
+			$FrqNumberOfSamples = $null;
+			if ([int]::TryParse($csvTest.FrqNumberOfSamples, [ref] $FrqNumberOfSamples)) {
+				$test.U_FrqNumberOfSamples = $FrqNumberOfSamples;
+			}
+
+			$FrqAcceptanceNumber = $null;
+			if ([int]::TryParse($csvTest.FrqAcceptanceNumber, [ref]$FrqAcceptanceNumber)) {
+				$test.U_FrqAcceptanceNumber = $FrqAcceptanceNumber;
+			}
+			$FrqRejectionNumber = $null;
+			if ([int]::TryParse($csvTest.FrqRejectionNumber, [ref] $FrqRejectionNumber)) {
+				$test.U_FrqRejectionNumber = $FrqRejectionNumber;
+			}
+
 			#Transactions
 			$test.U_TrsPurGdsRcptPo = $csvTest.TrsPurGdsRcptPo;
 			$test.U_TrsPurApInv = $csvTest.TrsPurApInv;
@@ -420,7 +445,7 @@ try {
 			$test.U_TrsInvBtchReTest = $csvTest.TrsInvBtchReTest;
 			$test.U_TrsInvSnReTest = $csvTest.TrsInvSnReTest;
 			$test.U_Instructions = $csvTest.Instructions;
-	
+
 			#Properties
 			$TestPropertiesLineNumDict = New-Object 'System.Collections.Generic.Dictionary[string,int]';
 			[array]$Properties = $dictionaryPropertiesTest[$csvTest.TestProtocolCode];
@@ -494,7 +519,7 @@ try {
 			}
 	  
 			#Certificates of Analysis for Test Properties
-			[array]$certs = $dictionaryCertsTest[$csvTemplate.TemplateCode];
+			[array]$certs = $dictionaryCertsTest[$csvTest.TestProtocolCode];
 			if ($certs.count -gt 0) {
 				$BusinessPartnerRelations = $test.PropertiesBusinessPartnerRelations;
 				#Deleting all exisitng lines
@@ -546,7 +571,7 @@ try {
 				}
 			}
 	
-			#ItemProperties
+			#region ItemProperties
 			$ItemPropertiesLineNumDict = New-Object 'System.Collections.Generic.Dictionary[string,int]';
 			[array]$ItemProperties = $dictionaryPropertiesItem[$csvTest.TestProtocolCode];
 			if ($ItemProperties.count -gt 0) {
@@ -600,9 +625,9 @@ try {
 					$dummy = $test.ItemProperties.Add()
 				}
 			}
-	  
+			#endregion
 			#Certificates of Analysis for Item Properties
-			[array]$certs = $dictionaryCertsItem[$csvTemplate.TemplateCode];
+			[array]$certs = $dictionaryCertsItem[$csvTest.TestProtocolCode];
 			if ($certs.count -gt 0) {
 				$BusinessPartnerRelations = $test.ItemPropertiesBusinessPartnerRelations;
 				#Deleting all exisitng lines
