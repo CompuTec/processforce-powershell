@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configuration>
 	<connection 
-        Database="PFDEMOGB_MACIEJP" 
-        SQLServer="10.0.0.240:30015" 
-        LicenseServer="10.0.0.240:40000" 
+        Database="PFDEMOGB" 
+        SQLServer="hanadev:30015" 
+        LicenseServer="hanadev:40000" 
         DbServerType="dst_HANADB" 
         UserName="manager" 
         Password="1234"
