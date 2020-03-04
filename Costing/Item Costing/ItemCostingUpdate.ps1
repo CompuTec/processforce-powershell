@@ -42,6 +42,8 @@ $csvImportCatalog = $PSScriptRoot + "\"
 
 $csvItemCostingsPath = -join ($csvImportCatalog, "ItemCosting.csv");
 $csvItemCostingDetailsPath = -join ($csvImportCatalog, "ItemCostingDetails.csv");
+$csvItemCostingCoproductsPath = -join ($csvImportCatalog, "ItemCostingCoproducts.csv");
+$csvItemCostingScrapsPath = -join ($csvImportCatalog, "ItemCostingScraps.csv");
 $csvItemCostingOverheadsPath = -join ($csvImportCatalog, "ItemCostingOverheads.csv");
 
 #endregion
@@ -142,7 +144,22 @@ try {
 	#region import csv files
 	[array]$csvItemCostings = Import-Csv -Delimiter ';' -Path $csvItemCostingsPath;
 	[array]$csvItemCostingDetails = Import-Csv -Delimiter ';' -Path $csvItemCostingDetailsPath;
+	[array]$csvItemCoproductsDetails = Import-Csv -Delimiter ';' -Path $csvItemCostingCoproductsPath;
 
+	if ((Test-Path -Path $csvItemCostingCoproductsPath -PathType leaf) -eq $true) {
+		[array] $csvItemCoproductsDetails = Import-Csv -Delimiter ';' $csvItemCostingCoproductsPath; 
+	}
+	else {
+		[array] $csvItemCoproductsDetails = $null; write-host "Item Costing CoProducts Details - csv not available."
+	}
+
+	[array]$csvItemScrapsDetails = Import-Csv -Delimiter ';' -Path $csvItemCostingScrapsPath;
+	if ((Test-Path -Path $csvItemCostingScrapsPath -PathType leaf) -eq $true) {
+		[array] $csvItemScrapsDetails = Import-Csv -Delimiter ';' $csvItemCostingScrapsPath; 
+	}
+	else {
+		[array] $csvItemScrapsDetails = $null; write-host "Item Costing Scraps Details - csv not available."
+	}
 	
 	if ((Test-Path -Path $csvItemCostingOverheadsPath -PathType leaf) -eq $true) {
 		[array] $csvItemCostingOverheads = Import-Csv -Delimiter ';' $csvItemCostingOverheadsPath;
@@ -151,7 +168,7 @@ try {
 		[array] $csvItemCostingOverheads = $null; write-host "Item Costing Overheads - csv not available."
 	}
 	
-	$totalRows = $csvItemCostings.Count + $csvItemCostingDetails.Count + $csvItemCostingOverheads.Count; 
+	$totalRows = $csvItemCostings.Count + $csvItemCostingDetails.Count + $csvItemCostingOverheads.Count + $csvItemCoproductsDetails.Count + $csvItemScrapsDetails.Count; 
 	
 	$dictionaryItemCosting = New-Object 'System.Collections.Generic.Dictionary[string,psobject]';
 
@@ -181,6 +198,8 @@ try {
 					Revision     = $row.Revision
 					CostCategory = $row.CostCategory
 					Details      = New-Object 'System.Collections.Generic.List[array]'
+					Coproducts   = New-Object 'System.Collections.Generic.List[array]'
+					Scraps       = New-Object 'System.Collections.Generic.List[array]'
 					Overheads    = New-Object 'System.Collections.Generic.List[array]'
 				});
 		}
@@ -197,6 +216,36 @@ try {
 
 		if ($dictionaryItemCosting.ContainsKey($key)) {
 			$list = $dictionaryItemCosting[$key].Details;
+			$list.Add([array]$row);
+		}
+	}
+
+	foreach ($row in $csvItemCoproductsDetails) {
+		$key = $row.ItemCode + '__' + $row.Revision + '__' + $row.Category;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
+
+		if ($dictionaryItemCosting.ContainsKey($key)) {
+			$list = $dictionaryItemCosting[$key].Coproducts;
+			$list.Add([array]$row);
+		}
+	}
+
+	foreach ($row in $csvItemScrapsDetails) {
+		$key = $row.ItemCode + '__' + $row.Revision + '__' + $row.Category;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
+
+		if ($dictionaryItemCosting.ContainsKey($key)) {
+			$list = $dictionaryItemCosting[$key].Scraps;
 			$list.Add([array]$row);
 		}
 	}
@@ -234,12 +283,7 @@ try {
 	foreach ($key in $dictionaryItemCosting.Keys) {
 		try {
 			$csvItemCosting = $dictionaryItemCosting[$key];
-			$progressItterator++;
-			$progres = [math]::Round(($progressItterator * 100) / $total);
-			if ($progres -gt $beforeProgress) {
-				Write-Host $progres"% " -NoNewline
-				$beforeProgress = $progres
-			}
+			
 			#Creating Item Costing Object
 			$ic = $pfcCompany.CreatePFObject([CompuTec.ProcessForce.API.Core.ObjectTypes]::ItemCosting);
 			if ($csvItemCosting.CostCategory -eq '000') {
@@ -253,13 +297,11 @@ try {
 			}
 
 			#Data loading from the csv file - Costing Details for positions from ItemCosting.csv file
-			#[array]$csvCostingDetails = Import-Csv -Delimiter ';' -Path "C:\PS\PF\Costing\ItemCostingDetails.csv" | Where-Object {$_.ItemCode -eq $csvItemCosting.ItemCode -and $_.Revision -eq $csvItemCosting.Revision -and $_.Category -eq $csvItemCosting.CostCategory}
 			$csvCostingDetails = $csvItemCosting.Details
 			if ($csvCostingDetails.Count -eq 0) {
 				throw [System.Exception]("Item Costing Details are missing. Check your csv file.");
 			}
 			foreach ($csvCD in $csvCostingDetails) {
-			
 				$count = $ic.CostingDetails.Count;
 				for ($i = 0; $i -lt $count ; $i++) {
 					$ic.CostingDetails.SetCurrentLine($i);
@@ -278,6 +320,52 @@ try {
 						$ic.CostingDetails.U_Remarks = $csvCD.Remarks
 						break;
 					}
+				}
+			}
+
+			$csvCoproducts = $csvItemCosting.Coproducts;
+			if ($csvCoproducts.Count -gt 0) {
+				foreach ($csvCP in $csvCoproducts) {
+					$matchingCPs = $ic.Coproducts.Where( { $_.U_SequenceNo -eq $csvCP.Sequence -and $_.U_WhsCode -eq $csvCP.WhsCode });
+					if ($matchingCPs.Count -gt 0) {
+						$cp = $matchingCPs[0];
+					}
+					else {
+						$msg = [string]::Format("Item Costing Coproducts Line with sequence {0} and WhsCode {1} is missing.", [string]$csvCP.Sequence, [string]$csvCP.WhsCode);
+						throw [System.Exception]($msg);
+					}
+					
+					$cp.U_Type = $csvCP.Type;
+					$cp.U_PriceList = $csvCP.PriceListCode;
+					$cp.U_WhenZero = $csvCP.WhenZero;
+					$cp.U_ItemCost = $csvCP.ItemCost;
+					$cp.U_RscCost = $csvCP.ResourceCost;
+					$cp.U_FixOH = $csvCP.FixedOH;
+					$cp.U_VarOH = $csvCP.VariableOH;
+					$cp.U_Remarks = $csvCP.Remarks;
+				}
+			}
+
+			$csvScraps = $csvItemCosting.Scraps;
+			if ($csvScraps.Count -gt 0) {
+				foreach ($csvSC in $csvScraps) {
+					$matchingSCs = $ic.Scrap.Where( { $_.U_SequenceNo -eq $csvSC.Sequence -and $_.U_WhsCode -eq $csvSC.WhsCode });
+					if ($matchingSCs.Count -gt 0) {
+						$sc = $matchingSCs[0];
+					}
+					else {
+						$msg = [string]::Format("Item Costing Scraps Line with sequence {0} and WhsCode {1} is missing.", [string]$csvCP.Sequence, [string]$csvCP.WhsCode);
+						throw [System.Exception]($msg);
+					}
+					
+					$sc.U_Type = $csvSC.Type;
+					$sc.U_PriceList = $csvSC.PriceListCode;
+					$sc.U_WhenZero = $csvSC.WhenZero;
+					$sc.U_ItemCost = $csvSC.ItemCost;
+					$sc.U_RscCost = $csvSC.ResourceCost;
+					$sc.U_FixOH = $csvSC.FixedOH;
+					$sc.U_VarOH = $csvSC.VariableOH;
+					$sc.U_Remarks = $csvSC.Remarks;
 				}
 			}
 
@@ -329,6 +417,14 @@ try {
 			$err = $_.Exception.Message;
 			$ms = [string]::Format("Error when updating Item Costing for ItemCode {0}, Revision {1}, Cost Category {2}, Details: {3}", $csvItemCosting.ItemCode, $csvItemCosting.Revision, $csvItemCosting.CostCategory, $err);
 			Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
+		}
+		Finally {
+			$progressItterator++;
+			$progres = [math]::Round(($progressItterator * 100) / $total);
+			if ($progres -gt $beforeProgress) {
+				Write-Host $progres"% " -NoNewline
+				$beforeProgress = $progres
+			}
 		}
 	}
 }
