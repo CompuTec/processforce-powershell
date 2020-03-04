@@ -5,7 +5,7 @@
         <!-- NumberOfMakeItems - number of items with MRP type Make (this number should be greater or equal to NumberOfBoms in BOM element)-->
         <!-- NumberOfItems should be les then NumberOfMakeItems-->
         <!-- Prefix - prefix for generated items-->
-        <ItemMasterData Prefix="ACTPF_" NumberOfItems="1020" NumberOfMakeItems="20" WarehouseCode="01"/>
+        <ItemMasterData Prefix="BCACTPF_" NumberOfItems="1020" NumberOfMakeItems="1000" WarehouseCode="01"/>
         <!-- NumberOfRevisions - number of revisions that will be added to each created item -->
         <ItemDetails NumberOfRevisions="10"/>
         <!-- NumberOfBoms - number of Bill of Materials that will be created (this number should be lowwer or equal to NumberOfMakeItems in ItemMasterData element) -->
@@ -15,15 +15,15 @@
         <BOM NumberOfBoms="1000" NumberOfItems="20" WarehouseCode="01" ItemsWarehouseCode="01"/>
         <!-- Prefix - prefix for generated Resources-->
         <!-- NumberOfResources - number of resources that will be created (this number should be greater or equal to NumberOfResources in element Operation -->
-        <Resource Prefix="ACTPF_" NumberOfResources="1000"/>
+        <Resource Prefix="BCACTPF_" NumberOfResources="1000"/>
         <!-- Prefix - prefix for generated operations -->
         <!-- NumberOfOperations - number of operations that will be created (this number should be greater or equal to NumberOfOperations in element Routing -->
         <!-- NumberOfResources - number of resources that will be added to operation (this number should be lower or equal to NumberOfResources in element Resource -->
-        <Operation Prefix="ACTPF_" NumberOfOperations="1000" NumberOfResources="5"/>
+        <Operation Prefix="BCACTPF_" NumberOfOperations="1000" NumberOfResources="5"/>
         <!-- Prefix - prefix for generated routings -->
         <!-- NumberOfRoutings - number of routings that will be created (this number should be greater or equal to NumberOfRoutings in element ProductionProcess -->
         <!-- NumberOfOperations - number of operations that will be added to routing (this number should be greater or equal to NumberOfOperations in element Operation -->
-        <Routing Prefix="ACTPF_" NumberOfRoutings="1000" NumberOfOperations="5"/>
+        <Routing Prefix="BCACTPF_" NumberOfRoutings="1000" NumberOfOperations="5"/>
         <!-- NumberOfBoms - this number should be lower or equal NumberOfBoms in element BOM -->
         <!-- NumberOfRoutings - this number should be lowe or euqal NumberOfRoutings in element Routing-->
         <ProductionProcess NumberOfBoms="1000" NumberOfRoutings="2"/>
