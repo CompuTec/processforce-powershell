@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configuration>
 	<connection 
-        Database="PFDEMOGB" 
-        SQLServer="hanadev:30015" 
-        LicenseServer="hanadev:40000" 
-        DbServerType="dst_HANADB" 
-        UserName="manager" 
+        Database="PFDEMOGB"
+		SQLServer="NDB@hanadev:30013"
+        LicenseServer="hanadev:40000"
+        DbServerType="dst_HANADB"
+        UserName="manager"
         Password="1234"
     />
 	<!--LicenseServer = SAP LicenceServer name or IP Address with port number (see in SAP Client -> Administration -> Licence -> Licence Administration -> Licence Server)-->
