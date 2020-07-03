@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configuration>
-	<connection 
-        Database="PFDEMOGB" 
-        SQLServer="hanadev:30015" 
+	<connection
+		Database="PFDEMOGB" 
+        SQLServer="DEV@hanadev:30013" 
         LicenseServer="hanadev:40000" 
         DbServerType="dst_HANADB" 
-        UserName="manager" 
-        Password="1234"
-    />
+        UserName="ae" 
+        Password="1234" />
 	<!--LicenseServer = SAP LicenceServer name or IP Address with port number (see in SAP Client -> Administration -> Licence -> Licence Administration -> Licence Server)-->
 	<!--SQLServer     = Server name or IP Address with port number, should be the same like in System Landscape Dirctory (see https://<Server>:<Port>/ControlCenter) - sometimes best is use IP Address for resolve connection problems.-->
 

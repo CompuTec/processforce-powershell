@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Routings
 ########################################################################
-$SCRIPT_VERSION = "3.1"
+$SCRIPT_VERSION = "3.2"
 # Last tested PF version: ProcessForce 9.3 (9.30.210) (64-bit)
 # Description:
 #      Import Routings. Script add new or will update existing Routings.
@@ -314,6 +314,7 @@ try {
 				}
 				$drivers = New-Object 'System.Collections.Generic.Dictionary[String,int]'
 				$operLineNumDict = New-Object 'System.Collections.Generic.Dictionary[int,int]';
+				$operCodeDict = New-Object 'System.Collections.Generic.Dictionary[int,string]';
 				#Adding the new data       
 				foreach ($rtOper in $routingOperations) {
 					$routing.Operations.U_OprCode = $rtOper.OperationCode
@@ -321,10 +322,18 @@ try {
                     {
 						$msg = [string]::Format("Operation {0} does not exists", [string]$rtOper.OperationCode);
 						throw [System.Exception]($msg);
-                    }
-					$routing.Operations.U_OprOverlayId = $rtOper.OverlayID
-					$routing.Operations.U_OprOverlayCode = $rtOper.OperationOverCode
-					$routing.Operations.U_OprOverlayQty = $rtOper.OverlayQty
+					}
+					$overlaySequence = $rtOper.OperationOverlaySequence;
+					if([string]::IsNullOrWhiteSpace($overlaySequence) -eq $false) {
+						$overlayId = -1;
+						if ($operLineNumDict.TryGetValue($overlaySequence, [ref] $overlayId) -eq $false) {
+							Throw [System.Exception] (([string]::Format("Can't configure overlay for operation: {0}. Operation Sequence: {1} don't exists", $rtOper.OperationCode, $overlaySequence)));
+						}
+ 						$routing.Operations.U_OprOverlayId = $overlayId 
+						$routing.Operations.U_OprOverlayCode = $operCodeDict[$overlaySequence]
+						$routing.Operations.U_OprOverlayQty = $rtOper.OverlayQty
+					}
+
 					$routing.Operations.U_OprSequence = $rtOper.Sequence
 					$routing.Operations.U_Remarks = $rtOper.Remarks
 					# Relation Types:
@@ -363,6 +372,7 @@ try {
 
 					$drivers.Add($routing.Operations.U_OprSequence, $routing.Operations.U_RtgOprCode);
 					$operLineNumDict.Add($routing.Operations.U_OprSequence, $routing.Operations.U_LineNum);
+					$operCodeDict.Add($routing.Operations.U_OprSequence, $routing.Operations.U_OprCode);
 					$dummy = $routing.Operations.Add()
 				}
 				
