@@ -3,8 +3,8 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Resources
 ########################################################################
-$SCRIPT_VERSION = "3.1"
-# Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
+$SCRIPT_VERSION = "3.2"
+# Last tested PF version: ProcessForce 10 (10.0.4) (64-bit)
 # Description:
 #      Import Resources. Script add new or will update existing Resources.
 #      You need to have all requred files for import.
@@ -38,6 +38,7 @@ $csvImportCatalog = $PSScriptRoot + "\"
 # $csvImportCatalog = "C:\PS\PF\";
 
 $csvResourcesPath = -join ($csvImportCatalog, "Resources.csv")
+$csvResourcesLikedToolsPath = -join ($csvImportCatalog, "ResourcesLikedTools.csv")
 $csvResourcesPropertiesPath = -join ($csvImportCatalog, "ResourcesProperties.csv")
 $csvResourcesAtachmentsPath = -join ($csvImportCatalog, "ResourcesAttachments.csv")
 $csvResourcesPlanningInfoPath = -join ($csvImportCatalog, "ResourcesPlanningInfo.csv")
@@ -104,6 +105,14 @@ try {
 	#Data loading from a csv file
 	[array] $csvResources = Import-Csv -Delimiter ';' -Path  $csvResourcesPath
 
+	if ((Test-Path -Path $csvResourcesLikedToolsPath -PathType leaf) -eq $true) {
+		[array] $csvResourcesLinkedTools = Import-Csv -Delimiter ';' -Path  $csvResourcesLikedToolsPath
+	}
+	else {
+		[array] $csvResourcesLinkedTools = $null;
+		write-host "Resources Linked Tools - csv not available."
+	}
+	
 	if ((Test-Path -Path $csvResourcesPropertiesPath -PathType leaf) -eq $true) {
 		[array] $csvResourcesProperties = Import-Csv -Delimiter ';' -Path  $csvResourcesPropertiesPath
 	}
@@ -130,9 +139,10 @@ try {
  
 	#region preparing data
 	write-Host 'Preparing data: ' -NoNewline
-	$totalRows = $csvResources.Count + $csvResourcesProperties.Count + $csvResourcesAtachments.Count + $csvResourcesPlanningInfoPath.Count;
+	$totalRows = $csvResources.Count + $csvResourcesProperties.Count + $csvResourcesAtachments.Count + $csvResourcesPlanningInfoPath.Count + $csvResourcesLinkedTools.Count;
 
 	$resourcesList = New-Object 'System.Collections.Generic.List[array]'
+	$resourcesToolsDict = New-Object 'System.Collections.Generic.Dictionary[String,System.Collections.Generic.List[array]]'
 	$resourcesPropertiesDict = New-Object 'System.Collections.Generic.Dictionary[String,System.Collections.Generic.List[array]]'
 	$resourcesAtachementsDict = New-Object 'System.Collections.Generic.Dictionary[String,System.Collections.Generic.List[array]]'
 	$resourcesPlanningInfoDict = New-Object 'System.Collections.Generic.Dictionary[String,System.Collections.Generic.List[array]]'
@@ -157,6 +167,26 @@ try {
 		}
 
 		$resourcesList.Add([array]$row);
+	}
+
+	foreach ($row in $csvResourcesLinkedTools) {
+		$key = $row.ResourceCode;
+		$progressItterator++;
+		$progress = [math]::Round(($progressItterator * 100) / $total);
+		if ($progress -gt $beforeProgress) {
+			Write-Host $progress"% " -NoNewline
+			$beforeProgress = $progress
+		}
+
+		if ($resourcesToolsDict.ContainsKey($key)) {
+			$list = $resourcesToolsDict[$key];
+		}
+		else {
+			$list = New-Object System.Collections.Generic.List[array];
+			$resourcesToolsDict[$key] = $list;
+		}
+
+		$list.Add([array]$row);
 	}
 
 	foreach ($row in $csvResourcesProperties) {
@@ -298,7 +328,7 @@ try {
 				$res.U_VendorCode = $csvItem.VendorCode
 				$res.U_ItemCode = $csvItem.ItemCode
 			}
-   			switch ($csvItem.PlanningWarningTable) {
+			switch ($csvItem.PlanningWarningTable) {
 				"CT_PF_OMOR" {
 					$res.U_WarningTable = [CompuTec.ProcessForce.API.Documents.Resource.ResourcePlanningInformationTableType]::ManufacturingOrder; 
 					break;
@@ -317,7 +347,7 @@ try {
 				}
 				Default {
 					$res.U_WarningTable = [CompuTec.ProcessForce.API.Documents.Resource.ResourcePlanningInformationTableType]::Undefined; 
-				 }
+				}
 			}
 
 			   
@@ -330,6 +360,25 @@ try {
 			else {
 				$res.U_IsWarnSqlEnabled = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No;
 			}
+
+			#region LINKED TOOLS
+			[array]$resTools = $resourcesToolsDict[$csvItem.ResourceCode]
+			if($resTools.count -gt 0) {
+				#Deleting all existing tools
+				$count = $res.LinkedTools.Count;
+				for ($i = $count-1; $i -ge 0; $i--) {
+					$dummy = $res.LinkedTools.DelRowAtPos($i);
+				}
+
+				foreach($tool in $resTools){
+					$res.LinkedTools.U_LinkToolCode = $tool.ResourceLinkedToolCode;
+					$dummy = $res.LinkedTools.Add();
+				}
+			}
+			#endregion
+
+
+
 			#Data loading from a csv file - Resource Properties
 			[array]$resProps = $resourcesPropertiesDict[$csvItem.ResourceCode]
 			if ($resProps.count -gt 0) {
@@ -403,7 +452,7 @@ try {
 						}
 						Default {
 							$res.PlanningInformation.U_Table = [CompuTec.ProcessForce.API.Documents.Resource.ResourcePlanningInformationTableType]::Undefined; 
-						 }
+						}
 					}
 					$res.PlanningInformation.U_Field = $pi.Field;
 
