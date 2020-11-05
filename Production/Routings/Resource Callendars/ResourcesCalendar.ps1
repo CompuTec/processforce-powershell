@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Resources Calendars
 ########################################################################
-$SCRIPT_VERSION = "3.1"
+$SCRIPT_VERSION = "3.2"
 # Last tested PF version: ProcessForce 9.3 (9.30.140) PL: 04 R1 HF1 (64-bit)
 # Description:
 #      Import Resources Calendars. Script add new or will update existing Resources Calendars.
@@ -302,7 +302,7 @@ try {
 			}
 		}
 		Catch {
-          
+			$err = $_.Exception.Message;
 			$taskMsg = "updating"
 			$ms = [string]::Format("Error when {0} Calendar for Resource with Code {1} Details: {2}", $taskMsg, $csvItem.ResourceCode, $err);
 			Write-Host -BackgroundColor DarkRed -ForegroundColor White $ms
