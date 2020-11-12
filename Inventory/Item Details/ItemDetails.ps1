@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Item Details
 ########################################################################
-$SCRIPT_VERSION = "3.6"
+$SCRIPT_VERSION = "3.7"
 # Last tested PF version: ProcessForce 9.3 (9.30.210) PL: MAIN (64-bit)
 # Description:
 #      Import Item Details. Script will update only existing ItemDetails. Remember to run Restore Item Details before running this script.
@@ -48,6 +48,7 @@ $csvItemDetailsPropertiesPath = -join ($csvImportCatalog, "ItemDetailsProperties
 $csvItemDetailsPropertiesCertifiacteOfAnalysisPath = -join ($csvImportCatalog, "ItemDetailsPropertiesCertifiacteOfAnalysis.csv")
 $csvItemDetailsRevisionsPath = -join ($csvImportCatalog, "ItemDetailsRevisions.csv")
 $csvItemDetailsTextsPath = -join ($csvImportCatalog, "ItemDetailsTexts.csv")
+$csvItemDetailsPlanningDataPath = -join ($csvImportCatalog, "ItemDetailsPlanningData.csv")
 
 #endregion
 
@@ -170,9 +171,16 @@ try {
 	else {
 		[array] $csvItemDetailsTexts = $null; write-host "Item Details Texts - csv not available."
 	}
+	if ((Test-Path -Path $csvItemDetailsPlanningDataPath -PathType leaf) -eq $true) {
+		[array] $csvItemDetailsPlanningData = Import-Csv -Delimiter ';' $csvItemDetailsPlanningDataPath;
+	}
+	else {
+		[array] $csvItemDetailsPlanningData = $null; write-host "Item Details Planning Data - csv not available."
+	}
 	#endregion
 
-	$totalRows = $csvItemDetails.Count + $csvItemDetailsBatchDetails.Count + $csvItemDetailsClassification.Count + $csvItemDetailsGroups.Count + $csvItemDetailsOrigins.Count + $csvItemDetailsPhrases.Count + $csvItemDetailsProperties.Count + $csvItemDetailsRevisions.Count + $csvItemDetailsTexts.Count + $csvItemDetailsPropertiesCerts.Count;
+	$totalRows = $csvItemDetails.Count + $csvItemDetailsBatchDetails.Count + $csvItemDetailsClassification.Count + $csvItemDetailsGroups.Count + $csvItemDetailsOrigins.Count;
+	$totalRows += $csvItemDetailsPhrases.Count + $csvItemDetailsProperties.Count + $csvItemDetailsRevisions.Count + $csvItemDetailsTexts.Count + $csvItemDetailsPropertiesCerts.Count + $csvItemDetailsPlanningData.Count;
 
 	$itemDetailsList = New-Object 'System.Collections.Generic.List[array]';
 	$dictItemDetailsBatchDetails = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]';
@@ -184,6 +192,7 @@ try {
 	$dictItemDetailsPropertiesCerts = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]';
 	$dictItemDetailsRevisions = New-Object 'System.Collections.Generic.Dictionary[string,psobject]';
 	$dictItemDetailsTexts = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]';
+	$dictItemDetailsPlanningData = New-Object 'System.Collections.Generic.Dictionary[string,psobject]';
 
 	$progressItterator = 0;
 	$progres = 0;
@@ -351,6 +360,24 @@ try {
 		
 		$list.Add([array]$row);
 	}
+	foreach ($row in $csvItemDetailsPlanningData) {
+		$key = $row.ItemCode;
+		$revCode = $row.RevisionCode;
+		$progressItterator++;
+		$progres = [math]::Round(($progressItterator * 100) / $total);
+		if ($progres -gt $beforeProgress) {
+			Write-Host $progres"% " -NoNewline
+			$beforeProgress = $progres
+		}
+
+		if ($dictItemDetailsPlanningData.ContainsKey($key) -eq $false) {
+			$dictItemDetailsPlanningData.Add($key, (New-Object 'System.Collections.Generic.Dictionary[string,array]'));
+		}
+
+		if ($dictItemDetailsPlanningData[$key].ContainsKey($revCode) -eq $false) {
+			$dictItemDetailsPlanningData[$key].Add($revCode, [array]$row);
+		}
+	}
 	#endregion
     
 	Write-Host '';
@@ -470,6 +497,37 @@ try {
 						} else {
 							$idt.Revisions.U_IsCostingDefault = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No
 						}
+						
+
+						#region Planning Data
+						$planningInfo = $dictItemDetailsPlanningData[$key];
+						if($planningInfo.ContainsKey($revCode) -eq $true){
+							$revPlanInf = $planningInfo[$revCode];
+							$idt.Revisions.U_PlanningMethod = $revPlanInf.PlanningMethod;
+							$idt.Revisions.U_PlanningMethod = $revPlanInf.PlanningMethod;
+							$idt.Revisions.U_ProcurementMethod = $revPlanInf.ProcurementMethod;
+							$idt.Revisions.U_OrderInterval = $revPlanInf.OrderInterval;
+							$idt.Revisions.U_OrderMultiple = $revPlanInf.OrderMultiple;
+							$idt.Revisions.U_LeadTime = $revPlanInf.LeadTime;
+							$idt.Revisions.U_ToleranceDays = $revPlanInf.ToleranceDays;
+							$idt.Revisions.U_ILeadTime = $revPlanInf.ILeadTime;
+							$idt.Revisions.U_MinOrderQty = $revPlanInf.MinOrderQty;
+							$idt.Revisions.U_MaxOrderQty = $revPlanInf.MaxOrderQty;
+							if($revPlanInf.ForcePrimaryDemand -eq "Y") {
+								$idt.Revisions.U_ForcePrimaryDemand = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes
+							} else {
+								$idt.Revisions.U_ForcePrimaryDemand = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No
+							}
+							if($revPlanInf.UseItmPerPurchUnit -eq "Y") {
+								$idt.Revisions.U_UseItmPerPurchUnit = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes
+							} else {
+								$idt.Revisions.U_UseItmPerPurchUnit = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No
+							}
+							$idt.Revisions.U_InternalLeadTimeTransfer = $revPlanInf.InternalLeadTimeTransfer;
+							$idt.Revisions.U_PlanerI = $revPlanInf.PlanerI;
+							$idt.Revisions.U_PlanerII = $revPlanInf.PlanerII;
+						}
+						#endregion
 						if ($currentPosDict.ContainsKey($revCode) -eq $false) {
 							$dummy = $idt.Revisions.Add();
 						}

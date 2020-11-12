@@ -2,8 +2,8 @@
 <configuration>
   <connection
     Database="PFDEMOGB"
-    SQLServer="NDB@hanaserver:30013"
-    LicenseServer="hanaserver:40000"
+    SQLServer="DEV@hanadev:30013"
+    LicenseServer="hanadev:40000"
     DbServerType="dst_HANADB"
     UserName="manager"
     Password="1234"
