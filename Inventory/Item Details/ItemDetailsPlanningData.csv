@@ -1,0 +1,4 @@
+﻿ItemCode;RevisionCode;PlanningMethod;ProcurementMethod;OrderInterval;OrderMultiple;LeadTime;ToleranceDays;ILeadTime;MinOrderQty;MaxOrderQty;ForcePrimaryDemand;UseItmPerPurchUnit;InternalLeadTimeTransfer;PlanerI;PlanerII
+Product-A;code00;M;M;0;1;4;2;1;50;100;N;N;0;1;;
+Product-A;custom1;N;B;;;0;0;0;;;N;N;;;;
+Product-A;custom2;N;B;;;;;;;;N;N;;;;
