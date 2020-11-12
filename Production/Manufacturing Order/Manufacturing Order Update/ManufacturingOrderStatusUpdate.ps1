@@ -12,7 +12,7 @@ $SCRIPT_VERSION = "3.0"
 #		* DocNum - Manufacuturing Order Document Number 
 #		* StatusCode - Manufacuturing Order Status
 # Troubleshooting:
-#   https://connect.computec.pl/display/PF930EN/FAQ+PowerShell
+#   https://connect.computec.pl/display/PF100EN/PowerShell+FAQ
 ########################################################################
 Write-Host -backgroundcolor Yellow -foregroundcolor DarkBlue ("Script Version:" + $SCRIPT_VERSION)
 #endregion

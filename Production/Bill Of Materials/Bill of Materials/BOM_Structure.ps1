@@ -14,8 +14,8 @@ $SCRIPT_VERSION = "3.5"
 #   It's recommended run script when all users all disconnected.
 #   Before running this script please Make Backup of your database.
 # Troubleshooting:
-#   https://connect.computec.pl/display/PF920EN/FAQ+PowerShell
-#   https://connect.computec.pl/display/PF910EN/FAQ+PowerShell
+#   https://connect.computec.pl/display/PF930EN/PowerShell+FAQ
+#   https://connect.computec.pl/display/PF930EN/PowerShell+FAQ
 ########################################################################
 #endregion
 
