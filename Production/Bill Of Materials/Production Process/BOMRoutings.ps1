@@ -12,10 +12,10 @@ $SCRIPT_VERSION = "3.3"
 #   It's recommended run script when all users all disconnected.
 #   Before running this script please do database backup.
 # Troubleshooting:
-#   https://connect.computec.pl/display/PF930EN/FAQ+PowerShell
-#   https://connect.computec.pl/display/PF920EN/FAQ+PowerShell
+#   https://connect.computec.pl/display/PF100EN/PowerShell+FAQ
+#   https://connect.computec.pl/display/PF930EN/PowerShell+FAQ
 # Script source:
-#   https://connect.computec.pl/display/PF930EN/Quality+Control+scripts
+#   https://code.computec.pl/repos?visibility=public
 ########################################################################
 Write-Host -backgroundcolor Yellow -foregroundcolor DarkBlue ("Script Version:" + $SCRIPT_VERSION)
 #endregion

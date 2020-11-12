@@ -13,8 +13,8 @@ $SCRIPT_VERSION = "3.1"
 #   Before running this script please restore Resource Costing Details. #
 #   This script allows only to update Resource Costing on categories different than 000 #
 # Troubleshooting:
-#   https://connect.computec.pl/display/PF930EN/FAQ+PowerShell
-#   https://connect.computec.pl/display/PF920EN/FAQ+PowerShell
+#   https://connect.computec.pl/display/PF100EN/PowerShell+FAQ
+#   https://connect.computec.pl/display/PF930EN/PowerShell+FAQ
 # Script source:
 #   https://connect.computec.pl/display/PF930EN/Item+details+script
 ########################################################################
