@@ -504,7 +504,6 @@ try {
 						if($planningInfo.ContainsKey($revCode) -eq $true){
 							$revPlanInf = $planningInfo[$revCode];
 							$idt.Revisions.U_PlanningMethod = $revPlanInf.PlanningMethod;
-							$idt.Revisions.U_PlanningMethod = $revPlanInf.PlanningMethod;
 							$idt.Revisions.U_ProcurementMethod = $revPlanInf.ProcurementMethod;
 							$idt.Revisions.U_OrderInterval = $revPlanInf.OrderInterval;
 							$idt.Revisions.U_OrderMultiple = $revPlanInf.OrderMultiple;
