@@ -1,0 +1,43 @@
+﻿<Window x:Class="PFUIEventServerSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PFUIEventServerSample"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" >
+        <CheckBox IsChecked="{Binding Connected}" IsEnabled="False" Content="Connected"/>
+            <TextBox Text="{Binding SAPPid}" IsEnabled="False" />
+            <Button Content="Connect" Command="{Binding Connect}"/>
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding Messages}" Grid.Row="1" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="EventType" Binding="{Binding EventType}"/>
+                <DataGridTextColumn Header="EventSender" Binding="{Binding EventSender}"/>
+                <DataGridTextColumn Header="MessageText" Binding="{Binding MessageText}"/>
+                <DataGridTemplateColumn Header="Parameters">
+                    <DataGridTemplateColumn.CellTemplate >
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding Parameters}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                        <TextBox Text="{Binding Key, Mode=OneWay}"/>
+                                            <TextBox Text="{Binding Value, Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

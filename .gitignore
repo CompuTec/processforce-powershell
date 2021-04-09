@@ -2,5 +2,10 @@
 Performance/Results.csv
 Performance/*.csv
 .vscode/launch.json
+**/bin/**
+**/obj/**
 **\bin\**
 **\obj\**
+packages\**
+**/packages/**
+**/.vs/**
