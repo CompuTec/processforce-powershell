@@ -2,4 +2,3 @@ BOM_Header;Revision;RoutingCode;Sequence;OperationCode;ResourceCode;MachineCode;
 Product-A;code00;01;10;01;01;;Y;B;10;2;30;2;100;9;10;2;15;N;300;Some remarks;P;C1;;;;;
 Product-A;code00;01;20;01;02;;Y;M;10;2;30;2;120;2;10;2;1;N;;;;;;;;;
 Product-A;code00;01;30;02;02;;Y;M;10;2;30;2;120;2;10;2;1;N;;;;;;;;;
-Product-A;code00;01;20;01;12;02;Y;M;10;2;30;2;120;2;10;2;1;N;;;;;;;;;

@@ -438,6 +438,13 @@ try {
 							$bom.RoutingOperations.U_OprOverlayId = $overlayDict[$rtgOper.OperationOverlaySequence];
 							$bom.RoutingOperations.U_OprOverlayQty = $rtgOper.OperationOverlayQty;
 						}
+
+						$bom.RoutingOperations.U_TestProtocolNo = $rtgOper.TestProtocolNo;
+						if($rtgOper.QCActive -eq 'Y') {
+							$bom.RoutingOperations.U_QCActive = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes
+						}
+						$bom.RoutingOperations.U_Remarks =  $rtgOper.Remarks;
+
 						$addedOperaionLineNum = $bom.RoutingOperations.U_LineNum;
 						$overlayDict.Add($rtgOper.Sequence, $addedOperaionLineNum);
 						$drivers_key = $rtgOper.RoutingCode + '@#@' + $bom.RoutingOperations.U_OprSequence;
