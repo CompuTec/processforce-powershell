@@ -1,0 +1,3710 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CompuTec.Core2</name>
+    </assembly>
+    <members>
+        <member name="P:CompuTec.Core2.Beans.ChildBeans.MasterBean">
+            <summary>
+            Reference To Master ChildBean  that holds Collection all Lines
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.ChildBeans.List_DynamicFields">
+            <summary>
+            This Dictionary hold information of dynamic fields that should be load to form to UserDataSource.
+            This is used only in function LoadToForm
+            Key: name of property in thisClass
+            Value: name of UserDataSource 
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.ChildBeans.UDSDeclaration">
+            <summary>
+            List Of UserDataFields
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.ChildBeans.RowNumUDS">
+            <summary>
+            This property is related beetween vis orderr and UDS
+            Dev should add here UDS UID of Row Num 
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ChildBeans.#ctor(CompuTec.Core2.Beans.ChildBeans)">
+            <summary>
+            This Constructor is used to while adding row to childs, master is needed to call add setcurrentline on masterChildUdo- that one who ius holding other Datas
+            </summary>
+            <param name="master"></param>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ChildBeans.InitChild">
+            <summary>
+            This Functiuon is Raised on form initializing Yo can put there all fogic
+            fex assigning functions to events initializing datasources etc.
+            
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ChildBeans.#ctor(System.Boolean,CompuTec.Core2.Beans.IUDOBean)">
+            <summary>
+            This Constructor is used when you haveto get base UDo from this child
+            
+            </summary>
+            <param name="master"></param>
+            <param name="BaseUdo"></param>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ChildBeans.#ctor(System.Boolean)">
+            <summary>
+            This constructor is used to initialize first Object in our UDO
+            </summary>
+            <param name="master"></param>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.ChildBeans.CurrentChild">
+            <summary>
+            This Interface is current selected Child
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.ChildBeans.RaiseEvents">
+            <summary>
+            This Variable is used for enabling and disabling Events
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.ChildBeans.Childs">
+            <summary>
+            List Of our Childs
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.ChildBeans.Columns">
+            <summary>
+            This List Contains All FieldNames including UDFItems
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.ChildBeans.RowAddedToCollection">
+            <summary>
+            problem with dbdatasource instert row in the meadle of object when object is in update Mode
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.ChildBeans.CurrentPos">
+            <summary>
+            Position in Chhilds Array();
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ChildBeans.BeforeUpdate">
+            <summary>
+            This Function can be overide 
+            You chould return false if document countains error
+            Good practice is to  throw exception with descripton what is wrong 
+            </summary>
+            <returns>return true if it is ok </returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ChildBeans.BeforeAdd">
+            <summary>
+            This Function can be overide 
+            You chould return false if document countains error
+            Good practice is to  throw exception with descripton what is wrong 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ChildBeans.IsRowFilled">
+            <summary>
+            This Method must be Ovverwrite if functionality of adding new row afert filling some data is required
+            This function is check on every last childRow before LoadToFormMethod is fired
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ChildBeans.RecalcChilds(System.Int32)">
+            <summary>
+            This Funnction is used To recalc all child Values and set Current Child Inteface
+            It is rised After AddRowAtPos and DelRowAtPos metchod
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ChildBeans.GetXML(System.Reflection.PropertyInfo[],System.String)">
+            <summary>
+            methood To Serialize ChildBean 
+            </summary>
+            <param name="propstoinsert"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.Converter.UDOConverter`1">
+            <summary>
+            This Converter is used To Create UDOBeanObject
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.CustomBean">
+            <summary>
+            This Object is to handle standard SAP UDO without Business Logic in default.
+            It lets dev to create object to store data in database in simple way.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.DataLayer.DataLayerUdoManager">
+            <summary>
+            This class will be used in UDOBean on Add, Update and Delete
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DataLayerUdoManager.#ctor(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfoGenerator{CompuTec.Core2.Beans.InternalSchema.UDOInfo,CompuTec.Core2.Beans.UDOBean})">
+            <summary>
+            
+            </summary>
+            <param name="statementGenerator"></param>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DataLayerUdoManager.Insert(System.String,CompuTec.Core2.Beans.UDOBean)">
+            <summary>
+            
+            </summary>
+            <param name="statements"></param>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DataLayerUdoManager.Update(System.String,CompuTec.Core2.Beans.UDOBean)">
+            <summary>
+            
+            </summary>
+            <param name="statements"></param>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DataLayerUdoManager.Delete(System.String,CompuTec.Core2.Beans.UDOBean)">
+            <summary>
+            
+            </summary>
+            <param name="statements"></param>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.ADbObjectGenerator`2">
+            <summary>
+            Abstract class
+            </summary>
+            <typeparam name="T">UDOInfo</typeparam>
+            <typeparam name="B">UDOBean</typeparam>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.ADbObjectGenerator`2.AddTemplateQuery(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo,System.String,System.String)">
+            <summary>
+            Method for delivering correct correct query syntax for insert operation for specific database.
+            </summary>
+            <param name="dbObject">IDbObjectInfo</param>
+            <param name="keys">list of columns</param>
+            /// <param name="values">list of values</param>
+            <returns>single string statement</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.ADbObjectGenerator`2.UpdateTemplateQuery(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo,System.String,System.String)">
+            <summary>
+            Method for delivering correct correct query syntax for update operation for specific database.
+            </summary>
+            <param name="dbObject">IDbObjectInfo</param>
+            <param name="setList">query part after Set</param>
+            <param name="code">code</param>
+            <returns>single string statement</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.ADbObjectGenerator`2.DeleteTemplateQuery(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo,System.String)">
+            <summary>
+            Method for delivering correct correct query syntax for delete operation for specific database.
+            </summary>
+            <param name="dbObject">IDbObjectInfo</param>
+            <param name="code">Database key</param>
+            <returns>single string statement</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.ADbObjectGenerator`2.GenerateDeleteStatements(`0,`1)">
+            <summary>
+            Generates statements for delete queries.
+            </summary>
+            <returns>IDbObjectInfo</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.ADbObjectGenerator`2.GenerateInsertStatements(`0,`1)">
+            <summary>
+            Generates statements for insert queries.
+            </summary>
+            <returns>IDbObjectInfo</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.ADbObjectGenerator`2.GenerateUpdateStatements(`0,`1)">
+            <summary>
+            Generates statements for update queries.
+            </summary>
+            <returns>IDbObjectInfo</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.ADbObjectGenerator`2.GetFieldNames(System.Collections.Generic.List{CompuTec.Core2.Beans.Structures.FieldInformation})">
+            <summary>
+            Method for extracting database property names from a List of FieldInformation Class
+            </summary>
+            <param name="FieldInformation">List of FieldInformation</param>
+            <returns>List of Database property names</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.ADbObjectGenerator`2.GetFieldValues(CompuTec.Core2.Beans.Structures.FieldDictionary,System.Collections.Generic.List{System.String})">
+            <summary>
+            Method for extracing FieldDictionary values
+            </summary>
+            <param name="dict">Field Dictionary</param>
+            <param name="list">List of Field Dictionary's keys</param>
+            <returns>List of Field Dictionary's values</returns>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.DbObjectInfo">
+            <summary>
+            Simple interface for getting string statements for query execution
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.HANAStatementsGenerator`2">
+            <summary>
+            Class responsible for preparing raw queries for SAP HANA. Returns IDbObject for each of themn(insert/update/delete)
+            </summary>
+            <typeparam name="T">UDOInfo</typeparam>
+            <typeparam name="B">UDOBean</typeparam>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.HANAStatementsGenerator`2.AddTemplateQuery(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo,System.String,System.String)">
+            <summary>
+            Method for delivering correct correct query syntax for insert operation for SAP HANA.
+            </summary>
+            <param name="dbObject">IDbObjectInfo</param>
+            <param name="keys">list of columns</param>
+            /// <param name="values">list of values</param>
+            <returns>single string statement</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.HANAStatementsGenerator`2.UpdateTemplateQuery(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo,System.String,System.String)">
+            <summary>
+            Method for delivering correct correct query syntax for update operation for SAP HANA.
+            </summary>
+            <param name="dbObject">IDbObjectInfo</param>
+            <param name="setList">query part after Set</param>
+            <param name="code">code</param>
+            <returns>single string statement</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.HANAStatementsGenerator`2.DeleteTemplateQuery(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo,System.String)">
+            <summary>
+            Method for delivering correct correct query syntax for delete operation for SAP HANA.
+            </summary>
+            <param name="dbObject">IDbObjectInfo</param>
+            <param name="code">Database key</param>
+            <returns>single string statement</returns>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo">
+            <summary>
+            Simple interface for getting string statements for query execution
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfoGenerator`2">
+            <summary>
+            Interface for generating IDbObjectInfo representing query statements
+            </summary>
+            <typeparam name="T">UDOInfo</typeparam>
+            <typeparam name="B">UDOBean</typeparam>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfoGenerator`2.GenerateInsertStatements(`0,`1)">
+            <summary>
+            Gets statements for insert queries
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfoGenerator`2.GenerateUpdateStatements(`0,`1)">
+            <summary>
+            Gets statements for update queries
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfoGenerator`2.GenerateDeleteStatements(`0,`1)">
+            <summary>
+            Gets statements for delete queries
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfoGenerator`2.GenerateLastInsertedStatements(`0,`1)">
+            <summary>
+            Gets statements for last inserted queries
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.SQLStatementsGenerator`2">
+            <summary>
+            Class responsible for preparing raw queries for MSSQL. Returns IDbObject for each of themn(insert/update/delete)
+            </summary>
+            <typeparam name="T">UDOInfo</typeparam>
+            <typeparam name="B">UDOBean</typeparam>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.SQLStatementsGenerator`2.AddTemplateQuery(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo,System.String,System.String)">
+            <summary>
+            Method for delivering correct correct query syntax for insert operation for MSSQL.
+            </summary>
+            <param name="dbObject">IDbObjectInfo</param>
+            <param name="keys">list of columns</param>
+            /// <param name="values">list of values</param>
+            <returns>single string statement</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.SQLStatementsGenerator`2.UpdateTemplateQuery(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo,System.String,System.String)">
+            <summary>
+            Method for delivering correct correct query syntax for update operation for MSSQL.
+            </summary>
+            <param name="dbObject">IDbObjectInfo</param>
+            <param name="setList">query part after Set</param>
+            <param name="code">code</param>
+            <returns>single string statement</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.DataLayer.DbObjectInfo.SQLStatementsGenerator`2.DeleteTemplateQuery(CompuTec.Core2.Beans.DataLayer.DbObjectInfo.IDbObjectInfo,System.String)">
+            <summary>
+            Method for delivering correct correct query syntax for delete operation for MSSQL.
+            </summary>
+            <param name="dbObject">IDbObjectInfo</param>
+            <param name="code">Database key</param>
+            <returns>single string statement</returns>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.DataLayer.UDOXmlStructure.Element">
+            <summary>
+            AutoGenerated XML structure for SAP UDO Object
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.FieldDictionary.#ctor">
+            <summary>
+            This Constructor is form net childs
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.FieldDictionary.#ctor(CompuTec.Core2.Beans.UDOTypes,System.Boolean)">
+            <summary>
+            This Constructor is for MasterBean and Master Childs 
+            other object are Copied From parent;
+            </summary>
+            <param name="typefUdo"></param>
+            <param name="header"></param>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.FieldDictionary.SetAllFieldsAsChanged">
+            <summary>
+            This methoods will set IsChanched to true for all Non SystemFields except Series
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.FieldDictionary.SetValueWithoutHandling(System.String,System.Object)">
+            <summary>
+            Puts Value To Dictionary But without handling Changing and Value Changed Event. 
+            
+            </summary>
+            <param name="PropertyName"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.FieldDictionary.SaveValues">
+            <summary>
+            Save DbDatasource Values To Form 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.Structures.FieldDictionary.TableName">
+            <summary>
+            Not Part of this Layer Must Be Moved Up
+            </summary>
+            <param name="datasources"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.FieldDictionary.InitFields(System.Collections.Generic.IEnumerable{CompuTec.Core2.Beans.Structures.FieldInformation})">
+            <summary>
+            Methood for Generating Properties
+            </summary>
+            <param name="finto"></param>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.FieldDictionary.Reset(System.Boolean)">
+            <summary>
+            Reset Binding Mechanism 
+            </summary>
+            <param name="userDataSources"> if true resets only UserDataSources</param>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.Structures.FieldInformation.RelatedHeaderPropertyName">
+            <summary>
+            This property is filled with Header PropertyName It Is used to synchonize Key Halue
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.Structures.FieldInformation.DatabasePropertyName">
+            <summary>
+            This Field is Mandatoru
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.FieldInformation.Validate(System.Object)">
+            <summary>
+            This Validator Cheks Only Lengtrh Of String Is This value is defined in Database
+            </summary>
+            <param name="Fieldname"></param>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.Structures.FieldRepresentation">
+            <summary>
+            This object is Stored in FirldDictionary
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.Structures.FieldRepresentation._Value">
+            <summary>
+            Private Value For Stored Data
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.Structures.FieldRepresentation.FieldInformation">
+            <summary>
+            This Class Holds Information About Field 
+            It Implements Basic Validation On Puted Data
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.Structures.FieldRepresentation.ExchangeDataManager">
+            <summary>
+            Reference to ExhangeDataManager
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.Structures.FieldRepresentation._ReadedFromSource">
+            <summary>
+            This Value is True When Value Is Filled From Source
+            Otherwise it must be updated From Source
+            </summary>
+            
+        </member>
+        <member name="F:CompuTec.Core2.Beans.Structures.FieldRepresentation.IsValueChanged">
+            <summary>
+            This Valiue is True When Value is Changed Due To UDO Internal Logic 
+            otherwise is false and dont have to be pusched into Source
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.Structures.FieldRepresentation.TypeOfProperty">
+            <summary>
+            It stores type of Property 
+            Thius Value is mandatory
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.Structures.FieldRepresentation.DatabaseField">
+            <summary>
+            This flagis set to true is field is Database field otherwise it is UsedDataSourceField
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.Structures.FieldRepresentation.PropertyName">
+            <summary>
+            This Property Store information About Database Property Name
+            This Value is Mandatory
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.Structures.FieldRepresentation.Value">
+            <summary>
+            This Property is Used for Declaration In UdoBean
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.Structures.IExchangeDataManager.NewRow">
+            <summary>
+            This property is used to obtain if row must be added to dbdatasource 
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.IExchangeDataManager.GetDataSource">
+            <summary>
+            Returns Datasource 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Structures.IExchangeDataManager.GetMode">
+            <summary>
+            Returns type of Implementation 
+            UI or DI
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.Structures.UDSDeclaration">
+            <summary>
+            This Class Descripses UDS Stucture
+            
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IBatchNumbers.BatchNumber">
+            <summary>
+            mandatory
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IBatchNumbers.Locked">
+            <summary>
+            Indicates If Values Are Blocked ( in case that they are Already Receipted Or Issued
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IBatchNumbers.TotalQuantity">
+            <summary>
+            Calculates Total batch Wuantity for Current Document Line that is not Receipted or Issued
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.ICTAction">
+            <summary>
+            Base Type for Every Action
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.ICTAction.DoAction(System.Object@)">
+            <summary>
+            Excecutes an action
+            </summary>
+            <param name="documentNumer">Newly added DocEntry</param>
+            <returns> Success</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IDocumentBean.SetDefaultSeries">
+            <summary>
+            Sets the default series for Quality Control Test document.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IExtendedDocumentBean.SetDefaultSeries">
+            <summary>
+            Setts Default Document Series and set next Number to docNum
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.IExtendedUDO">
+            <summary>
+            Class Adds Formula Implementation
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IExtendedUDO.RecalcFormulas">
+            <summary>
+            Function to Activate Recalculation Engine on object
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.InternalShema.UDOChildInfo.GetDefaultValue(System.Type,System.String,System.String)">
+            <summary>
+            This Function Converts Default Value from database to Specified Type;
+            </summary>
+            <param name="propertyType"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.InternalSchema.UDOInfo.Childs">
+            <summary>
+            We will Hold Here all informations of child Items representation
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.InternalSchema.UDOInfo.udfItems">
+            <summary>
+            We will hodl here all udfItemTypes with default values and correct types get from database
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.InternalSchema.UDOInfo.GetDefaultValue(System.Type,System.String,System.String)">
+            <summary>
+            This Function Converts Default Value from database to Specified Type;
+            </summary>
+            <param name="propertyType"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.IUDFItem">
+            <summary>
+            Representation of UdfField ( name and Value)
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDFItem.HasValidValues">
+            <summary>
+            Does Udf has Valid Values
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDFItem.Description">
+            <summary>
+            Description Of an UDF item
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDFItem.Name">
+            <summary>
+            Name of UDF Field
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDFItem.GetValueType">
+            <summary>
+            Type of Value
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDFItem.Value">
+            <summary>
+            Get,Set UDF Value
+            </summary>
+            
+        </member>
+        <member name="T:CompuTec.Core2.Beans.IUDFItems">
+            <summary>
+            Object For User User Defined Fields
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDFItems.Count">
+            <summary>
+            Gets Number of UDF fields in this object 
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDFItems.Item(System.String)">
+            <summary>
+            Gets Current UdfObject
+            </summary>
+            <param name="name">Name of UDF field</param>
+            <returns>UDF Representation</returns>
+            /// <example>
+            <code lang="C#">CompuTec.ProcessForce.API.Documents.BillOfMaterials.IBillOfMaterial bom=pfcompany.CreatePFObject(ObjectTypes.BillOfMaterial); 
+            string udfValue = bom.UDFItems.Item("U_test").Value; //recive current value
+            bom.UDFItems.Item("U_test").Value="new value" ;// set new value</code>
+            </example>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDFItems.getUDFNames">
+            <summary>
+            Returns List of UDF Fields
+            </summary>
+            <returns>
+            Table of filed names
+            </returns>
+            <example>
+            <code lang="C#">CompuTec.ProcessForce.API.Documents.BillOfMaterials.IBillOfMaterial bom=pfcompany.CreatePFObject(ObjectTypes.BillOfMaterial); 
+            string[] udfFieldNames = bom.UDFItems.getUDFNames();</code>
+            </example>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.IUDOBean">
+            <summary>
+            This Interface delivers Basic Operaton On our UDO
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDOBean.ErrorDescription">
+            <summary>
+            Error Information if any
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOBean.Add">
+            <summary>
+            methood adds Object To Database
+            </summary>
+            <returns>0 - sucess</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOBean.GetByKey(System.String)">
+            <summary>
+            Loads object with values From Database
+            </summary>
+            <param name="key">master Key Code or Docentry</param>
+            <returns>0 if success</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOBean.Update">
+            <summary>
+            Update An object 
+            </summary>
+            <returns>0 - if succeded</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOBean.Delete">
+            <summary>
+            Deletes an object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOBean.GetLastObjectCode">
+            <summary>
+            Returns Object Code form newly added item
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDOBean.UdoTableName">
+            <summary>
+            Gets Correspondend Table name in databse
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDOBean.UdoLogTableName">
+            <summary>
+            Gets Correspondend Log Table name in databse 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDOBean.UdoName">
+            <summary>
+            gets UDOName of current object
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOBean.CanDelete">
+            <summary>
+            Gets Can Delete information
+            </summary>
+            <returns>Returns true if object can be deleted</returns>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDOBean.UDFItems">
+            <summary>
+            User Defined Items 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDOChildBean.Count">
+            <summary>
+            Number of Childs
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDOChildBean.UDFItems">
+            <summary>
+            UDF Items for current object
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOChildBean.AddRowAtPos(System.Int32)">
+            <summary>
+            Adds Row At specific position
+            </summary>
+            <param name="pos"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOChildBean.DelRowAtPos(System.Int32)">
+            <summary>
+            Del rows of specific Position
+            </summary>
+            <param name="pos"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOChildBean.Add">
+            <summary>
+            Adds Row ot the end
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.IUDOChildBean.SetCurrentLine(System.Int32)">
+            <summary>
+            Sets Line on specific Position from o to Count
+            </summary>
+            <param name="LineNum"></param>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.IUDOChildBean.U_LineNum">
+            <summary>
+            Gets ProcessForce Line Num
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.MasterDataBean">
+            <summary>
+            This Class is Used for Master Bean Type of SAP UdoObjectType
+            
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.MasterDataBean.UseOwnCodeValue">
+            <summary>
+            If You will set this property to true 
+            Code wont be generatine AutomaticlyUseOI
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.Tools.BulkUdoConverter">
+            <summary>
+            Class to faster getting List Of UDo Object from system 
+            Udo taken by this method is not suppported for updating ( not tested)!!!!
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Tools.BulkUdoConverter.BuildXmlTransformationIput``1(System.String,System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean@,System.Boolean@)">
+            <summary>
+            Builds Formatted XML document with multiple UDO representation
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="Token"></param>
+            <param name="isMasterData"></param>
+            
+            <param name="type"></param>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Tools.BulkUdoConverter.Transform(System.Xml.Linq.XDocument,System.Boolean)">
+            <summary>
+            Transforms XML document prepared by Builder to SAP Formatted Schema
+            </summary>
+            <param name="inDoc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Tools.BulkUdoConverter.GetBulkObjects``1(System.String,System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean)">
+            <summary>
+            Gets list Of Udo Object of specified type based on Key collection
+            </summary>
+            <typeparam name="T"> wher ususaly T is int -Documents or string-Master data udo </typeparam>
+            <param name="Token">Database Token</param>
+            <param name="type">Type of Udo object</param>
+            <param name="keys">Keys collection Code or DocEntry</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.Tools.BulkUdoConverter.GetBulkObjects``2(System.String,System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean)">
+            <summary>
+            Gets list Of Udo Object of specified type based on Key collection
+            </summary>
+            <typeparam name="T"> wher ususaly T is int -Documents or string-Master data udo </typeparam>
+            <param name="Token">Database Token</param>
+            <param name="type">Type of Udo object</param>
+            <param name="keys">Keys collection Code or DocEntry</param>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.UDOBean">
+            <summary>
+            Implements basic logic of our UdoBean
+            </summary>
+             
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.ChangingFromUdo">
+            This Field is used to Block some internal Actions Thant are triggered Autmatically
+        </member>
+        <member name="E:CompuTec.Core2.Beans.UDOBean.RowAdded">
+            <summary>
+            This event is rised aferAdding an row
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.UDOBean.U_CTVersion">
+            <summary>
+            Holds Information of PF Version
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.UDOBean.U_CTDBVersion">
+            <summary>
+            Holds information About DataBaseVersion
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.UDOBean.ErrorDescription">
+            <summary>
+            Holds Error Information 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Beans.UDOBean.UDFItems">
+            <summary>
+            UserDefined Items
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.MatrixInformation">
+            <summary>
+            This Data Collection Must Be filled To avoid Costly Exception Handling on Form Load methood
+            Please provide nessesery information for oll objects and Forms 
+            DictionaryKey is a Form TypeEx
+            Dictionary value Contains all matrixes used On Form 
+            if this object is null system will check and throw time costly exception 
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.HasRelation">
+            <summary>
+            This flag is true when UDO has Relation key Mechanism enabled
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.RelationHeaderPrpertyList">
+            <summary>
+            This Array Stores infrmations with Header Propertiy name for Relation mechanism;
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.Childs">
+            <summary>
+            This dictionary Holds All Childs
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.ChildDictionary">
+            <summary>
+            .This dictionary contains representation of our Children 
+            Key is Code 
+            Value is a key in Childs;
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.SupportedMethod">
+            <summary>
+            this value desctipes what method are allowed for user
+            default is add 
+            only after get fromForm and GetByKey must be set to Add
+            
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.RaiseEvents">
+            <summary>
+            This Variable is used for enabling and disabling Events
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.List_DynamicFields">
+            <summary>
+            This Dictionary hold information of dynamic fields that should be load to form to UserDataSource.
+            This is used only in function LoadToForm
+            Key: name of property in thisClass
+            Value: name of UserDataSource 
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.UDSDeclaration">
+            <summary>
+            List Of UserDataFields
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean.udoinformation">
+            <summary>
+            This object Holds All UDO shtructure informations
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Beans.UDOBean.SupporteMethod">
+            <summary>
+            This Enum is used to het information what methods ar allowed
+            Whe document is created Only add method sholud be supported 
+            if Document is filled with  getbykey only Update is supported
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Beans.UDOBean._IUDFItems">
+            <summary>
+            UdfitemsClass
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.BeforeAdd">
+            <summary>
+            ThisFunction Is Rised Before Add It can be In delivered classses overrite 
+            It will be used for check whether we can Update our UDO object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.BeforeUpdate">
+            <summary>
+            ThisFunction Is Rised Before Update It can be In delivered classses overrite 
+            It will be used for check whether we can Update our UDO object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.Init">
+            <summary>
+            This method  is prepared to do some while creating an object using Converter
+            it can be overite on class
+            on base class it prepare UDF
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.GetRelationRepresentation(System.String)">
+            <summary>
+            Returns Information About Fields That must be udpated;
+            </summary>
+            <param name="headerPropertyName"></param>
+            <returns> Key is type Of Child </returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.Update">
+            <summary>
+            Update An object 
+            </summary>
+            <returns>0 - if succeded</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.NormalizeXML(System.Xml.Linq.XDocument)">
+            <summary>
+            This method is responsible for mormalize xml 
+            Date must me in 2016-11-28 
+            Time mus be 00:00:00
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CompuTec.Core2.Beans.UDOBean.NormalizeTimesOnlyXML(System.Xml.Linq.XDocument)" -->
+        <!-- Badly formed XML comment ignored for member "M:CompuTec.Core2.Beans.UDOBean.InitializeUdoFromXml10(System.Xml.Linq.XDocument)" -->
+        <member name="M:CompuTec.Core2.Beans.UDOBean.InitializeUdoFromXml20(System.Xml.Linq.XDocument)">
+            <summary>
+            Initialize Udo Bean From XMl string for udo 2.0
+            </summary>
+            <param name="xml"> Xml document</param>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.CanWeGetUdoDirectlyFromQuery">
+            <summary>
+            this predicate indicates wether we can Get Xml from Data Layer
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.GetXmlFromSAPService(System.String)">
+            <summary>
+            This method is getting XML Document From SAP Service
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.GetByKey(System.String)">
+            <summary>
+            This Function get specific object by ocject type 
+            if documenttype is document the value is docentry else Code
+            </summary>
+            <param name="key"> key of a table</param>
+            <returns> 0 if succes else -1</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Beans.UDOBean.ClearData">
+            <summary>
+            This function ned to be changed 
+            Childs udos nead to be clear manulay using reflection
+            This funct is responsible for cleaning all fields in our UDOBeanClass
+            This function cost a lot of time to clear all Data an must be changed
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Connection.ConnectionHolder">
+            <summary>
+            Main Class to Handle SAP Connections 
+            It contains All connection Interfaces
+            * SAP Company
+            * SAP Application
+            * Direct Database Connectio
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Connection.ConnectionHolder.InitializeEventWatcher">
+                                                  ///
+                  Computec.Core2.UI Important      ///
+                                                  ///
+        </member>
+        <member name="F:CompuTec.Core2.Connection.ConnectionHolder.DbType">
+            <summary>
+            Database Type of Connection
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Connection.ConnectionHolder.GetCompany(System.String)">
+            <summary>
+            Get SAP Company object 
+            </summary>
+            <param name="Token">Connection Token</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Connection.ConnectionHolder.GetTokenByCmpany(CompuTec.BaseLayer.DI.Company)">
+            <summary>
+            Returns Token for witch this company is assigned to 
+            </summary>
+            <param name="company"></param>
+            <returns></returns>
+        </member>
+        <member name="P:CompuTec.Core2.Connection.ConnectionHolder.CanUseDataLayer">
+            <summary>
+            This propertu indicates wether sistem can use Direct Database Connection 
+            
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Connection.ICommonConnection">
+            <summary>
+            Common interface used by all Connection types.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Connection.ICommonConnection.GetConnectionString">
+            <summary>
+            Returns Connection string for active connection.
+            </summary>
+            <returns>Connection string as String</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Connection.ICommonConnection.GetAddonIdentifier">
+            <summary>
+            Returns Addon Identifier String.
+            </summary>
+            <returns>Addon Identifier String as String</returns>
+        </member>
+        <member name="T:CompuTec.Core2.Connection.ConnectionConstans">
+            <summary>
+            Describes the constans used by Connection like a connection string.
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Connection.ConnectionConstans.ConnectionString">
+            <summary>
+            Connection String supplied by SAP valid for both runtime and development. 
+            The connection string maybe freely passed as an argument to the application.
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Connection.ConnectionConstans.DevelopmentLicenceAddonIdentifier">
+            <summary>
+            A unique string allowing the License Service to recognize your add-ons.
+            You may generate the license string directly from SBO application using 
+            Administration -> Licences -> ID Addon generator and then put the number here.
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Connection.ConnectionConstans.NullAddonIdentifier">
+            <summary>
+            The Null addon identifier
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Connection.ConnectionConstans.DefaultAddonIdentifier">
+            <summary>
+            Default addon identifier.
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Connection.ConnectionConstans.IsAddonIdentifierEnabled">
+            <summary>
+            Global parameter for enabling/disabling setting of addonIdentifier.
+            Until Bug 85 exists keep this parameter set to false.
+            TODO: Move it into Lib.config file and read it from this file. Shouldn't be included here!!!
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Connection.ConnectionConstans.UIConnectionType">
+            <summary>
+            Defines UI Connection type.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Connection.AbstractCommonConnection">
+            <summary>
+            Abstract class declaring a common logic for all connection types. This class implements a CommonConnection
+            interface. Put here and declare into CommonConnection interface every new logic you want to be used in all
+            Connection types. It defines all common properties like a ConnectionString, AddonIdentifierString etc.
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Connection.AbstractCommonConnection.ConnectionString">
+            <summary>
+            Connection String supplied by SAP valid for both runtime and development.
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.Connection.AbstractCommonConnection.AddonIdentifierString">
+            <summary>
+            A unique string allowing the License Service to recognize your add-ons.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Connection.AbstractCommonConnection.GetAddonIdentifier">
+            <summary>
+            Returns a unique string allowing the License Service to recognize your add-ons.
+            </summary>
+            <returns>Addon identifier as String</returns>
+        </member>
+        <member name="T:CompuTec.Core2.Connection.DIConnectionException">
+            <summary>
+            Exception thrown when there was a problem during connecting to DI of SBO application.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Connection.NoDIConnectionException">
+            <summary>
+            DIConnection cannot be established.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Connection.NoUIConnectionException">
+            <summary>
+            UIConnection connection cannot be established.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Connection.NoUIDIConnectionException">
+            <summary>
+            UIDIConnection connection cannot be established.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Connection.UIConnectionException">
+            <summary>
+            Exception thrown when there was a problem during connecting to UI of SBO application.
+            Exception may occurs when there is no running instance of application, it's not responding 
+            or as a result of other operations performing during connection.
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.CoreInfo.SolutionName">
+            <summary>
+            Name Of Solution
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.CoreInfo.SolutionVersion">
+            <summary>
+            App V ersion of solution
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.CoreInfo.SolutionDBVersion">
+            <summary>
+            DatabaseVersion
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.CoreInfo.TranslationInvoker">
+            <summary>
+            Translations Invoker 
+            use this to load Translations 
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.CoreInfo.CreateObject(System.String,System.String)">
+            <summary>
+            UDOFacotory Class Please implement this behaviour
+            </summary>
+            <param name="Token"></param>
+            <param name="ObjectType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.CoreInfo.ImplementObject(System.String)">
+            <summary>
+            Predicate that indicates weather this object is implemented by this library
+            </summary>
+            <param name="ObjectType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.CoreManager.GetUDO``1(System.String)">
+            <summary> Universal Generic method which returns instance of specific UDO object </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Attributes.KeyPropertyAttribute">
+            <summary>
+            Thius classis sed to automaticly implement Key Value from Header to Child Table 
+            Used when child Table Has a key that is synchronized with header Value 
+            Echa change of Header Value Changes its values in Childs 
+            and it is added each time in childs while adding new row
+            We put this on property in child
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Attributes.TimeType">
+            <summary>
+            Allows to add Date Time filed on UDO objects but holds Time Only
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Attributes.TimeSpanType">
+            <summary>
+            Allows to add  Time Span filed on UDO objects 
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Attributes.ConfigurationDataField">
+            <summary>
+            Determines the name of an existing field in CT_PF_CONFIG database table.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Attributes.ConfigurationDataField.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of ConfigurationDataField object.
+            </summary>
+            <param name="name">The name of an existing field in CT_PF_CONFIG database table.</param>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Attributes.ConfigurationDataField.Name">
+            <summary>
+            Gets the name of configuration data field.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Database.CTRecordset">
+            <summary>
+            Base Class Witch implements Recordset Functionality 
+            Allows to switch Implementation ( data layer) beeten Connection and SAP Recordset
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Database.DataLayer">
+            <summary>
+            Class form Managing and Holding direct Database Connection
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.DI.Database.DataLayer.HanaAssemblyLoaded">
+            <summary>
+            Static Value that inform me of Hana Ado Library was loaded
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Database.DataLayer.DataLayerInfo">
+            <summary>
+            Holds data Layer Connection and Establishing Rules
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.DataLayer.DataLayerInfo.GetCreditionals(System.String,System.String,System.String,System.String,System.String,CompuTec.Core2.Connection.DatabaseType)">
+            <summary>
+            Gets DataBaseCreditionals
+            </summary>
+            <param name="token"></param>
+            <param name="licenceServer"></param>
+            <param name="port"></param>
+            <param name="dbName"></param>
+            <param name="server"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.DataLayer.DataLayerInfo.GetSalt(System.String,System.String)">
+            <summary>
+            Get Salt Value by existing SAP database COnnection
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.DataLayer.DataLayerInfo.InitializeDataLayer(System.String,System.String,CompuTec.Core2.Connection.DatabaseType,System.String,System.String)">
+            <summary>
+            Initialize and connect to database 
+            </summary>
+            <param name="server"></param>
+            <param name="companyDb"></param>
+            <param name="type"></param>
+            <param name="password"></param>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.DataLayer.GetLayerState(System.String)">
+            <summary>
+            Returns True Wether 
+            </summary>
+            <param name="Token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.DataLayer.InitializeConnectionSilent(System.String,System.String,System.String)">
+            <summary>
+            This method is responsible for Initializing DataLayer Connection
+            Not Throws any exception
+            </summary>
+            <param name="token"></param>
+            <param name="LicenceServer"></param>
+            <param name="port"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CompuTec.Core2.DI.Database.DataLayer.InitializeConnection(System.String,System.String,System.String)" -->
+        <member name="T:CompuTec.Core2.DI.Database.DataLayerState">
+            <summary>
+            states of Data Layer 
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Database.SAPFields">
+            <summary>
+            Encapsulates  SAP IFields interface
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Database.ICTField">
+            <summary>
+            Encapsulates SAPBobs.IField
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.ICTField.Description">
+            <summary>
+            Coluumn Descrioption
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.ICTField.FieldID">
+            <summary>
+            Column Position
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.ICTField.Name">
+            <summary>
+            Column Name
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.ICTField.Size">
+            <summary>
+            Data size
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.ICTField.Type">
+            <summary>
+            Value Data type 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.ICTField.Value">
+            <summary>
+            Query Column Value
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.ICTField.SetNullValue">
+            <summary>
+            Not Uset
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Database.ICTFields">
+            <summary>
+            Encapsulates SAPBobs.IFields interface
+            For unification database Connection
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.ICTFields.Count">
+            <summary>
+            Fields Count
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.ICTFields.Item(System.String)">
+            <summary>
+            GetField By Colukn Name
+            </summary>
+            <param name="Column"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.ICTFields.Item(System.Int32)">
+            <summary>
+            Returns Field By Position
+            </summary>
+            <param name="ColPos"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Database.ICTRecordset">
+            <summary>
+            encapsulates SAPBoscom.Recordset object 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.ICTRecordset.RecordCount">
+            <summary>
+            Query results
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.ICTRecordset.Fields">
+            <summary>
+            Current Row Fields Collection
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.ICTRecordset.GetAsXML">
+            <summary>
+            Returns XML Representation of fetched data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.ICTRecordset.DoQuery(System.String)">
+             <summary>
+             Execute Query 
+             Strongly not recomended to use this function Please Use QueryManager
+            
+             </summary>
+             <param name="Query"></param>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.QueryManager.SimpleTableName">
+            <summary>
+            Table Name For 4 Parameters
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.QueryManager.SimpleReultFields">
+            <summary>
+            Simple Fields For 4 Parameters
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.QueryManager.SimpleWhereFields">
+            <summary>
+            Simple Fields For 4 Parameters
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.QueryManager.ExecuteSimpleQuery``1(System.String,System.String,System.String,System.String,System.Object)">
+            <summary>
+            Calls 4 parametrs
+            </summary>
+            <typeparam name="T">type to return</typeparam>
+            <param name="token">token</param>
+            <param name="tableName">table name</param>
+            <param name="returnValue">return column name</param>
+            <param name="whereColumn">where column name</param>
+            <param name="whereValue">where parameter value</param>
+            <returns>If result is found then it is return; if no result exists returns default type value from T</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.QueryManager.ExecuteSimpleQuery``1(System.String,System.String,System.String,System.String[],System.Object[])">
+            <summary>
+            calls simple query
+            </summary>
+            <typeparam name="T">type to return</typeparam>
+            <param name="token">token of connection</param>
+            <param name="tableName">table name</param>
+            <param name="returnValue">return column name</param>
+            <param name="whereColumns">arary of where column names</param>
+            <param name="whereValues">array of where parameters values</param>
+            <returns></returns>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.QueryManager.CommandText">
+            <summary>
+            Set CommandText For Query
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Database.SAPRecordset">
+            <summary>
+            Clas For managing SAP Recordset
+            
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.DI.Database.SAPRecordset.ComDictionary">
+            <summary>
+            Holds all SAP Fiuelds Opbjects witch encapsulates SAP COM object
+            as a key Column Name
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.DI.Database.SAPRecordset.IntComDictionary">
+            <summary>
+            Holds all SAP Fiuelds Opbjects witch encapsulates SAP COM object
+            as a key Column Position
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.DI.Database.SAPRecordset.casulaComList">
+            <summary>
+            Other stored COM objects
+            </summary>
+        </member>
+        <member name="F:CompuTec.Core2.DI.Database.SAPRecordset.__Fields">
+            <summary>
+            SAP Fields Object
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Database.SAPRecordset.Fields">
+            <summary>
+            Fields
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.SAPRecordset.#ctor(System.String)">
+            <summary>
+            Standatd Constructor
+            </summary>
+            <param name="Token"></param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.SAPRecordset.CleanFields">
+            <summary>
+            Dispatches all Collected Fields COm objects
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.SAPRecordset.CleanMemory">
+            <summary>
+            Clears all Allocated Com Object
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Database.SQL.SQLRecordset">
+            <summary>
+            Clas For managing Direct Database Connection
+            
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.SQL.SQLRecordset.GetAsXmlForUdo">
+            <summary>
+            This Method is Used To Get Udo Witch is compatibile with sap xml schema with null Values
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Database.SQL.SQLRecordset.GetAsXML">
+            <summary>
+            Returns SAP Formated ( almoust) 
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.BaseQueries.GetQuantityPrecision(System.String)">
+            <summary>
+            Selects QtyDec
+            </summary>
+            <param name="Token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.BaseQueries.GetLocalCurrency(System.String)">
+            <summary>
+            "MainCurncy" 
+            </summary>
+            <param name="Token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.BaseQueries.GetTimeZoneOffset(System.String)">
+            <summary>
+            returns -999 when no time zone is defined
+            </summary>
+            <param name="Token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetItemLastBinLocation(System.String,System.String,System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+             T1.[AbsEntry], T1.[BinCode], T1.[WhsCode]
+            </summary>
+            <param name="Token"></param>
+            <param name="itemCode"></param>
+            <param name="whsCode"></param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="isSystem"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetItemCurrentBinLocation(System.String,System.String,System.String)">
+            <summary>
+            T1.[AbsEntry], T1.[BinCode], T1.[WhsCode]
+            </summary>
+            <param name="Token"></param>
+            <param name="ItemCode"></param>
+            <param name="WhsCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetItemCurrentAndHistoricalBinLocation(System.String,System.String,System.String)">
+            <summary>
+            T1.[AbsEntry], T1.[BinCode], T1.[WhsCode]
+            </summary>
+            <param name="Token"></param>
+            <param name="ItemCode"></param>
+            <param name="WhsCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetItemLIFOBinsWitnOnHandQty(System.String,System.String,System.String)">
+            <summary>
+            T1."AbsEntry", min(T2."DocDate")
+            </summary>
+            <param name="Token"></param>
+            <param name="ItemCode"></param>
+            <param name="WhsCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetItemFIFOBinsWitnOnHandQty(System.String,System.String,System.String)">
+            <summary>
+            T1."AbsEntry", min(T2."DocDate")
+            </summary>
+            <param name="Token"></param>
+            <param name="ItemCode"></param>
+            <param name="WhsCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GenerateCode(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="token"></param>
+            <param name="TableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GenerateHolidayInfo(System.String)">
+            <summary>
+            t1."WndFrm",t1."WndTo",t2."StrDate",t2."EndDate",t2."Rmrks" 
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.InstallSpecificView(System.String,System.String,System.String,System.String)">
+            <summary>
+            Installs Specific View
+            </summary>
+            <param name="Token"></param>
+            <param name="ViewCommand"></param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.FormatedSerchExists(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+             T3."IndexID"
+            </summary>
+            <param name="token"></param>
+            <param name="FormID"></param>
+            <param name="ItemID"></param>
+            <param name="ColID"></param>
+            <param name="QName"></param>
+            <param name="CatName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetUserQueryKey(System.String,System.String,System.String)">
+            <summary>
+            "IntrnalKey"  
+            </summary>
+            <param name="token"></param>
+            <param name="QName"></param>
+            <param name="CatName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetFileData(System.String,System.Int32,System.String,System.String)">
+            <summary>
+            SUBSTRING("U_FileData", @StartPos, 2048)
+            </summary>
+            <param name="token"></param>
+            <param name="StartPos"></param>
+            <param name="TableCode"></param>
+            <param name="TableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetItemsInformations(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            T0."ItemCode", T0."ItemName", IFNULL(T0."InvntryUom", ''), t0."PrcrmntMtd", t1."U_Code", t1."U_Description" 
+            </summary>
+            <param name="token"></param>
+            <param name="itemCodes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetAccocuntsNamesForCodes(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            gets account codes an names
+            </summary>
+            <param name="token"></param>
+            <param name="accountCodes">accocunt codes</param>
+            <returns>dictionary key - account code, value - account name</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetBPNamesForCodes(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            gets bp codes an names
+            </summary>
+            <param name="token"></param>
+            <param name="accountCodes">bp codes</param>
+            <returns>dictionary key - bp code, value - bp name</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetOCRNamesForCodes(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            gets ocr codes an names
+            </summary>
+            <param name="token"></param>
+            <param name="accountCodes">ocr codes</param>
+            <returns>dictionary key - ocr code, value - ocr name</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.GetDocumentAuthorizationsData(System.String,System.String)">
+            <summary>
+            "AbsId",ifnull("FathId",'') as "FathId" ,"Levels",ifnull("FormId",'') as "FormId"
+            </summary>
+            <param name="token"></param>
+            <param name="PermissionID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Queries.IQueries.HasReadOnlyPerrmissionForForm(System.String,System.Int32,System.String)">
+            <summary>
+            Obtain wether User has Read Only permission for UDO Form
+            </summary>
+            <param name="token"></param>
+            <param name="UserSign"></param>
+            <param name="FormType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.Actions.ColumnOperationsTools">
+            <summary>
+            Static class that contains static functions which are helpful in order to modify existed columns in database table using SAP SDK services.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.Actions.ColumnOperationsTools.ChangeParameterOfSomeColumn(System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            This is ready scenario function for changing concrete parameters.
+            You may specify which values would be different for the new column by setting parameters.
+            If you do not want to changes concrete parameter then leave value as null. Just values different than null, not empty strings and numbers greater than 0 would be taken into consideration.
+            For example this function can be used if you want to change type of specific column from alphanumerical to memo.
+            </summary>
+            <param name="Token">Token</param>
+            <param name="Table">Table</param>
+            <param name="Column">Existed column name to be modified.</param>
+            <param name="Description">Description</param>
+            <param name="SizeID">SizeID as integer</param>
+            <param name="EditSize">EditSize as integer</param>
+            <param name="Type">Type from BoFieldTypes enumerator.</param>
+            <param name="SubType">SubType from BoFldSubTypes enumerator.</param>
+            <param name="DefaultValue">Default values</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.Actions.ColumnOperationsTools.DeleteColumn(System.String,System.String,System.String)">
+            <summary>
+            Deleting existed column using Sap service.
+            </summary>
+            <param name="Token">Token</param>
+            <param name="Table">Table</param>
+            <param name="Column">Column to be removed.</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.Actions.ColumnOperationsTools.CopyValues(System.String,System.String,System.String,System.String)">
+            <summary>
+            Copying values from one column to the other one.
+            Both of them must already exist.
+            </summary>
+            <param name="Token">Token</param>
+            <param name="Table">Table</param>
+            <param name="ToColumn">Column the values are going to be taken from.</param>
+            <param name="FromColumn">Column the values are going to be insert into.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.Actions.ColumnOperationsTools.AddColumnBasedOn(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Adding new column to the table, based on the existing (in such a table) column.
+            You may specify which values would be different for the new column by setting parameters.
+            If you do not want to changes concrete parameter then leave value as null. Just values different than null, not empty strings and numbers greater than 0 would be taken into consideration.
+            </summary>
+            <param name="Token">Token</param>
+            <param name="Table">Table</param>
+            <param name="ColumnBased">Existed column name, used as base.</param>
+            <param name="NewColumnName">Name of new column, to be created.</param>
+            <param name="Description">Description</param>
+            <param name="SizeID">SizeID as integer</param>
+            <param name="EditSize">EditSize as integer</param>
+            <param name="Type">Type from BoFieldTypes enumerator.</param>
+            <param name="SubType">SubType from BoFldSubTypes enumerator.</param>
+            <param name="DefaultValue">Default values</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.Actions.ColumnOperationsTools.AddColumnChangeJustName(System.String,System.String,System.String,System.String)">
+            <summary>
+            Adding new column based on the other, existed one.
+            In this case it is copying all other parameters of the existed column as a parameters to the new one.
+            Just the name is changed (obviously).
+            </summary>
+            <param name="Token">Token</param>
+            <param name="Table">Table</param>
+            <param name="ColumnBased">Existed column name, used as base.</param>
+            <param name="NewColumnName">Name of new column, to be created.</param>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.Actions.SetupCustomAction">
+            <summary>
+            This Class must be override by user Action 
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.Attributes.ExecuteInstallAction.#ctor(System.Double)">
+            <summary>
+            This Action Will be Executed if Database Version of ProcessForce is lower than parameter
+            </summary>
+            <param name="_RunIfPFVersionIsLessThan">Version  below Action Executes</param>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.Attributes.UpdateDictionary">
+            <summary>
+            This attribute must be set in ItemUtils It Descripses How ofen CollectionNumstBeUpdated 
+            and discribses way (select) to achive this
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.Attributes.UpdateDictionary.#ctor(System.Int64,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="refreshInterval">interval in milisecounds</param>
+            <param name="query"> Query with Paramaters as '{0}' as Key</param>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.Attributes.AuthorizationInstall">
+            <summary>
+            If This Attribute is set it will Install Authorisation to SAP
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.Attributes.ReportInstall">
+            <summary>
+            If this attribute is Set It will Install Report To SAP
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.Attributes.TableInstall">
+            <summary>
+            If This Attribute is Set It will install or Update Table to SAP
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.Attributes.TableInstall.#ctor">
+            <summary>
+            Default Priority 
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.Attributes.TableInstall.#ctor(System.Int32)">
+            <summary>
+            This Constructor is used tu set up Priority 
+            if higher it will be install faster than other
+            
+            </summary>
+            <param name="priority"></param>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.DayOfExecution">
+            <summary>
+            Sets or Returns the number of days remains until the day of execution of this alert. 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.ExecutionTime">
+            <summary>
+            Returns the time remaining until the execution hour of this alert. 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.FrequencyInterval">
+            <summary>
+            Returns the time unit used to define the cycle Frequency of this alert.  
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.FrequencyType">
+            <summary>
+            Sets or returns a valid value that determines this allert frequency type.  
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.AlertName">
+            <summary>
+            Sets or returns the Name of this Alert. 
+            </summary> 
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.Param">
+            <summary>
+            Sets or returns the Parameters that define this Alert. 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.Priority">
+            <summary>
+            Sets or returns valid value for this alert Priority.  
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.CategoryName">
+            <summary>
+             Sets Category Name of Query 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.QueryName">
+            <summary>
+            Sets Query Name 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Alert.SaveHistory">
+            <summary>
+            Determines whether or not to save history for this Alert.  
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.Query">
+            <summary>
+            Base class to install Quey in SAP b1
+             To install this class please add {install attribute
+             Must have exacly the same QureryCategory Nmae as Query Category Parameter
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Query.QueryCategory">
+            <summary>
+            Linked to Query Category - Mandatory
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Query.QueryDescription">
+            <summary>
+            Mandatory Query Name 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Query.QueryString">
+            <summary>
+            Orginal tsql Query code
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.QueryCategory">
+            <summary>
+            Base Class to install Query category Into SAP B1
+            To install this class please add {install attribute
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.QueryCategory.Name">
+            <summary>
+            Mandatyry Category name - also a key 
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.Representation.UdoRepresentation.Type">
+            <summary>
+            1:Master Data
+            3:Document
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.SimpleDictionary.IsUdoRegistered(System.String)">
+            <summary>
+            check if UDO is registered
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.SimpleDictionary.ShouldUpdateUdo(System.String)">
+            <summary>
+            check if something is changed in UDO definition
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.SimpleDictionary.AddCompuTecVersionField">
+            <summary>
+            Adds the U_PFVersion field to ExtraFields.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.SimpleDictionary.AddCompuTecDbVersionField">
+            <summary>
+            Adds the U_PFDBVersion field to ExtraFields.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DocumentLayoutInfo.#ctor(System.String,System.String,System.Boolean)">
+                                                  ///
+                  Computec.Core2.UI Important      ///
+                                                  ///
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager">
+            <summary>
+            Abstract class for creation the definitions of UDOTables.
+            Implement this in every new definition of UDOTable.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.ComparePriority(System.Object,System.Object)">
+            <summary>
+            Sorter used to sort UDoManager Instances by proprity
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.ArchiveTablename">
+            <summary>
+            This is Name of ArchiveTableName for UDO Header and UDO Lines
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.#ctor(CompuTec.BaseLayer.Connection.IDIConnection)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="dbManager">DB Manager as DBManager.</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.Register">
+            <summary>
+            Registers the UDO.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.Unregister(System.Boolean)">
+            <summary>
+            Unregisters UDO.
+            </summary>
+            <param name="withTableRemoving">withTableRemoving as bool. Tells whether unregister only UDO object or unregister with related table removing.
+            True means unregister and remove a table, false means unregister only.</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.GetUDOTable">
+            <summary>
+            Returns UDOTable object associated with this manager.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.SetChildTables">
+            <summary>
+            This Function is requred For automatc Setup UDO objects;
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.CreateUDOTable">
+            <summary>
+            Custom implementation of UDOTable.
+            </summary>
+            <returns>Udo Table as IUDOTable</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.AfterInstall(System.Double,System.Double,System.Object)">
+            <summary>
+            This function can ve overide  and is executed after Table or UDO is install
+            </summary>
+            <param name="current_version">Curren Database Version - Before Instal/Update</param>
+            <param name="Final_Version">Final Verision of DataBase</param>
+            <param name="Obj">Object Recived Form BeforeuUpdateKeys </param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.AfterUpdateTable(System.Double,System.Double,System.Object)">
+            <summary>
+             This function can ve overide  and is executed after Table is Updated
+            </summary>
+            <param name="current_version">Curren Database Version - Before Instal/Update</param>
+            <param name="Final_Version">Final Verision of DataBase</param>
+            <param name="Obj">Object Recived Form BeforeuUpdateTable </param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.AfterUpdateUDO(System.Double,System.Double,System.Object)">
+            <summary>
+            This function can ve overide  and is executed after UDO is Updated
+            </summary>
+            <param name="current_version">Curren Database Version - Before Instal/Update</param>
+            <param name="Final_Version">Final Verision of DataBase</param>
+            <param name="Obj">Object Recived Form BeforeuUpdateUDO </param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.AfterUpdateTableKeys(System.Double,System.Double,System.Object)">
+            <summary>
+            This function can ve overide  and is executed after Keys are Updated
+            </summary>
+            <param name="current_version">Curren Database Version - Before Instal/Update</param>
+            <param name="Final_Version">Final Verision of DataBase</param>
+            <param name="Obj">Object Recived Form BeforeuUpdateKeys </param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CompuTec.Core2.DI.Setup.UDO.Model.UDOManager.BeforeUpdateTableKeys(System.Double,System.Double)" -->
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.TableCreationException">
+            <summary>
+            Exception thrown when there was a problem during Master or Document table creation in DB.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager">
+            <summary>
+            Manages the DB operations like a table creating, registering UDOs etc.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.RegisterUDO(CompuTec.Core2.DI.Setup.UDO.Model.IUDOTable)">
+            <summary>
+            Creates a Table in DB with all fields, defines the primary key fields and registers Table in DB.
+            When adding user tables or fields to the SBO DB use a prefix identifying your partner name space
+            this will prevent collisions between different partners add-ons.
+            Computec prefix is CT.
+            </summary>
+            <param name="fields">The list of Fields as List of Field</param>
+            <param name="name">The name of a table</param>
+            <param name="description">Description of a table</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.CheckTableKeyUpdateNeed(CompuTec.Core2.DI.Setup.UDO.Model.IUDOTableKey)">
+            <summary>
+            This function checks if you need to add or update Key;
+            </summary>
+            <param name="key">key to check</param>
+            <returns>"U"-Update,"N"-No,"A"-Add</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.CreateTableInDatabase(System.String,System.String,CompuTec.BaseLayer.DI.BoUTBTableType)">
+            <summary>
+            Creates a table in DB.
+            </summary>
+            <param name="name">The name of a table as String</param>
+            <param name="description">Description of a table as String</param>
+            <param name="tableType">Table type as BoUTBTableType</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.AddFieldsToTable(System.Collections.Generic.List{CompuTec.Core2.DI.Setup.UDO.Model.IUDOField},System.String)">
+            <summary>
+            Adds fields to table.
+            </summary>
+            <param name="fields">The list of table field as List of IField</param>
+            <param name="tableName">Table name as String</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.SetPrimaryKeysForTable(System.Collections.Generic.List{CompuTec.Core2.DI.Setup.UDO.Model.IUDOField},System.String)">
+            <summary>
+            Defines and adds the primary keys for a table.
+            </summary>
+            <param name="fields">The list of table field as List of IField</param>
+            <param name="tableName">Table name as String</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.Register(CompuTec.Core2.DI.Setup.UDO.Model.IUDOTable,CompuTec.BaseLayer.DI.BoUTBTableType)">
+            <summary>
+            Registers the UDO.
+            </summary>
+            <param name="tableName">The table name as String</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.CallRegisterUDO(CompuTec.BaseLayer.DI.BoUTBTableType)">
+            <summary>
+            Checks whether the register UDO maybe done on this object or not.
+            If the data table type is BoUTBTableType.bott_DocumentLines or BoUTBTableType.bott_MasterData
+            the calling shouldn't be performed. For other values, the UDO registration must be done.
+            </summary>
+            <param name="tableType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.SaveObjectStructure(CompuTec.BaseLayer.DI.UserObjectsMD@)">
+            <summary>
+            In progress. The method will store in any external source (probably DB table) information about hashKey of current
+            object. This will be used by the setup component.
+            </summary>
+            <param name="UserObject"></param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.HandleException(System.Int32)">
+            <summary>
+            Handles exceptions related to table, fields, primary keys and UDO registering operations.
+            </summary>
+            <param name="errorCode"></param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.DatabaseManager.DisposeResources">
+            <summary>
+            Performs the Garbage collection.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.ICustomField">
+            <summary>
+            Represents a custom field in a system table.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.IUDOField">
+            <summary>
+            Representing a single field in a Data base table.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.IUDOFindColumn">
+            <summary>
+            representing a single column to display in the find form (choose from list form)
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.IUDOTableKey">
+            <summary>
+            Represents single key in Udo Table
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Model.UDOTable">
+            <summary>
+            Class representing the UDOTable.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOTable.#ctor(System.Collections.Generic.List{CompuTec.Core2.DI.Setup.UDO.Model.IUDOField},System.String,System.String,CompuTec.BaseLayer.DI.BoUTBTableType)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="udoFields">The list of table fields as List of IUDOField</param>
+            <param name="name">The name of a created table as String</param>
+            <param name="description">Description of a created table as String</param>
+            <param name="type">Table type as BoUTBTableType. Maybe Master, Document, DocumentLine etc. See BoUTBTableType to see all possibilities.</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOTable.#ctor(System.Collections.Generic.List{CompuTec.Core2.DI.Setup.UDO.Model.IUDOField},System.Collections.Generic.List{CompuTec.Core2.DI.Setup.UDO.Model.IUDOFindColumn},System.String,System.String,CompuTec.BaseLayer.DI.BoUTBTableType,System.Collections.Generic.List{CompuTec.Core2.DI.Setup.UDO.Model.IUDOTable})">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="udoFields">The list of table fields as List of IUDOField</param>
+            <param name="name">The name of a created table as String</param>
+            <param name="description">Description of a created table as String</param>
+            <param name="type">Table type as BoUTBTableType. Maybe Master, Document, DocumentLine etc. See BoUTBTableType to see all possibilities.</param>
+            <param name="childTables">Child tables of this table as List of IUDOTable</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOTable.#ctor(System.Collections.Generic.List{CompuTec.Core2.DI.Setup.UDO.Model.IUDOField},System.Collections.Generic.List{CompuTec.Core2.DI.Setup.UDO.Model.IUDOFindColumn},System.String,System.String,CompuTec.BaseLayer.DI.BoUTBTableType,System.Collections.Generic.List{CompuTec.Core2.DI.Setup.UDO.Model.IUDOTable},System.String,System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="udoFields">The list of table fields as List of IUDOField</param>
+            <param name="name">The name of a created table as String</param>
+            <param name="description">Description of a created table as String</param>
+            <param name="type">Table type as BoUTBTableType. Maybe Master, Document, DocumentLine etc. See BoUTBTableType to see all possibilities.</param>
+            <param name="childTables">Child tables of this table as List of IUDOTable</param>
+            <param name="registeredUDOCode">Registered UDO Code. Udo Code is used to get an instance of registered UDO object and is a unique. Given as String</param>
+            <param name="registeredUDOName">registered UDO object name as String.</param>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOTable.AddCompuTecVersionField">
+            <summary>
+            Adds the U_PFVersion field to MasterData and Document tables.
+            </summary>
+            <returns>A Boolean value that indicates whether the U_PFVersion field was added successfully or not.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Model.UDOTable.AddCompuTecDbVersionField">
+            <summary>
+            Adds the U_PFDBVersion field to MasterData and Document tables.
+            </summary>
+            <returns>A Boolean value that indicates whether the U_PFDBVersion field was added successfully or not.</returns>
+        </member>
+        <member name="F:CompuTec.Core2.DI.Setup.UDO.Setup.TablesToUpdate">
+            <summary>
+            The lis of all IUDOTables requring updating. 
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Setup.UDO.Setup.UpdateType2">
+            <summary>
+            All possible Update types. 
+            Values: 
+            NoUpdate - No update required
+            Install - Complete installation required. Addon wasn't intalled previously or was installed previously but totaly removed.
+            Update - Addon is installed but update of some components is required.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Setup.GetTablesToCheck">
+            <summary>
+            This Function Serch for object in PFDBInstall.Tables manespace and ad them to TablesToCheck
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Setup.GetTablesToCheck(System.Reflection.Assembly,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            This Function Serch for object in PFDBInstall.Tables manespace and ad them to TablesToCheck
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Setup.UnInstall">
+            <summary>
+            Uninstall Addon by removing all created tables during installation process. No data are backed up during uninstall process.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Setup.Update">
+            <summary>
+            Updates Addon by creating missing tables.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Setup.ShowDebugMessage">
+                                                  ///
+                  Computec.Core2.UI Important      ///
+                                                  ///
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Setup.IsUpdateRequired(System.Boolean)">
+            <summary>
+            This function 
+            </summary>
+            <param name="CheckDBVersion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Setup.IsUpdateRequiredForTable(CompuTec.BaseLayer.DI.UserTablesMD@,System.String)">
+            <summary>
+            Returns the list of table names should be installed to let the addon work properly.
+            Every time you create new Table definition in Application/install/Tables put its name here.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Setup.SetPFDefaultSettings(System.String)">
+            <summary>
+            taken from ConfigurationTable.cs in Database project
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Setup.UDO.Setup.PFConfigurationExists(System.String)">
+            <summary>
+            checks if default PFConfigurationExists
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Tools.Accounting.AccountPicker">
+            <summary>
+            This class is used for Calculate Account based of SAP Configuration
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.Accounting.AccountPicker.CheckAccount(System.String,System.String@,System.String)">
+            <summary>
+            This function checks if account is correct: exists in table; is active.
+            </summary>
+            <param name="acctCode"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Tools.ItemUtils">
+            <summary>
+            This class is used for Getting Some informations About Items
+            it can be oveerided To Add some new Properities
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.ItemUtils.GetHolidayInfo(System.String)">
+            <summary>
+            Gets the object of SAP Holiday Representation 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.ItemUtils.GetItemName(System.String,System.String)">
+            <summary>
+            Returns ItemName
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.ItemUtils.GetItemUnitOfMesure(System.String,System.String)">
+            <summary>
+            Returns the inventory unit of measure value for a given item code.
+            </summary>
+            <param name="ItemCode">The code of an inventory item.</param>
+            <returns>The inventory unit of measure value.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.ItemUtils.GetIssuePrimaryByForItem(System.String,System.String)">
+                                                  ///
+                  Computec.Core2.UI Important      ///
+                                                  ///
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.ItemUtils.GetDefaultItemBinLocationForWarehouse(System.String,System.String,System.String)">
+            <summary>
+            gets default bin location AbsEntry only if selected warehouse have enabled bin loactions and default bin is set on any level
+            </summary>
+            <param name="whsCode">warehouse to chech</param>
+            <param name="itemCode">item to check</param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.ItemUtils.GetItemLIFOBinsWitnOnHandQty(System.String,System.String,System.String)">
+            <summary>
+            gets list of LIFO bins with OnHandQty > 0
+            </summary>
+            <param name="itemCode"></param>
+            <param name="whsCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.ItemUtils.GetItemFIFOBinsWitnOnHandQty(System.String,System.String,System.String)">
+            <summary>
+            gets list of LIFO bins with OnHandQty > 0
+            </summary>
+            <param name="itemCode"></param>
+            <param name="whsCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.MasterDataHelper.GetMasterDataCode(System.String,System.String,System.String,System.String)">
+            <summary>
+            gets master data code from user data object
+            </summary>
+            <param name="tableName">table name: for pf tables full name, e.g.: @CT_PF_TableName</param>
+            <param name="columnName">column name for where query</param>
+            <param name="value">returnes value from Code column</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.MasterDataHelper.GetMasterDataSingleValue(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            gets master data code from user data object
+            </summary>
+            <param name="tableName">table name: for pf tables full name, e.g.: @CT_PF_TableName</param>
+            <param name="returnColumnName">column, which value will be returned</param>
+            <param name="whereColumnName">column name for where query</param>
+            <param name="whereValue">where param value, for string use: N'some text'</param>
+            <returns>in caso of multiple results, only first will be returned</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.SqlCommandTool.PrepareInDocuments(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            this methood prepers Sql "in" syntax 
+            for parameters{1,2,3,4,5,6,7}
+            it prepares (1,2,3,4,5,6,7)
+            </summary>
+            <param name="lst"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Tools.Blob.BlobData">
+            <summary>
+            Represents the BLOB data of a file.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.Blob.BlobData.#ctor">
+            <summary>
+            Initializes a new instance of CompuTec.Core2.Model.Blob.BlobManager class.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.Blob.BlobData.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of CompuTec.Core2.Model.Blob.BlobManager class.
+            </summary>
+            <param name="fileName">The name of a file.</param>
+            <param name="fileData">The content of a file.</param>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Tools.Blob.BlobData.FileName">
+            <summary>
+            Gets or sets the name of a file.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Tools.Blob.BlobData.FileData">
+            <summary>
+            Gets or sets the content of a file.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Tools.Blob.BlobManager">
+            <summary>
+            Manages the Blob Object in ProcessForce's database.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.Blob.BlobManager.GetFileName(System.String,CompuTec.BaseLayer.DI.Company,System.String,System.String)">
+            <summary>
+            Gets the file name from ProcessForce's Blob Object table.
+            </summary>
+            <param name="company">A handler to Company object.</param>
+            <param name="tableCode">The code value from a related ProcessForce's table.</param>
+            <param name="tableName">The name of a related ProcessForce's table.</param>
+            <returns>The file name.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.Blob.BlobManager.GetFileData(System.String,CompuTec.BaseLayer.DI.Company,System.String,System.String)">
+            <summary>
+            Gets the file data from ProcessForce's Blob Object table.
+            </summary>
+            <param name="company">A handler to Company object.</param>
+            <param name="tableCode">The code value from a related ProcessForce's table.</param>
+            <param name="tableName">The name of a related ProcessForce's table.</param>
+            <returns>The file data.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.Blob.BlobManager.GetBlobData(System.String,CompuTec.BaseLayer.DI.Company,System.String,System.String)">
+            <summary>
+            Gets the blob content from the ProcessForce's Blob Object table.
+            </summary>
+            <param name="company">A handler to Company object.</param>
+            <param name="tableCode">The code value from a related ProcessForce's table.</param>
+            <param name="tableName">The name of a related ProcessForce's table.</param>
+            <returns>The blob content.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.Blob.BlobManager.SaveBlobToFile(System.String,CompuTec.Core2.DI.Tools.Blob.BlobData)">
+            <summary>
+            Saves the blob content into a file.
+            </summary>
+            <param name="filePath">The path to a file.</param>
+            <param name="data">The blob content.</param>
+            <returns>A Boolean value that indicates whether the file with blob content was saved successfully or not.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.Blob.BlobManager.LoadBlobFromFile(System.String,CompuTec.BaseLayer.DI.Company,System.String,System.String,System.String)">
+            <summary>
+            Loads the content of a file to ProcessForce's Blob Objects table.
+            </summary>
+            <param name="company">A handler to Company object.</param>
+            <param name="tableCode">The code value from a related ProcessForce's table.</param>
+            <param name="tableName">The name of a related ProcessForce's table.</param>
+            <param name="filePath">The path to a file.</param>
+            <returns>A Boolean value that indicates whether the content of a file was successfully loaded or not.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.Blob.BlobManager.DeleteBlobData(System.String,CompuTec.BaseLayer.DI.Company,System.String,System.String)">
+            <summary>
+            Deletes the blob data.
+            </summary>
+            <param name="company">A handler to Company object.</param>
+            <param name="tableCode">The code value from a related ProcessForce's table.</param>
+            <param name="tableName">The name of a related ProcessForce's table.</param>
+            <returns>A Boolean value that indicates whether the blob data was successfully deleted or not.</returns>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Tools.HolidaysInfo">
+            <summary>
+            Class To holds information about Company Holidays Info
+            This class allows us to copute date with this Holidays
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.HolidaysInfo.Add(System.DateTime,System.TimeSpan)">
+            <summary>
+            Adds Specific TimeSpan to specific date with holiday informations
+            </summary>
+            <param name="date">specific date</param>
+            <param name="value">specific time span</param>
+            <returns>added date and time  </returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.HolidaysInfo.Substract(System.DateTime,System.TimeSpan)">
+            <summary>
+            Substracts Specific TimeSpan from  specific date with holiday informations
+            </summary>
+            <param name="date">specific date</param>
+            <param name="value">specific time span</param>
+            <returns>added date and time  </returns>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.HolidaysInfo.GenerateHolidayInfo(System.String)">
+            <summary>
+            Gets Holiday Info representation from company Database
+            </summary>
+            <returns>Holiday Representation</returns>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Tools.CodeGenerator">
+            <summary>
+            Allows generating code values for records in database tables.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.CodeGenerator.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of CompuTec.Core2.Model.UDO.CodeGenerator object.
+            </summary>
+            <param name="tableName">The name of a database table.</param>
+        </member>
+        <member name="P:CompuTec.Core2.DI.Tools.CodeGenerator.TableName">
+            <summary>
+            Gets or sets the name of a database table.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.CodeGenerator.GenerateCode(System.String)">
+            <summary>
+            Generates the code value for a next record in the database table.
+            </summary>
+            <returns>The code value for a next record in the database table.</returns>
+        </member>
+        <member name="T:CompuTec.Core2.DI.Tools.DocumentsHelper">
+            <summary>
+            Helper class for doing common documents actions
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.DocumentsHelper.GetDefaultSeriesForDocument(CompuTec.BaseLayer.DI.Company,System.String,System.Int32@)">
+            <summary>
+            method for getting default series for comany and currently logged user
+            </summary>
+            <param name="company">company object, for which series will be returned</param>
+            <param name="documentType">object code (e.g. A/R Invoice=13)</param>
+            <returns></returns>
+        </member>
+        <member name="F:CompuTec.Core2.DI.Tools.DocumentsHelper.HasSeriesBranchTable">
+                                                  ///
+                  Computec.Core2.UI Important      ///
+                                                  ///
+        </member>
+        <member name="M:CompuTec.Core2.DI.Tools.SerialNumberValidator.GetUniqueSerialNumberType(System.String)">
+            <summary>
+            returns type, how serials are managed in SAP
+            </summary>
+            <returns>BoUniqueSerialNumber</returns>
+        </member>
+        <member name="T:CompuTec.Core2.EmptyCoreInfo">
+            <summary>
+            Emtty Core Info used in CustomUDO 
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Exceptions.Error">
+            <summary>
+            Represents a single error or warning of performing action.
+            
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Exceptions.Error.Code">
+            <summary>
+            Gets or sets the error code.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Exceptions.Error.Message">
+            <summary>
+            Gets or sets the error message.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Exceptions.Error.IsWarning">
+            <summary>
+            Indicates Level of Error
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.Error.#ctor">
+            <summary>
+            Initializes a new instance of the Error class.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.Error.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the Error class with error message.
+            </summary>
+            <param name="message">Error message.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.Error.#ctor(System.Nullable{System.Int32},System.String)">
+            <summary>
+            Initializes a new instance of the Error class with code and message of an error.
+            </summary>
+            <param name="code">Error code.</param>
+            <param name="message">Error message.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.Error.#ctor(System.Nullable{System.Int32},System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the Error class with code and message of an error.
+            </summary>
+            <param name="code">Error code.</param>
+            <param name="message">Error message.</param>
+        </member>
+        <member name="T:CompuTec.Core2.Exceptions.Result">
+            <summary>
+            Represents the result of performed action.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Exceptions.Result.Success">
+            <summary>
+            Gets the status whether the performed action has been completed successfully.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Exceptions.Result.Count">
+            <summary>
+            Gets the number of errors reported during the action performing.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Exceptions.Result.Errors">
+            <summary>
+            Gets or sets a collection of errors.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.Result.#ctor">
+            <summary>
+            Initializes a new instance of the Result class.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.Result.GetWarnings">
+            <summary>
+            Get List of eventual Warnings 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.Result.Add(CompuTec.Core2.Exceptions.Error)">
+            <summary>
+            Adds a single error.
+            </summary>
+            <param name="error">Error.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.Result.Register(System.String)">
+            <summary>
+            Registers all errors as a single entry in Event Handler.
+            </summary>
+            <param name="header">The text that will be displayed as a header of the entry.</param>
+        </member>
+        <member name="T:CompuTec.Core2.Exceptions.ExceptionHandler">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Exceptions.ExceptionHandler.Count">
+            <summary>
+            Gets the number of already registered errors.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.RegisterMessage(System.String,System.Boolean)">
+            <summary>
+            Registers a message.
+            </summary>
+            <param name="message">A message to register.</param>
+            <param name="writeToEventLog">Determines whether the message must be also added to Event Viewer (<b>true</b>) or not (<b>false</b>).</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.RegisterMessageInEventLog(System.String)">
+            <summary>
+            Registers a message.
+            </summary>
+            <param name="message">A message to register.</param>
+            <param name="writeToEventLog">Determines whether the message must be also added to Event Viewer (<b>true</b>) or not (<b>false</b>).</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.RegisterError(System.String,System.Boolean)">
+            <summary>
+            Registers an error.
+            </summary>
+            <param name="errorMessage">An error message to register.</param>
+            <param name="writeToEventLog">Determines whether the error message must be also added to Event Viewer (<b>true</b>) or not (<b>false</b>).</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.RegisterError(System.String,System.Boolean,System.Exception)">
+            <summary>
+            Registers an error and the data of an exception that was thrown.
+            </summary>
+            <param name="errorMessage">An error message to register.</param>
+            <param name="writeToEventLog">Determines whether the error message must be also added to Event Viewer (<b>true</b>) or not (<b>false</b>).</param>
+            <param name="exception">The data of an exception that was thrown.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.RegisterErrorWithoutIncludeItIntoErrorsList(System.String,System.Exception)">
+            <summary>
+            Registers an error and the data of an exception that was thrown. 
+            This version of method is not going to include error in errors list.
+            </summary>
+            <param name="errorMessage">An error message to register.</param>
+            <param name="exception">The data of an exception that was thrown.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.RegisterErrorAndDisplay(System.String,System.Boolean,System.Exception)">
+            <summary>
+            Registers an error and the data of an exception that was thrown and shows the message in SAP Business One log window.
+            </summary>
+            <param name="errorMessage">An error message to register.</param>
+            <param name="writeToEventLog">Determines whether the error message must be also added to Event Viewer (<b>true</b>) or not (<b>false</b>).</param>
+            <param name="exception">The data of an exception that was thrown.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.GetErrors(System.Boolean)">
+            <summary>
+            Gets the messages of all registered errors.
+            </summary>
+            <param name="clearStack">Determines whether the list of registered errors must be cleaned (<b>true</b>) or not (<b>false</b>).</param>
+            <returns>Formatted String object that represents the messages of all registered errors.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.DisplayException(System.String,System.Exception,System.Boolean)">
+            <summary>
+            Displays an error message and the data of an exception that was thrown for the user.
+            </summary>
+            <param name="errorMessage">An error message to display.</param>
+            <param name="exception">The data of an exception that was thrown.</param>
+            <param name="diConnectionOnly">Determines whether the type of connection with SAP Business One is a DI connection (<b>true</b>) or UIDI connection (<b>false</b>).</param>
+                                                  ///
+                  Computec.Core2.UI Important      ///
+                                                  ///
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.PrepareEventLog">
+            <summary>
+            Prepares the Event Viewer data for registering ProcessForce errors.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.AddMessageToEventLog(System.String)">
+            <summary>
+            Adds a message to Event Viewer.
+            </summary>
+            <param name="message">An error message to add.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.AddMessageToEventLog(System.String,System.Boolean)">
+            <summary>
+            Adds a message to Event Viewer.
+            </summary>
+            <param name="message">An error message to add.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.AddErrorToEventLog(System.String)">
+            <summary>
+            Adds an error to Event Viewer.
+            </summary>
+            <param name="errorMessage">An error message to add.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.AddErrorToEventLog(System.String,System.Exception)">
+            <summary>
+            Adds an error and the data of an exception that was thrown to Event Viewer.
+            </summary>
+            <param name="errorMessage">An error message to add.</param>
+            <param name="exception">The data of an exception that was thrown.</param>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.ExtractExceptionDetails(System.Exception)">
+            <summary>
+            Extracts the data of an exception that was thrown to String object.
+            </summary>
+            <param name="exception">The data of an exception that was thrown.</param>
+            <returns>Formatted String that represents the extracted data of an exception.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Exceptions.ExceptionHandler.DisplayMessageBox(System.String,System.Exception)">
+            <summary>
+            Displays an error message and the data of an exception that was thrown in a message box window.
+            </summary>
+            <param name="errorMessage">An error message to display.</param>
+            <param name="exception">The data of an exception that was thrown.</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetItemsToRestoreItemDetails(System.String)" -->
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetAlreadyDefinedAdditionaBatchDetails(System.String,System.String,System.Int32)">
+            <summary>
+            t0."ItemCode",t0."SysNumber" 
+            </summary>
+            <param name="Token"></param>
+            <param name="ItemCode"></param>
+            <param name="SysNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetItemDetailsExistsForBatch(System.String,System.String,System.Int32)">
+            <summary>
+             t0.ItemCode,t0.SysNumber ,t0.DistNumber
+            </summary>
+            <param name="Token"></param>
+            <param name="ItemCode"></param>
+            <param name="SysNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetBatchTemplateDetails(System.String,System.String)">
+            <summary>
+             isnull("U_Expiry",'N')"U_Expiry", ISNULL("U_ShelfTime",'0d')"U_ShelfTime",isnull("U_Consume",'N')"U_Consume"
+            ,ISNULL("U_ConsWarn",0) "U_ConsWarn",ISNULL("U_ExpWarn",0)"U_ExpWarn", isnull("U_InspDays",0)"U_InspDays"
+            </summary>
+            <param name="Token"></param>
+            <param name="ItemCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetBaseTypeForbatch(System.String,System.String,System.Int32)">
+            <summary>
+             top 1 t0."DocEntry", t0."DocType" ,isnull(t2."DocEntry",0) "MnfDocEntry",ISNULL(t3."U_Revision",'') "Revision",ISNULL(t4."U_Description",'')
+            </summary>
+            <param name="Token"></param>
+            <param name="ItemCoe"></param>
+            <param name="SysNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetBatchesToCreateAddtitemCodes(System.String,System.Int32,System.Int32)">
+            <summary>
+             t0."ItemCode" , t1."SysNumber"  ,ifnull(t3."U_Revision",'') "Revision",ifnull(t3."U_RevisionName",'') "RevisionName"
+            </summary>
+            <param name="Toke"></param>
+            <param name="DocEntry"></param>
+            <param name="docType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.EnablePostResourceConfirmation(System.String)">
+            <summary>
+            Determines whether or not the Post Resources Confirmation checkbox must be enabled on the General Settings form.
+            </summary>
+            <param name="token">Token.</param>
+            <returns>Int32 object.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetDefaultValueForFields(System.String,System.String)">
+             <summary>
+             t0."Dflt", t0."Descr", t0."TableID", t0."FieldID", t0."EditType", 'U_' || t0."AliasID" AS "AliasID", 
+            t0."EditSize" 
+             </summary>
+             <param name="token"></param>
+             <param name="TableID"></param>
+             <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetDefaultValueForField(System.String,System.String,System.String)">
+            <summary>
+            t0."Dflt", t0."Descr", COUNT(t1."TableID") as "Count", t0."TableID", t0."FieldID", t0."EditType" 
+            </summary>
+            <param name="token"></param>
+            <param name="TableID"></param>
+            <param name="AliasID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetTransValueFormOITM(System.String,System.Int32,System.String)">
+            <summary>
+            "TransType", "CreatedBy", BASE_REF, "DocLineNum", SUM("TransValue") AS "TransValue", SUM("InQty"), 
+             SUM("OutQty"), "Price", "CardCode", "ItemCode", "Warehouse" 
+            </summary>
+            <param name="Token"></param>
+            <param name="CreatedBy"></param>
+            <param name="TransType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetWhsJournal(System.String,System.String,System.Int32)">
+             <summary>
+              T0.TransType, T0.CreatedBy, T0.BASE_REF, T0.DocLineNum, T0.DocDate, T0.Allocation, T0.CardCode, T0.CardName,
+            T0.JrnlMemo, T0.DocTime, T0.ItemCode, T0.Dscription, SUM(T0.InQty) AS 'InQty', SUM(T0.OutQty) AS 'OutQty', T0.Price, T0.Currency, T0.Warehouse, 
+            T0.TaxDate, T0.UserSign, SUM(T0.TransValue) AS 'TransValue', T0.InvntAct, OcrCode, OcrCode2, OcrCode3, OcrCode4, OcrCode5, PrjCode 
+             </summary>
+             <param name="Tokne"></param>
+             <param name="TransType"></param>
+             <param name="DocEntry"></param>
+             <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetAdtJeForCompicatedTypes(System.String)">
+            <summary>
+            "PmntID", "ObjCrtType" 
+            </summary>
+            <param name="Token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetCostCentres(System.String,System.String)">
+            <summary>
+            T1.OcrCode, T0.U_CT_Acct5, T0.U_CT_ContrAcct, T1.PrcAmount, T1.OcrTotal
+            </summary>
+            <param name="Token"></param>
+            <param name="ocrCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetSeriesNameForJE(System.String,System.Int32)">
+            <summary>
+            T0.SeriesName 
+            </summary>
+            <param name="Token"></param>
+            <param name="TransId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetUpdatePaymentDocumentAdditionalJournalEntries(System.String,System.String,System.Int32)">
+            <summary>
+            t0."DocNum" AS "Numer dokumentu", t0."Canceled", IFNULL(t1."TransId", 0) AS "Transakcja bazowa", 
+            IFNULL(t2."TransId", 0) AS "Anulowanie", IFNULL(t3."TransId", 0) AS "Roliczenie transakcji bazowej", 
+            IFNULL(t4."TransId", 0) AS "Rozliczenie anulowania" 
+            </summary>
+            <param name="Token"></param>
+            <param name="TableName"></param>
+            <param name="DocNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetResourceWIPAcct(System.String,System.Int32,System.Int32)">
+            <summary>
+            "WipAcct" 
+            </summary>
+            <param name="Token"></param>
+            <param name="BaseEntry"></param>
+            <param name="BaseLine"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetDataForRestoreAdditionaBatchDetails(System.String)">
+            <summary>
+            returns data erquired for batch details restoration
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetGlobalBatchSettings(System.String,System.String)">
+            <summary>
+            "U_SapDfQCS", "U_PFDfQCS", "U_PFDfBS", "U_SapDfBS"
+            </summary>
+            <param name="Token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetMissingBatchesForProdReceipt(System.String,System.Int32)">
+            <summary>
+            t0.U_BnStatus ,t3.U_Description,t5.DocEntry [BaseEntry] ,t5.DocType [BaseType], t1.*
+            </summary>
+            <param name="Token"></param>
+            <param name="PickOrderDocEntry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.ISystemQueries.GetOprNamesForCodes(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            gets ocr codes an names
+            </summary>
+            <param name="token"></param>
+            <param name="accountCodes">ocr codes</param>
+            <returns>dictionary key - ocr code, value - ocr name</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.SystemQueries.GetColumnConfiguration(System.String,System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Gets the configuration of given columns for a specified parent.
+            </summary>
+            <param name="token">Token.</param>
+            <param name="parentId">The ID of the parent.</param>
+            <param name="columnIds">A collection of the IDs of columns.</param>
+            <returns>CTRecordset object.</returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.SystemQueries.GetBatchAllDetails(System.String,System.String,System.String)">
+            <summary>
+            All Details for Batch 
+            generally select * from "OBTN"
+            </summary>
+            <param name="Token"></param>
+            <param name="ItemCode"></param>
+            <param name="DistNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Queries.SystemQueries.SystemQueries.GetUserDataFieldsToCompare(System.String,System.String,System.String)">
+            <summary>
+            Gets the list of User Data Fields of two database tables to compare.
+            </summary>
+            <param name="token">Token.</param>
+            <param name="table1">The first database table.</param>
+            <param name="table2">The second database table.</param>
+            <returns>CTRecordset object.</returns>
+        </member>
+        <member name="T:CompuTec.Core2.Resources.MSSQLQueries">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.DelBlob">
+            <summary>
+              Looks up a localized string similar to DELETE FROM &quot;@CT_PF_OBLOB&quot;
+            							WHERE
+            								&quot;U_TableCode&quot; = @TableCode AND
+            								&quot;U_TableName&quot; = @TableName.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.FormatedSerchExists">
+             <summary>
+               Looks up a localized string similar to Select T3.IndexID 
+            from CSHS T3 
+            inner join OUQR T0 on t3.QueryId=T0.IntrnalKey
+            inner join OQCN T1 on t0.QCategory=t1.CategoryId
+            where T3.FormID=@FormID and T3.ItemID=@ItemID and T3.ColID=@ColID and t0.QName =@QName and t1.CatName=@CatName.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GenerateCode">
+            <summary>
+              Looks up a localized string similar to SELECT ISNULL(MAX(CAST(Code as int)) + 1, 1) FROM &quot;@{0}&quot;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GenerateHolidayInfo">
+             <summary>
+               Looks up a localized string similar to select t1.WndFrm,t1.WndTo,t2.StrDate,t2.EndDate,t2.Rmrks from oadm t0
+            left  join OHLD t1 on t0.HldCode=t1.HldCode
+            left join HLD1 t2 on t1.HldCode=t2.HldCode.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetAccocuntsNamesForCodes">
+             <summary>
+               Looks up a localized string similar to SELECT &quot;AcctCode&quot;, &quot;AcctName&quot; 
+            FROM OACT 
+            WHERE &quot;AcctCode&quot; IN (@AccountCodes).
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetBPNamesForCodes">
+             <summary>
+               Looks up a localized string similar to SELECT &quot;CardCode&quot;, &quot;CardName&quot; 
+            FROM OCRD 
+            WHERE &quot;CardCode&quot; IN (@BPCodes).
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetBranch">
+             <summary>
+               Looks up a localized string similar to select isnull(t1.&quot;BPLName&quot;,&apos;&apos;) &quot;Name&quot;,
+            isnull(t1.&quot;BPLId&quot;,-1) &quot;Code&quot;
+             from OWHS t0
+            left outer join OBPL t1 on t0.&quot;BPLid&quot;=t1.&quot;BPLId&quot;
+            where t0.&quot;WhsCode&quot;=@WhsCode.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetDefaultValueForField">
+             <summary>
+               Looks up a localized string similar to SELECT
+              t0.&quot;Dflt&quot;, t0.&quot;Descr&quot;, COUNT(t1.&quot;TableID&quot;) as &quot;Count&quot;, t0.&quot;TableID&quot;, t0.&quot;FieldID&quot;, t0.&quot;EditType&quot; 
+            FROM CUFD T0 
+                LEFT OUTER JOIN UFD1 t1 ON t0.&quot;TableID&quot; = t1.&quot;TableID&quot; AND t0.&quot;FieldID&quot; = t1.&quot;FieldID&quot; 
+            WHERE T0.&quot;TableID&quot; = @TableID AND T0.&quot;AliasID&quot; = @AliasID
+            GROUP BY t0.&quot;Dflt&quot;, t0.&quot;Descr&quot;, t0.&quot;TableID&quot;, t0.&quot;FieldID&quot;, t0.&quot;EditType&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetDefaultValueForFields">
+             <summary>
+               Looks up a localized string similar to SELECT
+              t0.&quot;Dflt&quot;, t0.&quot;Descr&quot;, t0.&quot;TableID&quot;, t0.&quot;FieldID&quot;, t0.&quot;EditType&quot;, &apos;U_&apos; + t0.&quot;AliasID&quot; AS &quot;AliasID&quot;, 
+                t0.&quot;EditSize&quot; 
+            FROM CUFD T0 
+            WHERE T0.&quot;TableID&quot; = @TableID.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetDfltBinForItem">
+             <summary>
+               Looks up a localized string similar to select isnull(t1.&quot;DftBinAbs&quot;,isnull(t3.&quot;DftBinAbs&quot;,t2.&quot;DftBinAbs&quot;)) from OITM t0
+            left outer join OITW t1 on t0.&quot;ItemCode&quot;=t1.&quot;ItemCode&quot; and t1.&quot;WhsCode&quot;=@WhsCode
+            left outer join OIGW t3 on t0.&quot;ItmsGrpCod&quot;=t3.&quot;ItmsGrpCod&quot; and t3.&quot;WhsCode&quot;=@WhsCode
+            left outer join owhs t2 on t2.&quot;WhsCode&quot;=@WhsCode
+            
+             where t0.&quot;ItemCode&quot;=@ItemCode.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetDocumentAuthorizationsData">
+             <summary>
+               Looks up a localized string similar to select &quot;AbsId&quot;,isnull(&quot;FathId&quot;,&apos;&apos;) as &quot;FathId&quot; ,&quot;Levels&quot;,isnull(&quot;FormId&quot;,&apos;&apos;) as &quot;FormId&quot; from OUPT T0 left outer join upt1 t1 on t0.&quot;AbsId&quot;=t1.&quot;PermId&quot;
+            where t0.&quot;AbsId&quot;=@PermisionID.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetFieldInfo">
+             <summary>
+               Looks up a localized string similar to select t0.&quot;TableID&quot;,t0.&quot;AliasID&quot; ,t0.&quot;TypeID&quot;,t0.&quot;EditSize&quot;,t0.&quot;SizeID&quot; ,Count(isnull(t1.&quot;IndexID&quot;,0))-1 as &quot;vvCount&quot;
+             from cufd t0
+            left outer join ufd1 t1 on t0.&quot;TableID&quot;=t1.&quot;TableID&quot; and T0.&quot;FieldID&quot;=t1.&quot;FieldID&quot;
+            where t0.&quot;TableID&quot;=@TableID and t0.&quot;AliasID&quot;=@AliasID
+            group by t0.&quot;TableID&quot;,t0.&quot;AliasID&quot; , t0.&quot;TypeID&quot;,t0.&quot;EditSize&quot;,t0.&quot;SizeID&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetFileData">
+            <summary>
+              Looks up a localized string similar to SELECT SUBSTRING(&quot;U_FileData&quot;, @StartPos, 2048)
+            							FROM &quot;@CT_PF_OBLOB&quot;
+            							WHERE
+            								&quot;U_TableCode&quot; = @TableCode AND
+            								&quot;U_TableName&quot; = @TableName.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetItemCurrentAndHistoricalBinLocation">
+             <summary>
+               Looks up a localized string similar to SELECT DISTINCT T1.&quot;AbsEntry&quot;, T1.&quot;BinCode&quot;, T1.&quot;WhsCode&quot;
+            FROM
+            	&quot;{0}&quot; T0 -- tu będzie OIBQ (Itemy bez zarządzania) lub OBBQ (Batche) lub OSBQ (Seriale) 
+            	LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot;
+             WHERE
+            	T0.&quot;WhsCode&quot; = @WhsCode  AND
+            	T0.&quot;ItemCode&quot; = @ItemCode  AND
+            	--T0.&quot;OnHandQty&quot; &lt;&gt; 0  AND -- tu jest kluczowy warunek
+            	T1.&quot;SysBin&quot; &lt;&gt; &apos;Y&apos;
+            ORDER BY
+            	T1.&quot;BinCode&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetItemCurrentBinLocation">
+             <summary>
+               Looks up a localized string similar to SELECT DISTINCT T1.&quot;AbsEntry&quot;, T1.&quot;BinCode&quot;, T1.&quot;WhsCode&quot;
+            FROM
+            	&quot;{0}&quot; T0 -- tu będzie OIBQ (Itemy bez zarządzania) lub OBBQ (Batche) lub OSBQ (Seriale) 
+            	LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot;
+             WHERE
+            	T0.&quot;WhsCode&quot; = @WhsCode  AND
+            	T0.&quot;ItemCode&quot; = @ItemCode  AND
+            	T0.&quot;OnHandQty&quot; &lt;&gt; 0  AND -- tu jest kluczowy warunek
+            	T1.&quot;SysBin&quot; &lt;&gt; &apos;Y&apos;
+            ORDER BY
+            	T1.&quot;BinCode&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetItemFIFOBinsWitnOnHandQty">
+            <summary>
+              Looks up a localized string similar to SELECT T1.&quot;AbsEntry&quot;, min(T2.&quot;DocDate&quot;)
+            					FROM  &quot;OBTL&quot; T0   
+            					LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot;    
+            					LEFT OUTER  JOIN &quot;OILM&quot; T2  ON  T0.&quot;MessageID&quot; = T2.&quot;MessageID&quot;   
+            					LEFT OUTER JOIN  &quot;{0}&quot; T3 ON T0.&quot;BinAbs&quot; = T3.&quot;BinAbs&quot; and T2.&quot;ItemCode&quot; =T3.&quot;ItemCode&quot; 
+            					WHERE T2.&quot;LocCode&quot; = (@WhsCode)  AND  T2.&quot;ItemCode&quot; = (@ItemCode)  AND  T2.&quot;ActionType&quot; IN(1,19,20) 
+            					 and T3.&quot;OnHandQty&quot;  &gt; 0
+            					group by t1.&quot;AbsEntry&quot;  
+            					ORDER BY min(T2.&quot;DocDate&quot;) [rest of string was truncated]&quot;;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetItemLastBinLocation">
+            <summary>
+              Looks up a localized string similar to SELECT TOP 1 T1.&quot;AbsEntry&quot;, T1.&quot;BinCode&quot;, T1.&quot;WhsCode&quot;
+            					FROM  &quot;OBTL&quot; T0   
+            					LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot;    
+            					LEFT OUTER  JOIN &quot;OILM&quot; T2  ON  T0.&quot;MessageID&quot; = T2.&quot;MessageID&quot;
+            					WHERE T2.&quot;LocCode&quot; = @LocCode  AND  T2.&quot;ItemCode&quot; = @ItemCode  
+            					AND  T2.&quot;ActionType&quot; IN(@A1,@A2)   AND  T1.&quot;SysBin&quot; &lt;&gt; @SysBin   
+            					ORDER BY T2.&quot;DocDate&quot; DESC,T0.&quot;AbsEntry&quot; DESC.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetItemLIFOBinsWitnOnHandQty">
+             <summary>
+               Looks up a localized string similar to SELECT T1.&quot;AbsEntry&quot;, min(T2.&quot;DocDate&quot;)
+            						FROM  &quot;OBTL&quot; T0   
+            						LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot; 
+            
+            						LEFT OUTER  JOIN &quot;OILM&quot; T2  ON  T0.&quot;MessageID&quot; = T2.&quot;MessageID&quot;   
+            						LEFT OUTER JOIN &quot;{0}&quot;T3 ON T0.&quot;BinAbs&quot; = T3.&quot;BinAbs&quot; and T2.&quot;ItemCode&quot;=t3.&quot;ItemCode&quot;
+            						WHERE T2.&quot;LocCode&quot; = @WhsCode  AND  T2.&quot;ItemCode&quot; = @ItemCode  AND  T2.&quot;ActionType&quot; IN(1,19,20) 
+            						and t3.&quot;OnHandQty&quot; &gt; 0
+            						group by t1.&quot;AbsEntry&quot;  
+            						ORDER BY min(T2.&quot;DocDate&quot;) Desc.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetItemManageType">
+             <summary>
+               Looks up a localized string similar to SELECT &apos;S&apos; FROM &quot;OITM&quot; 
+            WHERE &quot;ItemCode&quot; = @ItemCode AND &quot;ManSerNum&quot; = &apos;Y&apos; 
+            UNION ALL
+            SELECT &apos;B&apos; FROM &quot;OITM&quot;
+            WHERE &quot;ItemCode&quot; = @ItemCode AND &quot;ManBtchNum&quot; = &apos;Y&apos; 
+            UNION ALL 
+            SELECT &apos;N&apos; FROM &quot;OITM&quot; 
+            WHERE &quot;ItemCode&quot; = @ItemCode AND &quot;ManBtchNum&quot; = &apos;N&apos; AND &quot;ManSerNum&quot; = &apos;N&apos;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetItemsInformations">
+             <summary>
+               Looks up a localized string similar to select T0.ItemCode, T0.ItemName ,isnull(T0.InvntryUom,&apos;&apos;),t0.PrcrmntMtd, t1.U_Code,t1.U_Description from oitm t0 left outer join [@CT_PF_IDT1] t1  on t0.ItemCode=t1.U_ParentItemCode
+             
+            where t0.ItemCode in (@Items).
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetLocalCurrency">
+            <summary>
+              Looks up a localized string similar to select &quot;MainCurncy&quot; from &quot;OADM&quot;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetNonStockAccts">
+            <summary>
+              Looks up a localized string similar to select t0.&quot;ItemCode&quot;, t2.&quot;WhsCode&quot;, t0.&quot;GLMethod&quot; ,
+             case  t0.&quot;GLMethod&quot; 
+             when &apos;W&apos; then t3.&quot;WipAcct&quot; 
+             when &apos;C&apos; then t1.&quot;WipAcct&quot; 
+             else 
+             t2.&quot;WipAcct&quot; end  as &quot;WIP&quot;
+              ,
+             case  t0.&quot;GLMethod&quot; 
+             when &apos;W&apos; then t3.&quot;ExpensesAc&quot; 
+             when &apos;C&apos; then t1.&quot;ExpensesAc&quot; 
+             else 
+             t2.&quot;ExpensesAc&quot; end  as &quot;EXP&quot;
+            from oitm t0
+             inner join OITB t1 on t0.&quot;ItmsGrpCod&quot;=T1.&quot;ItmsGrpCod&quot;
+             INNER JOIN  OITW T2 ON T0.&quot;ItemCode&quot;=t2.&quot;ItemCode&quot;
+             inner join owhs t3 on t2.&quot;WhsCode&quot;=t3.&quot;WhsCode&quot;
+            where t0.&quot;ItemCo [rest of string was truncated]&quot;;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetOCRNamesForCodes">
+             <summary>
+               Looks up a localized string similar to SELECT &quot;OcrCode&quot;, &quot;OcrName&quot; 
+            FROM OOCR 
+            WHERE &quot;OcrCode&quot; IN (@OcrCodes).
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetPriceFromOITT">
+            <summary>
+              Looks up a localized string similar to select T0.price from ITM1 T0  inner join OITT T1 on T1.Code=T0.ItemCode and T1.PriceList=T0.PriceList where T1.Code=@ItemCode.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetProductionAccounts">
+            <summary>
+              Looks up a localized string similar to select
+            * from &quot;CT_PF_GetProductionAccount&quot;(@ParentItemCode,@ComponentItemCode,@ParentWhsCode,@ComponentWhsCode).
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetQuantityPrecision">
+            <summary>
+              Looks up a localized string similar to select Top 1 &quot;QtyDec&quot; from &quot;OADM&quot;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetTableColumns">
+             <summary>
+               Looks up a localized string similar to SELECT
+              &apos;U_&apos; + &quot;AliasID&quot;, t0.&quot;Descr&quot;, &quot;TypeID&quot;, &quot;EditType&quot;, &quot;SizeID&quot;, &quot;EditSize&quot;, COUNT(t1.&quot;FieldID&quot;) AS &quot;DefVal&quot; 
+            FROM CUFD t0 
+                LEFT OUTER JOIN UFD1 t1 ON t0.&quot;TableID&quot; = t1.&quot;TableID&quot; AND t0.&quot;FieldID&quot; = t1.&quot;FieldID&quot; 
+            WHERE T0.&quot;TableID&quot; = @TableID 
+            GROUP BY &quot;AliasID&quot;, t0.&quot;Descr&quot;, &quot;TypeID&quot;, &quot;EditType&quot;, &quot;SizeID&quot;, &quot;EditSize&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetTimeZoneOffset">
+            <summary>
+              Looks up a localized string similar to select top 1 isnull(&quot;offset&quot;,-999) from otiz order by &quot;Id&quot;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetUserQueryKey">
+             <summary>
+               Looks up a localized string similar to select 
+            t0.&quot;IntrnalKey&quot;  ,T0.&quot;QString&quot;
+            from &quot;OUQR&quot; t0 
+            inner join &quot;OQCN&quot; t1 on t0.&quot;QCategory&quot;=t1.&quot;CategoryID&quot; 
+            where t0.&quot;QName&quot; =@QName and t1.&quot;CatName&quot;=@CatName.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.GetWorkaroundSeriesNumber">
+             <summary>
+               Looks up a localized string similar to select &quot;U_SeriesID&quot;   from &quot;@CT_PF_OBSE&quot;
+            where 
+            &quot;U_Object&quot; =@DocType 
+            and 
+            (( (isnull(&quot;U_BplID&quot;,0)=0 or isnull(&quot;U_BplID&quot;,0)=@BplID) and 0&lt;&gt;@BplID)
+            or
+            ( 0=@BplID ))
+            and 
+            (&quot;U_User&quot; =@userId  or isnull(&quot;U_User&quot;,&apos;&apos;)=&apos;&apos;)
+            order by isnull(&quot;U_User&quot;,&apos;&apos;) desc.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.HasReadOnlyPerrmissionForForm">
+            <summary>
+              Looks up a localized string similar to select * from usr3 where UserLink =@UserID and PermId=@FormType and Permission=&apos;R&apos;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.MSSQLQueries.SaveBlob">
+            <summary>
+              Looks up a localized string similar to IF EXISTS (
+            							SELECT * FROM &quot;@CT_PF_OBLOB&quot;
+            								WHERE
+            									&quot;U_TableCode&quot; =@TableCode AND
+            									&quot;U_TableName&quot; =@TableName
+            							)
+            								UPDATE &quot;@CT_PF_OBLOB&quot;
+            								SET
+            									&quot;U_FileName&quot; =@FileName,
+            									&quot;U_FileData&quot; =@FileData
+            								WHERE
+            									&quot;U_TableCode&quot; = @TableCode AND
+            									&quot;U_TableName&quot; = @TableName
+            						ELSE
+            							INSERT INTO &quot;@CT_PF_OBLOB&quot; (
+            								&quot;Code&quot;,
+            								&quot;Name&quot;,
+            								&quot;U_TableCode&quot;,
+            								&quot;U_TableName&quot;,
+            					 [rest of string was truncated]&quot;;.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Resources.SAPHanaQueries">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.DelBlob">
+            <summary>
+              Looks up a localized string similar to DELETE FROM &quot;@CT_PF_OBLOB&quot;
+            							WHERE
+            								&quot;U_TableCode&quot; = @TableCode AND
+            								&quot;U_TableName&quot; = @TableName.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.FormatedSerchExists">
+             <summary>
+               Looks up a localized string similar to Select
+              T3.&quot;IndexID&quot;
+            from CSHS T3 
+            inner join OUQR T0 on t3.&quot;QueryId&quot;=T0.&quot;IntrnalKey&quot;
+            inner join OQCN T1 on t0.&quot;QCategory&quot;=t1.&quot;CategoryId&quot;
+            where T3.&quot;FormID&quot;=@FormID and T3.&quot;ItemID&quot;=@ItemID and T3.&quot;ColID&quot;=@ColID and t0.&quot;QName&quot; =@QName and t1.&quot;CatName&quot;=@CatName.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GenerateCode">
+            <summary>
+              Looks up a localized string similar to SELECT
+             IFNULL(MAX(CAST(&quot;Code&quot; as int)) + 1, 1) FROM &quot;@{0}&quot;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GenerateHolidayInfo">
+             <summary>
+               Looks up a localized string similar to select
+              t1.&quot;WndFrm&quot;,t1.&quot;WndTo&quot;,t2.&quot;StrDate&quot;,t2.&quot;EndDate&quot;,t2.&quot;Rmrks&quot; from OADM t0
+            left  join OHLD t1 on t0.&quot;HldCode&quot;=t1.&quot;HldCode&quot;
+            left join HLD1 t2 on t1.&quot;HldCode&quot;=t2.&quot;HldCode&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetAccocuntsNamesForCodes">
+             <summary>
+               Looks up a localized string similar to SELECT
+              &quot;AcctCode&quot;, &quot;AcctName&quot; 
+            FROM OACT 
+            WHERE &quot;AcctCode&quot; IN (@AccountCodes).
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetBPNamesForCodes">
+             <summary>
+               Looks up a localized string similar to SELECT
+              &quot;CardCode&quot;, &quot;CardName&quot; 
+            FROM OCRD 
+            WHERE &quot;CardCode&quot; IN (@BPCodes).
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetBranch">
+             <summary>
+               Looks up a localized string similar to select
+              ifnull(t1.&quot;BPLName&quot;,&apos;&apos;) &quot;Name&quot;,
+            ifnull(t1.&quot;BPLId&quot;,-1) &quot;Code&quot;
+             from OWHS t0
+            left outer join OBPL t1 on t0.&quot;BPLid&quot;=t1.&quot;BPLId&quot;
+            where t0.&quot;WhsCode&quot;=@WhsCode.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetDefaultValueForField">
+             <summary>
+               Looks up a localized string similar to SELECT
+              t0.&quot;Dflt&quot;, t0.&quot;Descr&quot;, COUNT(t1.&quot;TableID&quot;) as &quot;Count&quot;, t0.&quot;TableID&quot;, t0.&quot;FieldID&quot;, t0.&quot;EditType&quot; 
+            FROM CUFD T0 
+                LEFT OUTER JOIN UFD1 t1 ON t0.&quot;TableID&quot; = t1.&quot;TableID&quot; AND t0.&quot;FieldID&quot; = t1.&quot;FieldID&quot; 
+            WHERE T0.&quot;TableID&quot; = @TableID AND T0.&quot;AliasID&quot; = @AliasID
+            GROUP BY t0.&quot;Dflt&quot;, t0.&quot;Descr&quot;, t0.&quot;TableID&quot;, t0.&quot;FieldID&quot;, t0.&quot;EditType&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetDefaultValueForFields">
+             <summary>
+               Looks up a localized string similar to SELECT
+              t0.&quot;Dflt&quot;, t0.&quot;Descr&quot;, t0.&quot;TableID&quot;, t0.&quot;FieldID&quot;, t0.&quot;EditType&quot;, &apos;U_&apos; || t0.&quot;AliasID&quot; AS &quot;AliasID&quot;, 
+                t0.&quot;EditSize&quot; 
+            FROM CUFD T0 
+            WHERE T0.&quot;TableID&quot; = @TableID.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetDfltBinForItem">
+             <summary>
+               Looks up a localized string similar to select
+              ifnull(t1.&quot;DftBinAbs&quot;,ifnull(t3.&quot;DftBinAbs&quot;,t2.&quot;DftBinAbs&quot;)) from OITM t0
+            left outer join OITW t1 on t0.&quot;ItemCode&quot;=t1.&quot;ItemCode&quot; and t1.&quot;WhsCode&quot;=@WhsCode
+            left outer join OIGW t3 on t0.&quot;ItmsGrpCod&quot;=t3.&quot;ItmsGrpCod&quot; and t3.&quot;WhsCode&quot;=@WhsCode
+            left outer join owhs t2 on t2.&quot;WhsCode&quot;=@WhsCode
+             where t0.&quot;ItemCode&quot;=@ItemCode.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetDocumentAuthorizationsData">
+             <summary>
+               Looks up a localized string similar to select
+                &quot;AbsId&quot;,ifnull(&quot;FathId&quot;,&apos;&apos;) as &quot;FathId&quot; ,&quot;Levels&quot;,ifnull(&quot;FormId&quot;,&apos;&apos;) as &quot;FormId&quot; from OUPT T0 left outer join upt1 t1 on t0.&quot;AbsId&quot;=t1.&quot;PermId&quot;
+            where t0.&quot;AbsId&quot;=@PermisionID.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetFieldInfo">
+             <summary>
+               Looks up a localized string similar to select 
+            t0.&quot;TableID&quot;,t0.&quot;AliasID&quot; ,t0.&quot;TypeID&quot;,t0.&quot;EditSize&quot;,t0.&quot;SizeID&quot; ,Count(ifnull(t1.&quot;IndexID&quot;,0))-1 as &quot;vvCount&quot;
+             from cufd t0
+            left outer join ufd1 t1 on t0.&quot;TableID&quot;=t1.&quot;TableID&quot; and T0.&quot;FieldID&quot;=t1.&quot;FieldID&quot;
+            where t0.&quot;TableID&quot;=@TableID and t0.&quot;AliasID&quot;=@AliasID
+            group by t0.&quot;TableID&quot;,t0.&quot;AliasID&quot; , t0.&quot;TypeID&quot;,t0.&quot;EditSize&quot;,t0.&quot;SizeID&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetFileData">
+            <summary>
+              Looks up a localized string similar to SELECT 
+            SUBSTRING(&quot;U_FileData&quot;, @StartPos, 2048)
+            							FROM &quot;@CT_PF_OBLOB&quot;
+            							WHERE
+            								&quot;U_TableCode&quot; = @TableCode AND
+            								&quot;U_TableName&quot; = @TableName.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetItemCurrentAndHistoricalBinLocation">
+             <summary>
+               Looks up a localized string similar to SELECT
+              DISTINCT T1.&quot;AbsEntry&quot;, T1.&quot;BinCode&quot;, T1.&quot;WhsCode&quot;
+            FROM
+            	&quot;{0}&quot; T0 -- tu będzie OIBQ (Itemy bez zarządzania) lub OBBQ (Batche) lub OSBQ (Seriale) 
+            	LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot;
+             WHERE
+            	T0.&quot;WhsCode&quot; = @WhsCode  AND
+            	T0.&quot;ItemCode&quot; = @ItemCode  AND
+            	--T0.&quot;OnHandQty&quot; &lt;&gt; 0  AND -- tu jest kluczowy warunek
+            	T1.&quot;SysBin&quot; &lt;&gt; &apos;Y&apos;
+            ORDER BY
+            	T1.&quot;BinCode&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetItemCurrentBinLocation">
+             <summary>
+               Looks up a localized string similar to SELECT 
+             DISTINCT T1.&quot;AbsEntry&quot;, T1.&quot;BinCode&quot;, T1.&quot;WhsCode&quot;
+            FROM
+            	&quot;{0}&quot; T0 -- tu będzie OIBQ (Itemy bez zarządzania) lub OBBQ (Batche) lub OSBQ (Seriale) 
+            	LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot;
+             WHERE
+            	T0.&quot;WhsCode&quot; = @WhsCode  AND
+            	T0.&quot;ItemCode&quot; = @ItemCode  AND
+            	T0.&quot;OnHandQty&quot; &lt;&gt; 0  AND -- tu jest kluczowy warunek
+            	T1.&quot;SysBin&quot; &lt;&gt; &apos;Y&apos;
+            ORDER BY
+            	T1.&quot;BinCode&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetItemFIFOBinsWitnOnHandQty">
+            <summary>
+              Looks up a localized string similar to SELECT 
+            T1.&quot;AbsEntry&quot;, min(T2.&quot;DocDate&quot;)
+            					FROM  &quot;OBTL&quot; T0   
+            					LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot;    
+            					LEFT OUTER  JOIN &quot;OILM&quot; T2  ON  T0.&quot;MessageID&quot; = T2.&quot;MessageID&quot;   
+            					LEFT OUTER JOIN  &quot;{0}&quot; T3 ON T0.&quot;BinAbs&quot; = T3.&quot;BinAbs&quot; and T2.&quot;ItemCode&quot; =T3.&quot;ItemCode&quot; 
+            					WHERE T2.&quot;LocCode&quot; = (@WhsCode)  AND  T2.&quot;ItemCode&quot; = (@ItemCode)  AND  T2.&quot;ActionType&quot; IN(1,19,20) 
+            					 and T3.&quot;OnHandQty&quot;  &gt; 0
+            					group by t1.&quot;AbsEntry&quot;  
+            					ORDER BY min(T2.&quot;DocDat [rest of string was truncated]&quot;;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetItemLastBinLocation">
+            <summary>
+              Looks up a localized string similar to SELECT 
+            TOP 1 T1.&quot;AbsEntry&quot;, T1.&quot;BinCode&quot;, T1.&quot;WhsCode&quot;
+            					FROM  &quot;OBTL&quot; T0   
+            					LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot;    
+            					LEFT OUTER  JOIN &quot;OILM&quot; T2  ON  T0.&quot;MessageID&quot; = T2.&quot;MessageID&quot;
+            					WHERE T2.&quot;LocCode&quot; = @LocCode  AND  T2.&quot;ItemCode&quot; = @ItemCode  
+            					AND  T2.&quot;ActionType&quot; IN(@A1,@A2)   AND  T1.&quot;SysBin&quot; &lt;&gt; @SysBin   
+            					ORDER BY T2.&quot;DocDate&quot; DESC,T0.&quot;AbsEntry&quot; DESC.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetItemLIFOBinsWitnOnHandQty">
+             <summary>
+               Looks up a localized string similar to SELECT 
+             T1.&quot;AbsEntry&quot;, min(T2.&quot;DocDate&quot;)
+            						FROM  &quot;OBTL&quot; T0   
+            						LEFT OUTER  JOIN &quot;OBIN&quot; T1  ON  T0.&quot;BinAbs&quot; = T1.&quot;AbsEntry&quot; 
+            
+            						LEFT OUTER  JOIN &quot;OILM&quot; T2  ON  T0.&quot;MessageID&quot; = T2.&quot;MessageID&quot;   
+            						LEFT OUTER JOIN &quot;{0}&quot;T3 ON T0.&quot;BinAbs&quot; = T3.&quot;BinAbs&quot; and T2.&quot;ItemCode&quot;=t3.&quot;ItemCode&quot;
+            						WHERE T2.&quot;LocCode&quot; = @WhsCode  AND  T2.&quot;ItemCode&quot; = @ItemCode  AND  T2.&quot;ActionType&quot; IN(1,19,20) 
+            						and t3.&quot;OnHandQty&quot; &gt; 0
+            						group by t1.&quot;AbsEntry&quot;  
+            						ORDER BY min(T2.&quot;DocDate&quot;) Desc.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetItemManageType">
+             <summary>
+               Looks up a localized string similar to SELECT
+              &apos;S&apos; FROM &quot;OITM&quot; 
+            WHERE &quot;ItemCode&quot; = @ItemCode AND &quot;ManSerNum&quot; = &apos;Y&apos; 
+            UNION ALL
+            SELECT
+              &apos;B&apos; FROM &quot;OITM&quot;
+            WHERE &quot;ItemCode&quot; = @ItemCode AND &quot;ManBtchNum&quot; = &apos;Y&apos; 
+            UNION ALL 
+            SELECT
+              &apos;N&apos; FROM &quot;OITM&quot; 
+            WHERE &quot;ItemCode&quot; = @ItemCode AND &quot;ManBtchNum&quot; = &apos;N&apos; AND &quot;ManSerNum&quot; = &apos;N&apos;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetItemsInformations">
+             <summary>
+               Looks up a localized string similar to SELECT 
+              T0.&quot;ItemCode&quot;, T0.&quot;ItemName&quot;, IFNULL(T0.&quot;InvntryUom&quot;, &apos;&apos;), t0.&quot;PrcrmntMtd&quot;, t1.&quot;U_Code&quot;, t1.&quot;U_Description&quot; 
+            FROM OITM t0 
+                LEFT OUTER JOIN &quot;@CT_PF_IDT1&quot; t1 ON t0.&quot;ItemCode&quot; = t1.&quot;U_ParentItemCode&quot; 
+            WHERE t0.&quot;ItemCode&quot; IN (@Items).
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetLocalCurrency">
+            <summary>
+              Looks up a localized string similar to select 
+            &quot;MainCurncy&quot; from &quot;OADM&quot;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetNonStockAccts">
+            <summary>
+              Looks up a localized string similar to select t0.&quot;ItemCode&quot;, t2.&quot;WhsCode&quot;, t0.&quot;GLMethod&quot; ,
+             case  t0.&quot;GLMethod&quot; 
+             when &apos;W&apos; then t3.&quot;WipAcct&quot; 
+             when &apos;C&apos; then t1.&quot;WipAcct&quot; 
+             else 
+             t2.&quot;WipAcct&quot; end  as &quot;WIP&quot;
+              ,
+             case  t0.&quot;GLMethod&quot; 
+             when &apos;W&apos; then t3.&quot;ExpensesAc&quot; 
+             when &apos;C&apos; then t1.&quot;ExpensesAc&quot; 
+             else 
+             t2.&quot;ExpensesAc&quot; end  as &quot;EXP&quot;
+            from oitm t0
+             inner join OITB t1 on t0.&quot;ItmsGrpCod&quot;=T1.&quot;ItmsGrpCod&quot;
+             INNER JOIN  OITW T2 ON T0.&quot;ItemCode&quot;=t2.&quot;ItemCode&quot;
+             inner join owhs t3 on t2.&quot;WhsCode&quot;=t3.&quot;WhsCode&quot;
+            where t0.&quot;ItemCo [rest of string was truncated]&quot;;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetOCRNamesForCodes">
+             <summary>
+               Looks up a localized string similar to SELECT 
+             &quot;OcrCode&quot;, &quot;OcrName&quot; 
+            FROM OOCR 
+            WHERE &quot;OcrCode&quot; IN (@OcrCodes).
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetPriceFromOITT">
+            <summary>
+              Looks up a localized string similar to select 
+            T0.&quot;Price&quot; from ITM1 T0  inner join OITT T1 on T1.&quot;Code&quot;=T0.&quot;ItemCode&quot; and T1.&quot;PriceList&quot;=T0.&quot;PriceList&quot; where T1.&quot;Code&quot;=@ItemCode.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetProductionAccounts">
+            <summary>
+              Looks up a localized string similar to select
+            * from &quot;CT_PF_GetProductionAccount&quot;(@ParentItemCode,@ComponentItemCode,@ParentWhsCode,@ComponentWhsCode).
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetQuantityPrecision">
+            <summary>
+              Looks up a localized string similar to select Top 1 &quot;QtyDec&quot; from &quot;OADM&quot;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetTableColumns">
+             <summary>
+               Looks up a localized string similar to SELECT
+              &apos;U_&apos; || &quot;AliasID&quot;, t0.&quot;Descr&quot;, &quot;TypeID&quot;, &quot;EditType&quot;, &quot;SizeID&quot;, &quot;EditSize&quot;, COUNT(t1.&quot;FieldID&quot;) AS &quot;DefVal&quot; 
+            FROM CUFD t0 
+                LEFT OUTER JOIN UFD1 t1 ON t0.&quot;TableID&quot; = t1.&quot;TableID&quot; AND t0.&quot;FieldID&quot; = t1.&quot;FieldID&quot; 
+            WHERE T0.&quot;TableID&quot; = @TableID 
+            GROUP BY &quot;AliasID&quot;, t0.&quot;Descr&quot;, &quot;TypeID&quot;, &quot;EditType&quot;, &quot;SizeID&quot;, &quot;EditSize&quot;.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetTimeZoneOffset">
+            <summary>
+              Looks up a localized string similar to select top 1 ifnull(&quot;offset&quot;,-999) from otiz order by &quot;Id&quot;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetUserQueryKey">
+             <summary>
+               Looks up a localized string similar to select 
+            t0.&quot;IntrnalKey&quot;  ,T0.&quot;QString&quot;
+            from &quot;OUQR&quot; t0 
+            inner join &quot;OQCN&quot; t1 on t0.&quot;QCategory&quot;=t1.&quot;CategoryId&quot; 
+            where t0.&quot;QName&quot; =@QName and t1.&quot;CatName&quot;=@CatName.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.GetWorkaroundSeriesNumber">
+             <summary>
+               Looks up a localized string similar to select &quot;U_SeriesID&quot;   from &quot;@CT_PF_OBSE&quot;
+            where 
+            &quot;U_Object&quot; =@DocType 
+            and 
+            (( (ifnull(&quot;U_BplID&quot;,0)=0 or ifnull(&quot;U_BplID&quot;,0)=@BplID) and 0&lt;&gt;@BplID)
+            or
+            ( 0=@BplID ))
+            and 
+            (&quot;U_User&quot; =@userId  or ifnull(&quot;U_User&quot;,&apos;&apos;)=&apos;&apos;)
+            order by ifnull(&quot;U_User&quot;,&apos;&apos;) desc.
+             </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.HasReadOnlyPerrmissionForForm">
+            <summary>
+              Looks up a localized string similar to select * from usr3 where &quot;UserLink&quot; =@UserID and &quot;PermId&quot;=@FormType and &quot;Permission&quot;=&apos;R&apos;.
+            </summary>
+        </member>
+        <member name="P:CompuTec.Core2.Resources.SAPHanaQueries.SaveBlob">
+            <summary>
+              Looks up a localized string similar to IF EXISTS (
+            							SELECT * FROM &quot;@CT_PF_OBLOB&quot;
+            								WHERE
+            									&quot;U_TableCode&quot; =@TableCode AND
+            									&quot;U_TableName&quot; =@TableName
+            							)
+            								UPDATE &quot;@CT_PF_OBLOB&quot;
+            								SET
+            									&quot;U_FileName&quot; =@FileName,
+            									&quot;U_FileData&quot; =@FileData
+            								WHERE
+            									&quot;U_TableCode&quot; = @TableCode AND
+            									&quot;U_TableName&quot; = @TableName
+            						ELSE
+            							INSERT INTO &quot;@CT_PF_OBLOB&quot; (
+            								&quot;Code&quot;,
+            								&quot;Name&quot;,
+            								&quot;U_TableCode&quot;,
+            								&quot;U_TableName&quot;,
+            					 [rest of string was truncated]&quot;;.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Tools.DateTimeFormattingSapSettings">
+            <summary>
+            Model of Sap settings concerned around displaying date and time.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateTimeFormattingSapSettings.#ctor">
+            <summary>
+            Constructor filling properties above automatically.
+            </summary>
+        </member>
+        <member name="T:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass">
+            <summary>
+            Tool class helpful in converting dates and times into a correct SAP format (as set in general settings).
+            It is using the model class DateTimeFormattingSapSettings as an input parameter which is filling settings automatically in constructor.
+            Moreover there are methods to converting TimeSpan into string for leadTime values (internal and receive) and the others methods in similar domain.
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ConvertLeadTimeToTimeSpan(System.String)">
+            <summary>
+            Method which is converting lead time (internal and receive) in format "days:hours:minutes" or "days:hours" into TimeSpan object.
+            </summary>
+            <param name="leadTimeValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ConvertTimeSpanToLeadTime(System.TimeSpan)">
+            <summary>
+            Function converting TimeSpan into string in format "days:hours:minutes".
+            Useful for internalLeadTime and receiveLeadTime values.
+            </summary>
+            <param name="span"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.MergeDateAndTimeObjectsIntoOne(System.DateTime,System.DateTime)">
+            <summary>
+            Method converting date and time given as DateTime objects into one DateTime object containg both values.
+            </summary>
+            <param name="date"></param>
+            <param name="time"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ConvertDateStringToDateTimeObject(System.String)">
+            <summary>
+            Return DateTime object from string formatted as yyyyMMdd.
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ConvertDateAndTimeStringsToDateTimeObject(System.String,System.String)">
+            <summary>
+            Return DateTime from strings, first containing date formatted as yyyyMMdd and the second as a parameter containing time formatted as HHmm.
+            </summary>
+            <param name="date"> yyyyMMdd</param>
+            <param name="time">HHmm</param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ConvertTimeStringToDateTimeObject(System.String,CompuTec.Core2.Tools.DateTimeFormattingSapSettings)">
+            <summary>
+            This method is going to make DateTime object from the parameter which is time at the string in format HH:mm or hh:mmtt if there is 12 hours format used.
+            </summary>
+            <param name="time"></param>
+            <param name="H24"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ConvertTimeAsNumberToDateTimeObject(System.String)">
+            <summary>
+            Method is converting string containing time as database is handling this values (for example "12" means 12:12 and "1528" means 15:28) into a DateTime value with date 01.01.0001 and converted time.
+            </summary>
+            <param name="time"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ConvertTimeAsNumberToTimeSpanObject(System.String)">
+            <summary>
+            Method is converting string containing time as database is handling this values (for example "12" means 12:12 and "1528" means 15:28) into a TimeSpan value.
+            </summary>
+            <param name="time"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.GetCompanyDate(System.DateTime,System.String)">
+            <summary>
+            Returns date value based on current ( conpany clock) with TimeZone Information
+            </summary>
+            <param name="date"></param>
+            <param name="Token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.GetCompanyDateTime(System.DateTime,System.String)">
+            <summary>
+            Returns datetime value based on current ( conpany clock) with TimeZone Information
+            </summary>
+            <param name="date"></param>
+            <param name="Token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.GetDateAndTimeStringFromDateTimeObject(System.DateTime,CompuTec.Core2.Tools.DateTimeFormattingSapSettings)">
+            <summary>
+            Return sap formatted string containing both date and time values from DateTime objects.
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.GetDateAndTimeStringFromDateTimeObject(System.Nullable{System.DateTime})">
+            <summary>
+            Return string containing both date and time values in format "yyyyMMdd HH:mm" from DateTime? object.
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.GetTimeFromDateTimeObject(System.DateTime,CompuTec.Core2.Tools.DateTimeFormattingSapSettings)">
+            <summary>
+            Return sap formatted string from DateTime object.
+            </summary>
+            <param name="time"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.GetTimeFromDateTimeObject(System.DateTime,System.Boolean)">
+            <summary>
+            Return sap formatted string from DateTime object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ConvertAndValidateTimeEntryForSAPFormat(System.String,System.Boolean@)">
+            <summary>
+            The method is converting entry string into a sap time format, considering settings in OADM table.
+            Moreover the function is going to give out an error if such have apperead or entry string have been not correct with validation.
+            </summary>
+            <param name="value"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ValidateInternalLeadTime(System.String)">
+            <summary>
+            Validating internal lead time editBox, correct format is "x:y:z", "x:y" or "x" where:
+            x means days (1-3 digits and value between 0 and 999 including borders),
+            y means hours (1-2 digits and value between 0 and 23 including borders), 
+            z means minutes (1-2 digits and value between 0 and 59 including borders).
+            </summary>
+            <param name="valueOfILeadTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CompuTec.Core2.Tools.DateAndTimeConversionsToolClass.ValidateReceiveLeadTime(System.String)">
+            <summary>
+            Validating receive lead time editBox, correct format is "x:y" or "x" where:
+            x means days (1-3 digits and value between 0 and 999 including borders),
+            y means hours (1-2 digits and value between 0 and 23 including borders).
+            </summary>
+            <param name="valueOfRLeadTime"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CompuTec.Core2.Translations.Translation">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CompuTec.Core2.Translations.Translation.LoadMessageTranslationsAfterInitLibrary(CompuTec.Core2.CoreInfo)">
+            <summary>
+            This methood must be executed when New Library is loaded into Core and other libraries already Loaded their Translations
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="M:CompuTec.ProcessForce.API.Tools2.UnitConverter.ConvertJoulesToCalories(System.Double)">
+            <summary>
+            converts energy in joules (J) to Calories(cal)
+            </summary>
+            <param name="energyInJoules">energy in Joules</param>
+            <returns>energy in Calories</returns>
+        </member>
+        <member name="M:CompuTec.ProcessForce.API.Tools2.UnitConverter.ConvertCaloriesToJoules(System.Double)">
+            <summary>
+            concerts energy in calories to energy in Joules
+            </summary>
+            <param name="energyInCalories">energy in calories</param>
+            <returns>energy in Joules</returns>
+        </member>
+        <member name="M:CompuTec.ProcessForce.API.Tools2.UnitConverter.GetQuantityDecimalPrecision(System.String)">
+            <summary>
+            Gets the decimal precision for Quantity related fields.
+            </summary>
+            <returns>System.Int32 object that represents the decimal precision for SAP Business One Quantity related fields.</returns>
+        </member>
+        <member name="T:CompuTec.ProcessForce.API.Core2.Structures.UDSDeclaration">
+            <summary>
+            This Class Descripses UDS Stucture
+            
+            </summary>
+        </member>
+    </members>
+</doc>

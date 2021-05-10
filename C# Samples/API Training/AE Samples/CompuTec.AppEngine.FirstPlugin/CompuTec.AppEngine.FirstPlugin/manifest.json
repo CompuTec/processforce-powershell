@@ -1,0 +1,29 @@
+﻿{
+  "version": "1.0.0",
+  "id": "FirstPlugin",
+  "name": "FirstPlugin",
+  "icon": "sap-icon://activate",
+
+  "company": "",
+  "api": {
+    "routePrefix": "FirstPlugin",
+    "setupAssembly": "CompuTec.AppEngine.FirstPlugin",
+    "assemblies": [
+    ],
+    "dependencies": {
+    }
+  },
+  "ui": {
+    "apps": [
+      {
+        "icon": "sap-icon://example",
+        "namespace": "computec.appengine.firstplugin",
+        "tile": "FirstPlugin",
+        "target": "home",
+        "type": "User",
+        "sapForms": [
+        ]
+      }
+    ]
+  }
+}

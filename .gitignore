@@ -1,11 +1,59 @@
-.vscode/settings.json
-Performance/Results.csv
-Performance/*.csv
-.vscode/launch.json
-**/bin/**
-**/obj/**
-**\bin\**
-**\obj\**
-packages\**
-**/packages/**
-**/.vs/**
+################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.cache
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+/x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Pp]ackages/
+
+
+HeatFiles.wxs
+
+
+# Visual Studio cache/options directory
+.vs/
+/Sources/CompuTec.AppEngine.PPF/www/node_modules
+/Sources/CompuTec.AppEngine.MOWizard/www/node_modules
+*.js
+*.js.map
+*dll
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/de
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/es
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/fr
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/it
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/ja
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/ko/Microsoft.OData.Core.resources.dll
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/ko
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/ru
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/zh-Hans
+/C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/zh-Hant
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/de
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/es
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/fr/Microsoft.OData.Core.resources.dll
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/fr
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/it
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/ja/Microsoft.OData.Core.resources.dll
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/ja
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/ko
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/ru
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/zh-Hans
+/C# Samples/ProgramData/CompuTec/AppEngine/Plugins/FirstPlugin/zh-Hant

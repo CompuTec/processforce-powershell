@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<messageTranslations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Message id="appTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">CompuTec.AppEngine.FirstPlugin</translation>
+  </Message>
+
+
+
+  <Message id="homePageTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Home Page</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Home Page</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Strona domowa</translation>
+  </Message>
+
+  <Message id="SandboxButtonTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">SandBox</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">SandBox</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Piaskownica</translation>
+  </Message>
+
+  <Message id="todoTileHeader" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">ToDo List</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">ToDo List</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Lista rzeczy do zrobienia</translation>
+  </Message>
+
+  <Message id="todoTileSubheader" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Online</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Online</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Online</translation>
+  </Message>
+
+  <Message id="todoPageTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">ToDo List</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">ToDo List</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Lista rzeczy do zrobienia</translation>
+  </Message>
+
+  <Message id="todoTableTaskColumnTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Task</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Task</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zadanie</translation>
+  </Message>
+
+  <Message id="todoTableIsDoneColumnTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Done</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Done</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zakończone</translation>
+  </Message>
+
+  <Message id="todoListCancelButtonText" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Cancel</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Cancel</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zakończ</translation>
+  </Message>
+
+  <Message id="todoListSaveButtonText" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Save</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Save</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zapisz</translation>
+  </Message>
+
+  <Message id="todoListSaveResultSuccessText" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Changes have been saved</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Changes have been saved</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zmiany zostały zapisane</translation>
+  </Message>
+  
+</messageTranslations>
