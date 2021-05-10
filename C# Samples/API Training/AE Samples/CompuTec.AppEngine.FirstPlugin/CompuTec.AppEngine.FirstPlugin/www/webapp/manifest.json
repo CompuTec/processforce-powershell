@@ -1,0 +1,93 @@
+{
+	"_version": "1.9.0",
+	"sap.app": {
+		"id": "FirstPlugin",
+		"type": "application",
+		"title": "FirstPlugin",
+		"description": "Template",
+		"i18n": "plugins/FirstPlugin/I18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"dataSources": {}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "sap-icon://example",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "computec.appengine.firstplugin.view.App",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.75.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.f": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {},
+		"resources": {
+			"css": [{
+				"uri": "./assets/style/style.css"
+			}]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "computec.appengine.plugin.PluginRouter",
+				"viewType": "XML",
+				"viewPath": "computec.appengine.firstplugin.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"async": true
+			},
+			"routes": [{
+				"pattern": "",
+				"name": "home",
+				"target": "home"
+			}, {
+				"pattern": "todo",
+				"name": "todo",
+				"target": "todo"
+			},
+			{
+				"pattern": "mytodo",
+				"name": "mytodo",
+				"target": "mytodo"
+			}
+		],
+			"targets": {
+				"home": {
+					"viewName": "Home",
+					"viewId": "Home"
+				},
+				"todo": {
+					"viewName": "Todo",
+					"viewId": "Todo"
+				},
+				"sandbox": {
+					"viewName": "MyToDo",
+					"viewId": "MyToDo"
+				}
+			}
+		}
+	}
+}
