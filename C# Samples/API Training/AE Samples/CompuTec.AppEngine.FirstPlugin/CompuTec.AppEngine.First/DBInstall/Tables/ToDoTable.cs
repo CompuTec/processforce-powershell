@@ -68,7 +68,7 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 			TaskName.SetName("TaskName");
 			TaskName.SetDescription("Task Name");
 			TaskName.SetType(BoFieldTypes.db_Alpha);
-			TaskName.SetEditSize(1);
+			TaskName.SetEditSize(100);
 			fields.Add(TaskName);
 
 
@@ -77,6 +77,7 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 			TaskDescription.SetName("Description");
 			TaskDescription.SetDescription("Task description");
 			TaskDescription.SetType(BoFieldTypes.db_Alpha);
+			TaskDescription.SetEditSize(254);
 			fields.Add(TaskDescription);
 
 			//priority column
