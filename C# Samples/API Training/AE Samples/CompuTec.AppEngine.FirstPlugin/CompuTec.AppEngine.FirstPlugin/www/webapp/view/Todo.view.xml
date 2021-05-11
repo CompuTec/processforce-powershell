@@ -12,7 +12,7 @@
           growing="true"
           growingThreshold="10"
           items="{
-								path: 'FirstPlugin>/Todo',
+								path: 'CompuTec.AppEngine.Template.Plugin1>/Todo',
 								parameters: {
 									$count: true,
 									$$updateGroupId : 'todoGroup'
@@ -64,11 +64,11 @@
               <CheckBox
                   text=""
                   select=".onInputChange"
-                  selected="{ path: 'FirstPlugin>IsDone' }" />
+                  selected="{ path: 'CompuTec.AppEngine.Template.Plugin1>IsDone' }" />
             </cells>
             <cells>
               <Input
-                  value="{ path: 'FirstPlugin>Title' }"
+                  value="{ path: 'CompuTec.AppEngine.Template.Plugin1>Title' }"
                   liveChange=".onInputChange" />
             </cells>
             <Button

@@ -2,131 +2,57 @@
 controllerName="computec.appengine.firstplugin.controller.MyToDo"
 	xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
+	displayBlock="true"
 >
-<table:Table
-					id="vendorsLeadTimesTable"
-					showNoData="true"
-					alternateRowColors="true"
-					rows="{ 
-							path:'PF>/BPLeadTime',
-							parameters : {
-								$$operationMode : 'Server',
-								$$updateGroupId: 'VLT'
-							},
-							sorter: { 
-								path: 'U_Priority'
-							}
-						}"
-					visibleRowCountMode="Auto">
-				<table:extension>
-					
-									<MultiComboBox
-											id="vendorLeadTimeFilterShippingTypes"
-											width="30rem"
-											items="{path: 'AE>/CustomViews/Views.Simple(DataSource=\'OSHP\')', 
-										parameters:{ 
-											$$operationMode: 'Server',
-											$select: ['TrnspCode', 'TrnspName']
-												},
-											sorter: {
-													path: 'TrnspCode'
-											}, 
-										templateShareable: false
-										}">
-										<core:Item
-												key="{path: 'AE>TrnspCode', type: 'sap.ui.model.type.String'}"
-												text="{path: 'AE>TrnspName', type: 'sap.ui.model.type.String'}"/>
-									</MultiComboBox>
-							
-					<OverflowToolbar>
-						<ToolbarSpacer/>
-						<Button
-								enabled="{= ${VM>/AddRuleEnabled}}"
-								icon="sap-icon://add"
-								text="{i18n>AddButtonTitle}"
-								press="onAddRule"/>
-						<Button
-								enabled="{= ${VM>/DeleteRuleEnabled}}"
-								icon="sap-icon://delete"
-								text="{i18n>DeleteButtonTitle}"
-								press="onDeleteSelectedRules"/>
-					</OverflowToolbar>
-				</table:extension>
-				<table:columns>
-					<table:Column>
-						<Label text="{i18n>vendorLeadTimePriority}"/>
-						<table:template>
-							<Text text="{PF>U_Priority}"></Text>
-						</table:template>
-					</table:Column>
-					<table:Column>
-						<Label text="{i18n>vendorLeadTimeVendorCode}"/>
-						<table:template>
-							<Input
-									enabled="{= ${VM>/EditMode}}"
-									value="{PF>U_CardCode}"
-									showValueHelp="true"
-									valueHelpOnly="true"
-									valueHelpRequest=".onCardCodeValueHelpRequest"/>
-						</table:template>
-					</table:Column>
-					<table:Column>
-						<Label text="{i18n>vendorLeadTimeShippingType}"/>
-						<table:template>
-							<Select
-									enabled="{= ${VM>/EditMode}}"
-									forceSelection="false"
-									items="{path: 'ST>/', 
-										parameters:{ 
-											sorter: {
-													path: 'TrnspCode'
-											}
-										}, 
-										templateShareable: false
-									}"
-									selectedKey="{path:'PF>U_TrnspCode', type:'sap.ui.model.odata.type.String'}">
-								<core:Item
-										key="{path:'ST>TrnspCode', type:'sap.ui.model.odata.type.String'}"
-										text="{path:'ST>TrnspName', type:'sap.ui.model.odata.type.String'}"/>
-							</Select>
-						</table:template>
-					</table:Column>
-					<table:Column>
-						<Label text="{i18n>vendorLeadTimeAddress}"/>
-						<table:template>
-							<Input
-									enabled="{= ${VM>/EditMode}}"
-									value="{PF>U_Address}"
-									showValueHelp="true"
-									valueHelpOnly="true"
-									valueHelpRequest="onAddressValueHelpRequest"/>
-						</table:template>
-					</table:Column>
-					<table:Column>
-						<Label text="{i18n>vendorLeadTimeActive}"/>
-						<table:template>
-							<CheckBox
-									enabled="{= ${VM>/EditMode}}"
-									selected="{path: 'PF>U_Active', type: 'computec.appengine.ui.controls.YesNoBoolType'}"/>
-						</table:template>
-					</table:Column>
-					<table:Column>
-						<Label text="{i18n>vendorLeadTimeAdd}"/>
-						<table:template>
-							<CheckBox
-									enabled="{= ${VM>/EditMode}}"
-									selected="{path: 'PF>U_Add', type: 'computec.appengine.ui.controls.YesNoBoolType'}"/>
-						</table:template>
-					</table:Column>
-					<table:Column>
-						<Label text="{i18n>vendorLeadTimeLeadTime}"/>
-						<table:template>
-							<Input
-									enabled="{= ${VM>/EditMode}}"
-									value="{path: 'PF>U_LeadTime', type: 'sap.ui.model.type.Integer', constraints: { minimun: 0 } }"/>
-						</table:template>
-					</table:Column>
-				</table:columns>
-			</table:Table>
 
+            <Button text="{i18n>DeleteButton}" press="onDelete" />
+            <Button text="{i18n>AddButton}" press="onAdd" />
+			<Table
+          id="todoList"
+          growing="true"
+          growingThreshold="10"
+          items="{
+								path: 'FP>/ToDo',
+								parameters: {
+									$count: true
+								}
+              }"
+          fixedLayout="false">
+        <headerToolbar>
+         
+        </headerToolbar>
+        <columns>
+          <Column
+              id="TaskNameCOlumn"
+              width="3rem">
+            <Text text="Task Name" />
+          </Column>
+          <Column id="DescriptionColumn">
+            <Text text="{i18n>DescriptionColumn}" />
+          </Column>
+          <Column
+              id="PriorityCOlumn"
+              width="3rem">
+            <Text text="{i18n>PriorityCOlumn}" />
+          </Column>
+        </columns>
+        <items>
+          <ColumnListItem>
+            <cells>
+              <Input
+                  value="{ path: 'FP>U_TaskName' }"
+                   />
+            </cells>
+            <cells>
+              <Input
+                  value="{ path: 'FP>U_Description' }"
+                  />
+            </cells>
+            <cells>
+              <Input
+                  value="{ path: 'FP>U_Priority' }"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
 </mvc:View>

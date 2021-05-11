@@ -83,7 +83,7 @@
 					"viewName": "Todo",
 					"viewId": "Todo"
 				},
-				"sandbox": {
+				"mytodo": {
 					"viewName": "MyToDo",
 					"viewId": "MyToDo"
 				}

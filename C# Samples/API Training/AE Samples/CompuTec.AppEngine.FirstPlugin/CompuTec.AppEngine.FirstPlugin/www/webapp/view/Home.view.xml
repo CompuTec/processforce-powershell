@@ -7,22 +7,13 @@
     <l:HorizontalLayout allowWrapping="true">
       <GenericTile
           class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-          header="{i18n>todoTileHeader}"
-          subheader="{i18n>todoTileSubheader}"
-          press='.onTodoListPress'>
+          header="{i18n>Apptitle}"
+          subheader="{i18n>Apptitle}"
+          press="onToDoPress">
         <TileContent>
           <ImageContent src="sap-icon://activity-2" />
         </TileContent>
       </GenericTile>
-      <GenericTile
-      class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-      header="{i18n>SandboxButtonTitle}"
-      subheader="{i18n>SandboxButtonTitle}"
-      press='.onToDoPress'>
-    <TileContent>
-      <ImageContent src="sap-icon://activity-2" />
-    </TileContent>
-  </GenericTile>
     </l:HorizontalLayout>
   </Panel>
 </mvc:View>
