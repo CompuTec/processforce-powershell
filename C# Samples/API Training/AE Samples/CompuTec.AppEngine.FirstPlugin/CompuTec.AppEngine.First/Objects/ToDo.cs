@@ -12,16 +12,16 @@ namespace CompuTec.AppEngine.First.Objects
 
 		public ToDo()
 		{
-            //this.Childs = new Dictionary<string, Core2.Beans.ChildBeans>();
             this.UDOCode = First.DBInstall.Tables.ToDoTable.OBJECT_CODE;
             this.TableName = First.DBInstall.Tables.ToDoTable.TABLE_NAME;
 
-
-        }
+			this.Childs = new Dictionary<string, ChildBeans>();
+			this.ChildDictionary = new Dictionary<string, string>();
+		}
 
 		protected override bool BeforeAdd()
 		{
-			this.Deadline = DateTime.Now;
+			this.U_Deadline = DateTime.Now;
 			
 			return base.BeforeAdd();
 		}

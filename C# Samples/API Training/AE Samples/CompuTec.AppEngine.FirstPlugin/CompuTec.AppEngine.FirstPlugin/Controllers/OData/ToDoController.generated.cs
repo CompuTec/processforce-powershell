@@ -20,7 +20,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Controllers.OData
     [ODataRoutePrefix("ToDo")]
     public partial class ToDoController : AppEngineCore2ODataBatchController<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.ToDo, CompuTec.AppEngine.First.Objects.IToDo, string>
     {
-        protected override string TableName => "@Sample_OTDO";
+        protected override string TableName => "@SAMPLE_OTDO";
         protected override string KeyName => "Code";
         protected override string ObjectType => "Sample_ToDo";
         protected override eUDOVersion UDOVersion => eUDOVersion.UDO_20;

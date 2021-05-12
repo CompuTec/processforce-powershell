@@ -18,10 +18,10 @@ namespace CompuTec.AppEngine.First.Objects
 			get { return FieldDictionary["Name"].Value; }
 			set { FieldDictionary["Name"].Value = value; ; }
 		}
-		public DateTime Deadline
+		public DateTime U_Deadline
 		{
-			get { return FieldDictionary["Deadline"].Value; }
-			set { FieldDictionary["Deadline"].Value = value; ; }
+			get { return FieldDictionary["U_Deadline"].Value; }
+			set { FieldDictionary["U_Deadline"].Value = value; ; }
 		}
 
 

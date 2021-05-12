@@ -13,6 +13,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
             var model = new CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.ToDo();
             model.Code = udo.Code;
             model.Name = udo.Name;
+            model.U_Deadline = udo.U_Deadline;
             UDFsToModel(udo, model);
             return model;
         }
@@ -21,6 +22,15 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
         {
             udo.Code = model.Code;
             udo.Name = model.Name;
+            if (model.U_Deadline != null)
+            {
+                udo.U_Deadline = (System.DateTime)model.U_Deadline;
+            }
+            else
+            {
+                udo.U_Deadline = default(System.DateTime);
+            }
+
             UDFsToUdo(udo, model);
             return udo;
         }
@@ -31,6 +41,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                 udo.Code = model.Code;
             if (model.Name != null)
                 udo.Name = model.Name;
+            if (model.U_Deadline != null)
+                udo.U_Deadline = (System.DateTime)model.U_Deadline;
             UDFsToUdo(udo, model);
             return udo;
         }
@@ -41,6 +53,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                 udo.Code = model.Code;
             if (model.Name != null)
                 udo.Name = model.Name;
+            if (model.U_Deadline != null)
+                udo.U_Deadline = (System.DateTime)model.U_Deadline;
             UDFsToUdo(udo, model);
             return udo;
         }

@@ -9,6 +9,10 @@
     "routePrefix": "FirstPlugin",
     "setupAssembly": "CompuTec.AppEngine.FirstPlugin",
     "assemblies": [
+      "CompuTec.AppEngine.First",
+      "CompuTec.AppEngine.FirstPlugin.Models",
+      "CompuTec.AppEngine.FirstPlugin.Serializer",
+      "CompuTec.AppEngine.FirstPlugin.Api"
     ],
     "dependencies": {
     }

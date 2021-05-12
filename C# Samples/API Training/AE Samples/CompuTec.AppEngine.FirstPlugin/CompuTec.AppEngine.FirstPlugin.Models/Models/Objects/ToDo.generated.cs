@@ -15,6 +15,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Models.Models.Objects
 
         public string Name { get; set; }
 
+        public System.DateTime? U_Deadline { get; set; }
+
         object ICloneable.Clone()
         {
             return (ToDo)this.MemberwiseClone();

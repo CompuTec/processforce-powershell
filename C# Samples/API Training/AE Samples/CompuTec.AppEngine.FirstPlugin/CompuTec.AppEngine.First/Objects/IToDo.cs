@@ -5,13 +5,13 @@ using System;
 
 namespace CompuTec.AppEngine.First.Objects
 {
-	[AppEngineUDOBean(Ignore = false, ObjectType = "Sample_ToDo", TableName = "@Sample_OTDO")]
+	[AppEngineUDOBean(Ignore = false, ObjectType = "Sample_ToDo", TableName = "@SAMPLE_OTDO")]
 	public interface IToDo : IUDOBean
 	{
 		[AppEngineProperty(IsMasterKey = true)]
 		String Code { get; set; }
 		String Name { get; set; }
-        DateTime Deadline { get; set; }
+        DateTime U_Deadline { get; set; }
 
     }
 }
