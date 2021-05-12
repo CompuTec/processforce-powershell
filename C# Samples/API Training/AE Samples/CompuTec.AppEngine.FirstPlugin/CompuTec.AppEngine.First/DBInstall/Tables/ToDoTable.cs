@@ -15,7 +15,7 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 		public const String OBJECT_CODE = "Sample_ToDo";
 		public const String TABLE_NAME = "SAMPLE_TODO";
 		public const String TABLE_DESCRIPTION = "Sample table";
-		public const String ARCHIVE_TABLE_NAME = "Sample_ATDO";
+		public const String ARCHIVE_TABLE_NAME = "SAMPLE_ATDO";
 
 		public ToDoTable(IDIConnection connection) : base(connection) { }
 
@@ -25,24 +25,20 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 			List<IUDOField> fields = this.CreateFieldsForHeaderTable();
 			List<IUDOFindColumn> findColumns = this.CreateFindColumnsList();
 
-			
+			IUDOTable UdoTable = new UDOTable(fields, findColumns, TABLE_NAME, TABLE_DESCRIPTION, BoUTBTableType.bott_MasterData, this.CreateKeys());
 
-			var UdoTable = new UDOTable(fields, findColumns, TABLE_NAME, TABLE_DESCRIPTION, BoUTBTableType.bott_MasterData, this.CreateKeys())
-			{
-				RegisteredUDOName = TABLE_NAME,
-				RegisteredUDOCode = OBJECT_CODE,
+			UdoTable.RegisteredUDOName = TABLE_NAME;
+			UdoTable.RegisteredUDOCode = OBJECT_CODE;
 
-				CanArchive = BoYesNoEnum.tYES,
-				CanCancel = BoYesNoEnum.tNO,
-				CanClose = BoYesNoEnum.tYES,
-				CanCreateDefaultForm = BoYesNoEnum.tYES,
-				CanDelete = BoYesNoEnum.tYES,
-				CanFind = BoYesNoEnum.tYES,
-				CanLog = BoYesNoEnum.tYES,
-				CanYearTransfer = BoYesNoEnum.tYES,
-				ArchiveTableName = ARCHIVE_TABLE_NAME
-			};
-
+			UdoTable.CanArchive = BoYesNoEnum.tYES;
+			UdoTable.CanCancel = BoYesNoEnum.tNO;
+			UdoTable.CanClose = BoYesNoEnum.tNO;
+			UdoTable.CanCreateDefaultForm = BoYesNoEnum.tNO;
+			UdoTable.CanDelete = BoYesNoEnum.tYES;
+			UdoTable.CanFind = BoYesNoEnum.tYES;
+			UdoTable.CanLog = BoYesNoEnum.tYES;
+			UdoTable.CanYearTransfer = BoYesNoEnum.tNO;
+			UdoTable.ArchiveTableName = ARCHIVE_TABLE_NAME;
 
 			return UdoTable;
 		}
@@ -51,10 +47,10 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 		{
 			List<IUDOFindColumn> findList = new List<IUDOFindColumn>();
 
-			var UpdatedBy = new UDOFindColumn();
-			UpdatedBy.SetColumnAlias("U_TaskName");
-			UpdatedBy.SetColumnDescription("Task Name");
-			findList.Add(UpdatedBy);
+			var taskName = new UDOFindColumn();
+			taskName.SetColumnAlias("U_TaskName");
+			taskName.SetColumnDescription("Task Name");
+			findList.Add(taskName);
 
 			return findList;
 		}
