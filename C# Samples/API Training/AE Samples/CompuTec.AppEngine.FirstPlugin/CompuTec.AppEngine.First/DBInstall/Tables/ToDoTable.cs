@@ -13,7 +13,7 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 	public class ToDoTable : UDOManager
 	{
 		public const String OBJECT_CODE = "Sample_ToDo";
-		public const String TABLE_NAME = "Sample_OTDO";
+		public const String TABLE_NAME = "SAMPLE_TODO";
 		public const String TABLE_DESCRIPTION = "Sample table";
 		public const String ARCHIVE_TABLE_NAME = "Sample_ATDO";
 

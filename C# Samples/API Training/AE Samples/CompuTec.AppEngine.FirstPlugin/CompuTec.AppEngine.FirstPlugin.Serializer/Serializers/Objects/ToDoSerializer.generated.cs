@@ -14,6 +14,9 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
             model.Code = udo.Code;
             model.Name = udo.Name;
             model.U_Deadline = udo.U_Deadline;
+            model.U_TaskName = udo.U_TaskName;
+            model.U_Description = udo.U_Description;
+            model.U_Priority = udo.U_Priority;
             UDFsToModel(udo, model);
             return model;
         }
@@ -31,6 +34,9 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                 udo.U_Deadline = default(System.DateTime);
             }
 
+            udo.U_TaskName = model.U_TaskName;
+            udo.U_Description = model.U_Description;
+            udo.U_Priority = model.U_Priority;
             UDFsToUdo(udo, model);
             return udo;
         }
@@ -43,6 +49,12 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                 udo.Name = model.Name;
             if (model.U_Deadline != null)
                 udo.U_Deadline = (System.DateTime)model.U_Deadline;
+            if (model.U_TaskName != null)
+                udo.U_TaskName = model.U_TaskName;
+            if (model.U_Description != null)
+                udo.U_Description = model.U_Description;
+            if (model.U_Priority != null)
+                udo.U_Priority = model.U_Priority;
             UDFsToUdo(udo, model);
             return udo;
         }
@@ -55,6 +67,12 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                 udo.Name = model.Name;
             if (model.U_Deadline != null)
                 udo.U_Deadline = (System.DateTime)model.U_Deadline;
+            if (model.U_TaskName != null)
+                udo.U_TaskName = model.U_TaskName;
+            if (model.U_Description != null)
+                udo.U_Description = model.U_Description;
+            if (model.U_Priority != null)
+                udo.U_Priority = model.U_Priority;
             UDFsToUdo(udo, model);
             return udo;
         }

@@ -17,6 +17,12 @@ namespace CompuTec.AppEngine.FirstPlugin.Models.Models.Objects
 
         public System.DateTime? U_Deadline { get; set; }
 
+        public string U_TaskName { get; set; }
+
+        public string U_Description { get; set; }
+
+        public string U_Priority { get; set; }
+
         object ICloneable.Clone()
         {
             return (ToDo)this.MemberwiseClone();

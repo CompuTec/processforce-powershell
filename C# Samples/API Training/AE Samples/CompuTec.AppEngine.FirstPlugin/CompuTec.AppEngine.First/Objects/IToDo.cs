@@ -5,7 +5,7 @@ using System;
 
 namespace CompuTec.AppEngine.First.Objects
 {
-	[AppEngineUDOBean(Ignore = false, ObjectType = "Sample_ToDo", TableName = "@SAMPLE_OTDO")]
+	[AppEngineUDOBean(Ignore = false, ObjectType = "Sample_ToDo", TableName = "@SAMPLE_TODO")]
 	public interface IToDo : IUDOBean
 	{
 		[AppEngineProperty(IsMasterKey = true)]
