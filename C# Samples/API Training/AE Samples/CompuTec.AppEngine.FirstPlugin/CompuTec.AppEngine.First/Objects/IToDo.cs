@@ -11,7 +11,11 @@ namespace CompuTec.AppEngine.First.Objects
 		[AppEngineProperty(IsMasterKey = true)]
 		String Code { get; set; }
 		String Name { get; set; }
-        DateTime U_Deadline { get; set; }
+		DateTime UpdateDate { get; set; }
+		DateTime U_Deadline { get; set; }
+		string U_TaskName { get; set; }
+		string U_Description { get; set; }
+		string U_Priority { get; set; }
 
-    }
+	}
 }

@@ -16,16 +16,32 @@ namespace CompuTec.AppEngine.First.Objects
 		public String Name
 		{
 			get { return FieldDictionary["Name"].Value; }
-			set { FieldDictionary["Name"].Value = value; ; }
+			set { FieldDictionary["Name"].Value = value; }
+		}
+		public DateTime UpdateDate
+		{
+			get { return FieldDictionary["UpdateDate"].Value; }
+			set { FieldDictionary["UpdateDate"].Value = value; }
 		}
 		public DateTime U_Deadline
 		{
 			get { return FieldDictionary["U_Deadline"].Value; }
-			set { FieldDictionary["U_Deadline"].Value = value; ; }
+			set { FieldDictionary["U_Deadline"].Value = value; }
 		}
-
-
-
-
+		public string U_TaskName
+		{
+			get { return FieldDictionary["U_TaskName"].Value; }
+			set { FieldDictionary["U_TaskName"].Value = value; }
+		}
+		public string U_Description
+		{
+			get { return FieldDictionary["U_Description"].Value; }
+			set { FieldDictionary["U_Description"].Value = value; }
+		}
+		public string U_Priority
+		{
+			get { return FieldDictionary["U_Priority"].Value; }
+			set { FieldDictionary["U_Priority"].Value = value; }
+		}
 	}
 }

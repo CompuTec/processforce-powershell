@@ -91,6 +91,7 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 				{ "M", "Medium Priority" },
 				{ "H", "Huge Priority" }
 			};
+			TaskPriority.DefaultValue = "L";
 			TaskPriority.SetEditSize(11);
 			fields.Add(TaskPriority);
 
