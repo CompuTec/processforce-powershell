@@ -65,5 +65,35 @@
     <translation lang="ln_English" Date="2011-08-09T15:55:59">Changes have been saved</translation>
     <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zmiany zostały zapisane</translation>
   </Message>
-  
+
+  <Message id="DeleteButton" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Delete Item</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Delete Item</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Usuń tą pozycję</translation>
+  </Message>
+
+  <Message id="AddButton" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Add Item</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Add Item</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Dodaj pozycję</translation>
+  </Message>
+
+  <Message id="DescriptionColumn" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Description</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Description</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Opis</translation>
+  </Message>
+
+  <Message id="TaskNameColumn" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Name</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Name</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Nazwa</translation>
+  </Message>
+
+  <Message id="PriorityColumn" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Priority</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Priority</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Priorytet</translation>
+  </Message>
+
 </messageTranslations>

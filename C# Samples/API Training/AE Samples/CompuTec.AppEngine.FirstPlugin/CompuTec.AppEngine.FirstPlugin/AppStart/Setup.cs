@@ -35,7 +35,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Plugin.AppStart
                 var updateResult = setup.Update();
 
                 if (!updateResult.Success)
-                {
+                {    
                     var message = new StringBuilder();
 
                     updateResult.Errors.ForEach(e =>
@@ -57,4 +57,4 @@ namespace CompuTec.AppEngine.FirstPlugin.Plugin.AppStart
 
         public override Version Version => new Version(Info.NameVersion);
     }
-}
+}  

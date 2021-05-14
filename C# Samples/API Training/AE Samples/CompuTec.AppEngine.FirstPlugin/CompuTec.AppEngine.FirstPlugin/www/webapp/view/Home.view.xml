@@ -14,6 +14,16 @@
           <ImageContent src="sap-icon://activity-2" />
         </TileContent>
       </GenericTile>
+     <GenericTile
+          class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+          header="{i18n>todoTileHeader}"
+          subheader="{i18n>todoTileSubheader}"
+          press="onTodoListPress">
+        <TileContent>
+          <ImageContent src="sap-icon://activity-2" />
+        </TileContent>
+      </GenericTile>
     </l:HorizontalLayout>
   </Panel>
+  
 </mvc:View>

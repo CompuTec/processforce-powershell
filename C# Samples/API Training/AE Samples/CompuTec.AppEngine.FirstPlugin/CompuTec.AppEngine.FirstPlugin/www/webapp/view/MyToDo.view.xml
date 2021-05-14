@@ -1,12 +1,19 @@
 <mvc:View
 controllerName="computec.appengine.firstplugin.controller.MyToDo"
 	xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m"
+  xmlns="sap.m"
+  xmlns:ae="computec.appengine.ui.controls"
 	displayBlock="true"
 >
 
             <Button text="{i18n>DeleteButton}" press="onDelete" />
             <Button text="{i18n>AddButton}" press="onAdd" />
+            <ae:Link
+								text=""
+								objectType="CT_PF_12"
+								objectSubType="Resource"
+								key="{path: 'RSC>Code', type: 'sap.ui.model.type.String', targetType : 'any'}">
+                </ae:Link>
 			<Table
           id="todoList"
           growing="true"
@@ -23,17 +30,17 @@ controllerName="computec.appengine.firstplugin.controller.MyToDo"
         </headerToolbar>
         <columns>
           <Column
-              id="TaskNameCOlumn"
-              width="3rem">
-            <Text text="Task Name" />
+              id="TaskNameColumn"
+              width="10rem">
+            <Text text="{i18n>TaskNameColumn}" />
           </Column>
           <Column id="DescriptionColumn">
             <Text text="{i18n>DescriptionColumn}" />
           </Column>
           <Column
-              id="PriorityCOlumn"
-              width="3rem">
-            <Text text="{i18n>PriorityCOlumn}" />
+              id="PriorityColumn"
+              width="10rem">
+            <Text text="{i18n>PriorityColumn}" />
           </Column>
         </columns>
         <items>

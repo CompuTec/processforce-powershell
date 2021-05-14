@@ -12,7 +12,7 @@
           growing="true"
           growingThreshold="10"
           items="{
-								path: 'CompuTec.AppEngine.Template.Plugin1>/Todo',
+								path: 'FP>/Todo',
 								parameters: {
 									$count: true,
 									$$updateGroupId : 'todoGroup'
