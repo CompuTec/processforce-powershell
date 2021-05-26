@@ -2,17 +2,41 @@
 controllerName="computec.appengine.firstplugin.controller.MyToDo"
 	xmlns:mvc="sap.ui.core.mvc"
   xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:tnt="sap.tnt"
   xmlns:ae="computec.appengine.ui.controls"
 	displayBlock="true"
 >
-
-            <Button text="{i18n>DeleteButton}" press="onDelete" />
-            <Button text="{i18n>AddButton}" press="onAdd" />
+  <tnt:ToolHeader>
+  <Input
+                  
+                  value="{ /task/name }"
+                  width = "15%"
+                  valueLiveUpdate = "true"
+                   />
+                   
+  <Input
+                  value="{ /task/description }"
+                  width = "25%"
+                  valueLiveUpdate = "true"
+                   />
+                   
+  <Input
+                  value="{ /task/priority }"
+                  width = "15%"
+                  valueLiveUpdate = "true"
+                   />
+  <Button text="{i18n>AddButton}" press="onAdd" />
+  </tnt:ToolHeader>
+  <tnt:ToolHeader>
+  <Button text="{i18n>DeleteButton}" press="onDelete" />
+  </tnt:ToolHeader>
+            
             <ae:Link
-								text=""
-								objectType="CT_PF_12"
+								text="move to MRP"
+								objectType="CT_PF_SSC"
 								objectSubType="Resource"
-								key="{path: 'RSC>Code', type: 'sap.ui.model.type.String', targetType : 'any'}">
+								key="{path: 'FP>Code', type: 'sap.ui.model.type.String', targetType : 'any'}">
                 </ae:Link>
 			<Table
           id="todoList"
@@ -59,7 +83,25 @@ controllerName="computec.appengine.firstplugin.controller.MyToDo"
               <Input
                   value="{ path: 'FP>U_Priority' }"/>
             </cells>
+             <cells>
+              <Button
+                id="deleteTaskButton"
+                icon="sap-icon://delete"
+                press=".onDelete">
+              </Button>
+            </cells>
           </ColumnListItem>
         </items>
       </Table>
-</mvc:View>
+      
+      <ComboBox
+											id="CustomView"
+											width="30rem"
+											items="{path:'AE>/CustomViews/Views.Custom(Id=\'FirstPlugin%3ASalesOrderList\')'
+                        }">
+
+										<core:Item
+                        key = "Like i Do"
+												text="AE"/>
+									</ComboBox>
+</mvc:View> 

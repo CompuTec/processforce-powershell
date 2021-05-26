@@ -268,6 +268,9 @@
     </Content>
     <None Include="CompuTec.AppEngine.PluginCodeGenerator.dll.config" />
     <None Include="CompuTecSAP.config" />
+    <Content Include="CustomViews\SalesOrderList.customview.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="www\eslintrc" />
     <None Include="www\gitignore" />
@@ -346,4 +349,9 @@
   <Import Project="..\packages\CompuTec.SAP.2.10.0.68\build\CompuTec.SAP.targets" Condition="Exists('..\packages\CompuTec.SAP.2.10.0.68\build\CompuTec.SAP.targets')" />
   <Import Project="..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets" Condition="Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets')" />
   <Import Project="..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.0.57\build\CompuTec.AppEngine.PluginCodeGenerator.targets" Condition="Exists('..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.0.57\build\CompuTec.AppEngine.PluginCodeGenerator.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties customviews_4salesorderlist_1customview_1json__JsonSchema="https://beaujs.com/schema.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

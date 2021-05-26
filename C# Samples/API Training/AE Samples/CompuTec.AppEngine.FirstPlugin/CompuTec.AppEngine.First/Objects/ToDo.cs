@@ -22,6 +22,7 @@ namespace CompuTec.AppEngine.First.Objects
 		protected override bool BeforeAdd()
 		{
 			this.U_Deadline = DateTime.Now;
+			this.Code = "Sample_Code";
 			
 			return base.BeforeAdd();
 		}

@@ -73,8 +73,8 @@
   </Message>
 
   <Message id="AddButton" param="0">
-    <translation lang="Default" Date="2011-08-09T15:55:59">Add Item</translation>
-    <translation lang="ln_English" Date="2011-08-09T15:55:59">Add Item</translation>
+    <translation lang="Default" Date="2011-08-09T15:55:59">Dodaj pozycję</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Dodaj pozycję</translation>
     <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Dodaj pozycję</translation>
   </Message>
 

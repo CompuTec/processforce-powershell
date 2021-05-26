@@ -1,0 +1,8 @@
+﻿{
+  "Id": "SalesOrderList",
+  "Description": "Sales Order List",
+  "Source": {
+    "Hana": "SELECT DocNum, CardName FROM ORDR WHERE DocEntry < 10",
+    "MsSql": "SELECT DocNum, CardName FROM ORDR WHERE DocEntry < 10"
+  }
+}
