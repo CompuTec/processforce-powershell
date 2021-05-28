@@ -1,7 +1,7 @@
 {
 	"_version": "1.9.0",
 	"sap.app": {
-		"id": "FirstPlugin",
+		"id": "computec.appengine.firstplugin",
 		"type": "application",
 		"title": "FirstPlugin",
 		"description": "Template",

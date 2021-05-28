@@ -1,0 +1,12 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+>
+<Dialog
+    id="SalesOrderDialog"
+    title="Sale Orders">
+
+	
+
+</Dialog>
+</c:FragmentDefinition>

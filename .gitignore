@@ -33,7 +33,6 @@ HeatFiles.wxs
 .vs/
 /Sources/CompuTec.AppEngine.PPF/www/node_modules
 /Sources/CompuTec.AppEngine.MOWizard/www/node_modules
-*.js
 *.js.map
 *dll
 /C# Samples/API Training/AE Samples/CompuTec.AppEngine.FirstPlugin/de

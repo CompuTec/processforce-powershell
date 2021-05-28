@@ -4,12 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
-            "type": "chrome",
-            "request": "attach",
-            "name": "Attach",
-            "port" : 9222,
-            "url": "http://localhost:54000/webcontent/launchpad/Index.html",
+            "name": "Launch Edge",
+            "request": "launch",
+            "type": "edge",
+            "version": "canary",
+            "url": "http://localhost:54000",
             "webRoot": "${workspaceFolder}/webapp"
         }
     ]
