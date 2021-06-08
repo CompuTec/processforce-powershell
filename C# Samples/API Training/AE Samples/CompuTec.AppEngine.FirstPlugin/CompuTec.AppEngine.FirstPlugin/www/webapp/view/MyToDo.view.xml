@@ -15,6 +15,7 @@ controllerName="computec.appengine.firstplugin.controller.MyToDo"
                   width = "15%"
                   valueLiveUpdate = "true"
                    />
+
                    
   <Input
                   value="{ /task/description }"
@@ -68,6 +69,7 @@ controllerName="computec.appengine.firstplugin.controller.MyToDo"
               id="ButtonColumn"
               width="5rem">
             <Text text="delete" />
+
           </Column>
         </columns>
         <items>
@@ -98,19 +100,6 @@ controllerName="computec.appengine.firstplugin.controller.MyToDo"
           </ColumnListItem>
         </items>
       </Table>
-      <!-- <Button
-        id="dialogButton"
-        text="openDialog"
-        press=".onOpenDialog"
-         /> -->
-         <!-- <List
-		items="{path:'AE>/CustomViews/Views.Custom(Id=\'FirstPlugin%3ASalesOrderList\')'}">
-		<StandardListItem
-			title="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
-			counter="{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int16'}"/>
-      
-
-	</List> -->
   <Table id="idProductsTable"
 		inset="false"
 		items="{path:'AE>/CustomViews/Views.Custom(Id=\'FirstPlugin%3ASalesOrderList\')'}">
@@ -136,7 +125,7 @@ controllerName="computec.appengine.firstplugin.controller.MyToDo"
           <Button
           app:CardName = "{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
           text="Check attachments"
-          press=".onParamButton">
+          press=".onOpenDialog">
         </Button>
         </cells>
 			</ColumnListItem>

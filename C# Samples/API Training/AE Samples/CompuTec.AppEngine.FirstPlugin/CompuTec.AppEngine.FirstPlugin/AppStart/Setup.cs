@@ -44,7 +44,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Plugin.AppStart
                     });
 
                     throw new Exception(message.ToString());
-                }
+                } 
 
 
                 Console.WriteLine(updateResult.ToString());

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.props" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.props')" />
-  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.props" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.props')" />
+  <Import Project="..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.props" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.props')" />
+  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.props" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.props')" />
+  <Import Project="..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.68\build\CompuTec.AppEngine.Base.Infrastructure.props" Condition="Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.68\build\CompuTec.AppEngine.Base.Infrastructure.props')" />
   <Import Project="..\packages\PostSharp.6.3.9\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.6.3.9\build\PostSharp.props')" />
-  <Import Project="..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.57\build\CompuTec.AppEngine.Base.Infrastructure.props" Condition="Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.57\build\CompuTec.AppEngine.Base.Infrastructure.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -145,17 +145,17 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.57\build\CompuTec.AppEngine.Base.Infrastructure.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.57\build\CompuTec.AppEngine.Base.Infrastructure.props'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.57\build\CompuTec.AppEngine.Base.Infrastructure.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.57\build\CompuTec.AppEngine.Base.Infrastructure.targets'))" />
     <Error Condition="!Exists('..\packages\PostSharp.6.3.9\build\PostSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.3.9\build\PostSharp.props'))" />
     <Error Condition="!Exists('..\packages\PostSharp.6.3.9\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.3.9\build\PostSharp.targets'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.props'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.targets'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.props'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.68\build\CompuTec.AppEngine.Base.Infrastructure.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.68\build\CompuTec.AppEngine.Base.Infrastructure.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.68\build\CompuTec.AppEngine.Base.Infrastructure.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.68\build\CompuTec.AppEngine.Base.Infrastructure.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.targets'))" />
   </Target>
-  <Import Project="..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.57\build\CompuTec.AppEngine.Base.Infrastructure.targets" Condition="Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.57\build\CompuTec.AppEngine.Base.Infrastructure.targets')" />
   <Import Project="..\packages\PostSharp.6.3.9\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.6.3.9\build\PostSharp.targets')" />
-  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.targets" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.targets')" />
-  <Import Project="..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.targets" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.targets')" />
+  <Import Project="..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.68\build\CompuTec.AppEngine.Base.Infrastructure.targets" Condition="Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.0.68\build\CompuTec.AppEngine.Base.Infrastructure.targets')" />
+  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.targets" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.targets')" />
+  <Import Project="..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.targets" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.targets')" />
 </Project>

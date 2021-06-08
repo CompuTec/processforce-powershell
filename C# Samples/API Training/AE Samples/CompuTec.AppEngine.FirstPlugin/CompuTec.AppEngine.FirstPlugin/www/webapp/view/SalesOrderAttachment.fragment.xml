@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+   xmlns="sap.m"
+   xmlns:core="sap.ui.core" >
+   <Dialog
+      title="Hello {/recipient/name}">
+      	<List headerText="Custom Content" mode="Delete" items="{path: '/ProductCollection'}" >
+		<CustomListItem>
+			<HBox>
+				<core:Icon size="2rem" src="sap-icon://attachment-photo" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+					<Link text="just" target="{ProductPicUrl}" press="handlePress"/>
+					<Label text="{ProductId}"/>
+				</VBox>
+			</HBox>
+		</CustomListItem>
+	</List>
+   </Dialog>
+</core:FragmentDefinition>

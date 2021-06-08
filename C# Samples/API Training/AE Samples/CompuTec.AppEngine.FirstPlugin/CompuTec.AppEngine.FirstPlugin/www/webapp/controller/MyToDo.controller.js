@@ -89,10 +89,10 @@ sap.ui.define([
 		onOpenDialog : function (){
 			var oView = this.getView();
 
-			if(!this.byId("SalesOrderDialog")){
+			if(!this.byId("SalesOrderAttachment")){
 				Fragment.load({
 					id : oView.getId(),
-					name : "computec.appengine.firstplugin.view.SalesOrderDialog"
+					name : "computec.appengine.firstplugin.view.SalesOrderAttachment"
 				}).then(function (oDialog){
 					oView.addDependent(oDialog);
 					oDialog.open();
@@ -100,9 +100,11 @@ sap.ui.define([
 
 			}
 			else{
-				this.byId("SalesOrderDialog").open();
+				this.byId("SalesOrderAttachment").open();
 			}
 		},
+
+		
 
 		onParamButton : function (oEvent) {
 			const oSource = oEvent.getSource();

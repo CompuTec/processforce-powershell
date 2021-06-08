@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.props" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.props')" />
-  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.props" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.props')" />
+  <Import Project="..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.props" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.props')" />
+  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.props" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.props')" />
   <Import Project="..\packages\PostSharp.6.3.9\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.6.3.9\build\PostSharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -73,7 +73,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CompuTec.AppEngine.DataAnnotations, Version=1.0.0.0, Culture=neutral, PublicKeyToken=481e6d68a5467cbe, processorArchitecture=MSIL">
-      <HintPath>..\packages\CompuTec.AppEngine.DataAnnotations.2.0.0.57\lib\net47\CompuTec.AppEngine.DataAnnotations.dll</HintPath>
+      <HintPath>..\packages\CompuTec.AppEngine.DataAnnotations.2.0.0.68\lib\net47\CompuTec.AppEngine.DataAnnotations.dll</HintPath>
     </Reference>
     <Reference Include="CompuTec.LabelPrinting.WebApiClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ea7f5d59e1cc26d2, processorArchitecture=MSIL">
       <HintPath>..\packages\CompuTec.LabelPrinting.1.0.0\lib\net47\CompuTec.LabelPrinting.WebApiClient.dll</HintPath>
@@ -178,12 +178,12 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\PostSharp.6.3.9\build\PostSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.3.9\build\PostSharp.props'))" />
     <Error Condition="!Exists('..\packages\PostSharp.6.3.9\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.3.9\build\PostSharp.targets'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.props'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.targets'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.props'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.targets'))" />
   </Target>
   <Import Project="..\packages\PostSharp.6.3.9\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.6.3.9\build\PostSharp.targets')" />
-  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.targets" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.68\build\CompuTec.BaseLayer.targets')" />
-  <Import Project="..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.targets" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.68\build\CompuTec.Core2.targets')" />
+  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.targets" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.72\build\CompuTec.BaseLayer.targets')" />
+  <Import Project="..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.targets" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.72\build\CompuTec.Core2.targets')" />
 </Project>
