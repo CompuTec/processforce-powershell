@@ -39,7 +39,6 @@ sap.ui.define([
 					priority : "priority"
 				
 			};
-			var oModel = new JSONModel(oDatak)
 			oBinding.create(oDatak);
 		},
 
@@ -173,6 +172,27 @@ sap.ui.define([
 			window.open(sUrl, '_blank');
 		},
 
+		onAddAttachment : function(){
+			const oFileUploader = this.getView().byId("FileUploader");
+			const that = this;
+			let domRef = oFileUploader.getFocusDomRef(),
+					file = domRef.files[0];
+			if (!file) {
+				alert("No File Uploaded!");
+				return;
+			}
+			const fromData = new FormData();
+			fromData.append("file", file)
+			fetch("http://localhost:54000/api/Attachments/SetAttachment/false/false" ,{
+				method: 'POST',
+				body: fromData
+			}).then((response) => {
+				console.log(response)
+			})
+			
+			
+		},
+
 		_get: function (sUrl) {
 			return new Promise((resolve, reject) => {
 				Http.request({
@@ -183,7 +203,19 @@ sap.ui.define([
 					fail: reject
 				})
 			}
-			)}
+			)},
+			_post: function (sData, sUrl) {
+				return new Promise((resolve, reject) => {
+					Http.request({
+						method: 'POST',
+						withAuth: true,
+						url: sUrl,
+						data: sData,
+						done: resolve,
+						fail: reject
+					});
+				});
+			},
 	
     });
  });

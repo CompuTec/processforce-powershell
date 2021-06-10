@@ -135,9 +135,9 @@
       <Project>{75c82b80-2457-4623-9176-a97c64b0591b}</Project>
       <Name>CompuTec.AppEngine.FirstPlugin.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CompuTec.AppEngine.First\CompuTec.AppEngine.First.csproj">
+    <ProjectReference Include="..\CompuTec.AppEngine.First\CompuTec.AppEngine.FirstSetup.csproj">
       <Project>{c630479d-86cb-4b34-a0de-b3e6d9f891a3}</Project>
-      <Name>CompuTec.AppEngine.First</Name>
+      <Name>CompuTec.AppEngine.FirstSetup</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

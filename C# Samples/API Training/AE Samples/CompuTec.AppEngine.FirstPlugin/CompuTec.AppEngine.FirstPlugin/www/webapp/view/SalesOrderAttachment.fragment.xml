@@ -26,14 +26,14 @@
           </Column>
            <Column
               id="DOwnloadAttachmentColumn"
-              width="20%">
+              width="10%">
             <Text text="Download" />
           </Column>
-          <Column
+          <!-- <Column
               id="DeleteAttachmentColumn"
               width="20%">
             <Text text="Delete" />
-          </Column>
+          </Column> -->
         </columns>
         <items>
           <ColumnListItem>
@@ -46,10 +46,10 @@
             press=".onDownloadInNewTab"
             app:AbsEntry="{path: 'AT>AbsEntry'}"
             app:Line="{path: 'AT>Line'}"/>
-              <Button
+              <!-- <Button
             id="deleteAttachment"
             icon="sap-icon://delete"
-            press=".onDelete"/>
+            press=".onDelete"/> -->
             </cells>
             
           
@@ -57,16 +57,17 @@
         </items>
       </Table>
       <u:FileUploader
-                                           fileType="jpg"
-                                           placeholder="Upload File"
-                                           width="100%"
-                                           change="onChangeFileUploader">
-                                        </u:FileUploader>
+      id="FileUploader"
+      fileType="txt"
+      placeholder="Upload File"
+     width="100%"
+      change="onChangeFileUploader">
+       </u:FileUploader>
                 <beginButton>
                 <Button
                 id="AddNewButton"
             text = "Add Attachment"
-            press=".onCloseDialog"
+            press=".onAddAttachment"
             >
 
                 
