@@ -6,5 +6,6 @@
 		"checkJs": true,
 		"allowJs": true,
 		"types": ["@sapui5/ts-types"]
+		
 	}
   }

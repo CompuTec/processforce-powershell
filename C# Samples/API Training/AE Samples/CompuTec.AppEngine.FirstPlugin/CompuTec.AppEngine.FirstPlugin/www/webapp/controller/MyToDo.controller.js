@@ -3,13 +3,15 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
-	"sap/ui/core/Fragment"
+	"sap/ui/core/Fragment",
+	"computec/appengine/ui/model/http/Http"
 
 ], function(BaseController,
 	JSONModel,
 	MessageToast,
 	MessageBox,
-	Fragment) {
+	Fragment,
+	Http) {
 	"use strict";
 
 	return BaseController.extend("computec.appengine.firstPlugin.controller.MyToDo", {
@@ -86,22 +88,36 @@ sap.ui.define([
 		getTable : function () {
 			return this.byId("todoList");
 		},
-		onOpenDialog : function (){
-			var oView = this.getView();
 
+
+
+		onOpenDialog : function (data){
+			var oView = this.getView();
+			
 			if(!this.byId("SalesOrderAttachment")){
 				Fragment.load({
 					id : oView.getId(),
-					name : "computec.appengine.firstplugin.view.SalesOrderAttachment"
+					name : "computec.appengine.firstplugin.view.SalesOrderAttachment",
+					controller : this
 				}).then(function (oDialog){
+					
 					oView.addDependent(oDialog);
+					oDialog.setModel(new JSONModel(data),"AT");
 					oDialog.open();
+
 				})
 
 			}
 			else{
+				this.byId("SalesOrderAttachment").setModel(new JSONModel(data),"AT");
 				this.byId("SalesOrderAttachment").open();
+				
 			}
+		},
+
+		onCloseDialog : function(){
+			
+			this.byId("SalesOrderAttachment").close();
 		},
 
 		
@@ -109,7 +125,7 @@ sap.ui.define([
 		onParamButton : function (oEvent) {
 			const oSource = oEvent.getSource();
 			const cardName = this.getCustomDataForElement(oSource, "CardName")
-			alert(cardName);
+			
 		},
 
 		getCustomDataForElement: function (oElement, sCustomDataCode) {
@@ -117,8 +133,57 @@ sap.ui.define([
 			if (oCustomData)
 				return oCustomData.getValue();
 			return null;
-		}
+		},
+		getAttachmentsByDocEntry : function(sDocNum){
+			const sUrl = encodeURIComponent(`odata/CustomViews/Views.CustomWithParameters(Id='FirstPlugin:Attachments',Parameters=["AbsEntry=${sDocNum}"],paramType=Default.ParamType'Custom')`);
 
+			
+			return this._get(sUrl);
+		},
+
+		onParamAttachmentButton : async function (oEvent) {
+			const oSource = oEvent.getSource();
+			const Doc = this.getCustomDataForElement(oSource, "DocNum");
+			const data = await this.getAttachmentsByDocEntry(Doc);
+			this.onOpenDialog(data.value);
+		},
+
+		onDownload :  function(oEvent){
+			
+			const oSource = oEvent.getSource();
+			const AbsEntry = this.getCustomDataForElement(oSource, "AbsEntry");
+			const Line = this.getCustomDataForElement(oSource, "Line");
+			const sUrl = encodeURIComponent(`http://localhost:54000/api/Attachments/GetAttachmentByCustomKey/ORDR/DocEntry/${AbsEntry}/0/${Line}`);
+
+			return this._get(sUrl).then(response => {
+				console.log(response);
+			}).catch(e => {
+				console.log(e);
+			});
+			
+				
+			
+		},
+
+		onDownloadInNewTab : function (oEvent){
+			const oSource = oEvent.getSource();
+			const AbsEntry = this.getCustomDataForElement(oSource, "AbsEntry");
+			const Line = this.getCustomDataForElement(oSource, "Line");
+			const sUrl = `http://localhost:54000/api/Attachments/GetAttachmentByCustomKey/ORDR/DocEntry/${AbsEntry}/0/${Line}`;
+			window.open(sUrl, '_blank');
+		},
+
+		_get: function (sUrl) {
+			return new Promise((resolve, reject) => {
+				Http.request({
+					method: 'GET',
+					withAuth: true,
+					url: sUrl,
+					done: resolve,
+					fail: reject
+				})
+			}
+			)}
 	
     });
  });

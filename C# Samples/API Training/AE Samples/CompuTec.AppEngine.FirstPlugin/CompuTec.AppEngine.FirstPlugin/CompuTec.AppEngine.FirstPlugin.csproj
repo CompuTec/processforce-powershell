@@ -249,6 +249,7 @@
     <Compile Include="AppStart\Setup.cs" />
     <Compile Include="AppStart\Initializer.cs" />
     <Compile Include="Controllers\Api\ToDoController.generated.cs" />
+    <Compile Include="Controllers\CustomController.cs" />
     <Compile Include="Controllers\OData\ToDoController.generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppStart\Registry.cs" />
@@ -269,6 +270,9 @@
     <None Include="CompuTec.AppEngine.PluginCodeGenerator.dll.config" />
     <None Include="CompuTecSAP.config" />
     <Content Include="CustomViews\SalesOrderList.customview.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomViews\Attachments.customview.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

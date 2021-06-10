@@ -1,0 +1,8 @@
+{
+  "Id": "Attachments",
+  "Description": "getting attachments of sales order",
+  "Source": {
+    "Hana": "SELECT \"FileName\", \"FileExt\",\"AbsEntry\",\"Line\" FROM ATC1 WHERE \"AbsEntry\" = @AbsEntry",
+    "MsSql": "SELECT FileName, FileExt, AbsEntry, Line FROM ATC1 WHERE AbsEntry = @AbsEntry"
+  }
+}

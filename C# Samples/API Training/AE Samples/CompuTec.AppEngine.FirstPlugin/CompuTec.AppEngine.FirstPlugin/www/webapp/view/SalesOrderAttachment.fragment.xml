@@ -1,18 +1,77 @@
 <core:FragmentDefinition
    xmlns="sap.m"
-   xmlns:core="sap.ui.core" >
+   xmlns:core="sap.ui.core"
+   xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+   xmlns:u="sap.ui.unified" 
+   >
    <Dialog
-      title="Hello {/recipient/name}">
-      	<List headerText="Custom Content" mode="Delete" items="{path: '/ProductCollection'}" >
-		<CustomListItem>
-			<HBox>
-				<core:Icon size="2rem" src="sap-icon://attachment-photo" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
-				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
-					<Link text="just" target="{ProductPicUrl}" press="handlePress"/>
-					<Label text="{ProductId}"/>
-				</VBox>
-			</HBox>
-		</CustomListItem>
-	</List>
+        id="AttachmentDialog"
+      title="Hello {/recipient/name}"
+      contentWidth = "50%">
+
+      	<Table
+          id="attachmentsTable"
+          growing="true"
+          growingThreshold="10"
+          inset="false"
+		      items="{AT>/}"
+          fixedLayout="false">
+        <headerToolbar>
+        </headerToolbar>
+        <columns>
+          <Column
+              id="AttachmentColumn"
+              width="50%">
+            <Text text="Attachment Name" />
+          </Column>
+           <Column
+              id="DOwnloadAttachmentColumn"
+              width="20%">
+            <Text text="Download" />
+          </Column>
+          <Column
+              id="DeleteAttachmentColumn"
+              width="20%">
+            <Text text="Delete" />
+          </Column>
+        </columns>
+        <items>
+          <ColumnListItem>
+            <cells>
+              <Text text = "{path: 'AT>FileName'}">
+              </Text>
+              <Button
+            id="downloadAttachment"
+            icon="sap-icon://download"
+            press=".onDownloadInNewTab"
+            app:AbsEntry="{path: 'AT>AbsEntry'}"
+            app:Line="{path: 'AT>Line'}"/>
+              <Button
+            id="deleteAttachment"
+            icon="sap-icon://delete"
+            press=".onDelete"/>
+            </cells>
+            
+          
+          </ColumnListItem>
+        </items>
+      </Table>
+      <u:FileUploader
+                                           fileType="jpg"
+                                           placeholder="Upload File"
+                                           width="100%"
+                                           change="onChangeFileUploader">
+                                        </u:FileUploader>
+                <beginButton>
+                <Button
+                id="AddNewButton"
+            text = "Add Attachment"
+            press=".onCloseDialog"
+            >
+
+                
+                </Button>
+                </beginButton>
+
    </Dialog>
 </core:FragmentDefinition>

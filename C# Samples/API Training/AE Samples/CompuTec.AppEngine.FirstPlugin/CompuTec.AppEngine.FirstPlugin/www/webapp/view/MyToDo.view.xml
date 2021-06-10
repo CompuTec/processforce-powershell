@@ -118,14 +118,15 @@ controllerName="computec.appengine.firstplugin.controller.MyToDo"
 				<cells>
 					<StandardListItem
           title="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
-          counter="{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int16'}"/>
+          counter="{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int32'}"/>
 				</cells>
         <cells>
           
           <Button
           app:CardName = "{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
-          text="Check attachments"
-          press=".onOpenDialog">
+          app:DocNum = "{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int32'}"
+          text="Attachments"
+          press=".onParamAttachmentButton">
         </Button>
         </cells>
 			</ColumnListItem>
