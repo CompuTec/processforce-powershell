@@ -7,18 +7,16 @@
     <l:HorizontalLayout allowWrapping="true">
       <GenericTile
           class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-          header="{i18n>Apptitle}"
-          subheader="{i18n>Apptitle}"
-          press="onToDoPress">
+          header="SalesOrder"
+          press="onSalesOrderPress">
         <TileContent>
           <ImageContent src="sap-icon://activity-2" />
         </TileContent>
       </GenericTile>
      <GenericTile
           class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-          header="{i18n>todoTileHeader}"
-          subheader="{i18n>todoTileSubheader}"
-          press="onTodoListPress">
+          header="toDo"
+          press="onToDoPress">
         <TileContent>
           <ImageContent src="sap-icon://activity-2" />
         </TileContent>

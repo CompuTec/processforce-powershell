@@ -1,0 +1,49 @@
+<mvc:View
+controllerName="computec.appengine.firstplugin.controller.SalesOrders"
+	xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:tnt="sap.tnt"
+  xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+  xmlns:ae="computec.appengine.ui.controls"
+	displayBlock="true"
+>
+  
+  <Table id="idProductsTable"
+		inset="false"
+		items="{path:'AE>/CustomViews/Views.Custom(Id=\'FirstPlugin%3ASalesOrderList\')'}">
+		<columns>
+			<Column
+				width="50%">
+				<Text text="Sales Order" />
+			</Column>
+      <Column
+				>
+				<Text text="Count Documents" />
+			</Column>
+			<Column
+				hAlign="End">
+				<Text text="Go to attachments" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<StandardListItem
+          title="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
+          counter="{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int32'}"/>
+          <Button
+          app:CountName = "{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}" 
+          text="Count Documents"
+          press=".onCountButton"/>
+          <Button
+          app:CardName = "{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
+          app:DocNum = "{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int32'}"
+          text="Attachments"
+          press=".onParamAttachmentButton">
+        </Button>
+        </cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</mvc:View>   

@@ -69,9 +69,9 @@
 				"target": "todo"
 			},
 			{
-				"pattern": "mytodo",
-				"name": "mytodo",
-				"target": "mytodo"
+				"pattern": "salesorder",
+				"name": "salesorder",
+				"target": "salesorder"
 			}
 		],
 			"targets": {
@@ -83,9 +83,9 @@
 					"viewName": "Todo",
 					"viewId": "Todo"
 				},
-				"mytodo": {
-					"viewName": "MyToDo",
-					"viewId": "MyToDo"
+				"salesorder": {
+					"viewName": "SalesOrder",
+					"viewId": "SalesOrder"
 				}
 			}
 		}

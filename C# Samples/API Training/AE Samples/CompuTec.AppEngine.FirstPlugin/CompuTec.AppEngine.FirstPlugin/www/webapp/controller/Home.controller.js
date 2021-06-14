@@ -10,17 +10,17 @@ sap.ui.define([
 			this.setPageName("homePageTitle");
 		},
 
-		onTodoListPress: function (env) {
+		onSalesOrderPress: function (env) {
 			var router = this.getRouter();
-			router.navTo("todo");
+			router.navTo("salesorder");
 		},
 
 		onToDoPress : function (env) {
 			var router = this.getRouter();
-			router.navTo("mytodo");
+			router.navTo("todo");
 			
 		},
 		
 		 
 	});
-}); 
+});   

@@ -136,7 +136,6 @@ sap.ui.define([
 		getAttachmentsByDocEntry : function(sDocNum){
 			const sUrl = encodeURIComponent(`odata/CustomViews/Views.CustomWithParameters(Id='FirstPlugin:Attachments',Parameters=["AbsEntry=${sDocNum}"],paramType=Default.ParamType'Custom')`);
 
-			
 			return this._get(sUrl);
 		},
 
@@ -191,6 +190,14 @@ sap.ui.define([
 			})
 			
 			
+		},
+
+		onCountButton : async function (oEvent){
+			const oSource = oEvent.getSource();
+			const Name = encodeURIComponent(this.getCustomDataForElement(oSource, "CountName"));
+			const sUrl = `api/FirstPlugin/Count?supplier=${Name}`;
+			var p = await this._get(sUrl);
+			alert(p);
 		},
 
 		_get: function (sUrl) {

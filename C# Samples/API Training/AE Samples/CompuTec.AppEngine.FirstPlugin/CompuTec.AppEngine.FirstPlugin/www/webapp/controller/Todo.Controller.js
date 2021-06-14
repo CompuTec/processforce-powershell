@@ -1,19 +1,23 @@
 sap.ui.define([
-    "computec/appengine/core/BaseController",
+	"computec/appengine/core/BaseController",
     "sap/ui/model/json/JSONModel",
-    "sap/m/MessageBox",
-    "sap/ui/model/Sorter",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "sap/ui/model/FilterType",
-], function (BaseController, JSONModel, MessageBox, Sorter, Filter, FilterOperator, FilterType) {
-    "use strict";
+	"sap/m/MessageToast",
+	"sap/m/MessageBox",
+	"computec/appengine/ui/model/http/Http"
 
-    return BaseController.extend("computec.appengine.firstplugin.controller.Todo", {
-        onInit: function () {
-            BaseController.prototype.onInit.call(this);
+], function(BaseController,
+	JSONModel,
+	MessageToast,
+	MessageBox,
+	Http) {
+	"use strict";
 
-            this.setPageName("todoPageTitle");
+	return BaseController.extend("computec.appengine.firstPlugin.controller.ToDo", {
+		
+		onInit : function (){
+			BaseController.prototype.onInit.call(this);
+
+			this.setPageName("First Plugin");
 
             var oViewModel = new JSONModel({
                 hasUIChanges: false,
@@ -21,20 +25,42 @@ sap.ui.define([
             });
 
             this.getView().setModel(oViewModel, "todoView");
+
+		},
+
+
+		onAdd : function (oEvent){
+			var oBinding = this.getBinding();
+			var oDatak = {
+					U_TaskName : "name",
+					description : "description",
+					priority : "priority"
+				
+			};
+			oBinding.create(oDatak);
+		},
+
+		onDelete: function (oEvent) {
+            oEvent.getSource().getBindingContext("FP").delete("$auto").then(function () {
+                MessageToast.show("deleted");
+            }.bind(this), function (oError) {
+                MessageBox.error(oError.message);
+            });
         },
-
-
-
-        onCreate: function () {
-            var oList = this.byId("todoList"),
-                oBinding = oList.getBinding("items"),
+		
+		onCreate : function () {
+            var oList = this.byId("todoList"), 
+                oBinding = oList.getBindingContext("items"),
 
                 oContext = oBinding.create({
-                    "IsDone": false,
-                    "Title": ""
+                'Code' : 10,
+				'DocEntry' : 10,
+				'U_TaskName' : 'By Add',
+				'U_Description' : 'by add description',
+				'U_Priority' : 'M'
                 });
 
-            this._setUIChanges(true);  
+            this._setUIChanges(true);
 
             oList.getItems().some(function (oItem) {
                 if (oItem.getBindingContext() === oContext) {
@@ -44,64 +70,7 @@ sap.ui.define([
                 }
             });
         },
-
-        onSave: function () {
-            var fnSuccess = function () {
-                this._setUIChanges(false);
-            }.bind(this);
-
-            var fnError = function (oError) {
-                this._setUIChanges(false);
-                MessageBox.error(oError.message);
-            }.bind(this);
-
-            this.getView().getModel("FirstPlugin").submitBatch("todoGroup").then(fnSuccess, fnError);
-        },
-
-        onDelete: function (oEvent) {
-            oEvent.getSource().getBindingContext("FirstPlugin").delete("$auto").then(function () {
-                MessageToast.show(this.geti18n().getText("deletionSuccessMessage"));
-            }.bind(this), function (oError) {
-                MessageBox.error(oError.message);
-            });
-        },
-
-
-
-        onResetChanges: function () {
-            this.byId("todoList").getBinding("items").resetChanges();
-            this._setUIChanges(false);
-        },
-
-        onRefresh: function () {
-            var oBinding = this.byId("todoList").getBinding("items");
-
-            if (oBinding.hasPendingChanges()) {
-                this.byId("todoList").getBinding("items").resetChanges();
-            }
-
-            oBinding.refresh();
-        },
-
-        onInputChange: function (oEvent) {
-            if (oEvent.getParameter("escPressed")) {
-                this._setUIChanges(false);
-            } else {
-                this._setUIChanges(true);
-            }
-        },
-
-
-        onSearch: function () {
-            var oView = this.getView(),
-                sValue = oView.byId("searchField").getValue(),
-                oFilter = new Filter("Title", FilterOperator.Contains, sValue);
-
-            oView.byId("todoList").getBinding("items").filter(oFilter, FilterType.Application);
-        },
-
-
-        _setUIChanges: function (bHasUIChanges) {
+		_setUIChanges: function (bHasUIChanges) {
             if (bHasUIChanges === undefined) {
                 bHasUIChanges = this.getView().getModel().hasPendingChanges();
             }
@@ -109,5 +78,50 @@ sap.ui.define([
             var oModel = this.getView().getModel("todoView");
             oModel.setProperty("/hasUIChanges", bHasUIChanges);
         },
+		getBinding : function () {
+			return this.getTable().getBinding("items");
+		},
+
+		getTable : function () {
+			return this.byId("todoList");
+		},
+
+		onParamButton : function (oEvent) {
+			const oSource = oEvent.getSource();
+			const cardName = this.getCustomDataForElement(oSource, "CardName")
+			
+		},
+
+		getCustomDataForElement: function (oElement, sCustomDataCode) {
+			let oCustomData = oElement.getCustomData().find(x => x.getKey() === sCustomDataCode);
+			if (oCustomData)
+				return oCustomData.getValue();
+			return null;
+		},
+
+	_get: function (sUrl) {
+			return new Promise((resolve, reject) => {
+				Http.request({
+					method: 'GET',
+					withAuth: true,
+					url: sUrl,
+					done: resolve,
+					fail: reject
+				})
+			}
+			)},
+			_post: function (sData, sUrl) {
+				return new Promise((resolve, reject) => {
+					Http.request({
+						method: 'POST',
+						withAuth: true,
+						url: sUrl,
+						data: sData,
+						done: resolve,
+						fail: reject
+					});
+				});
+			},
+	
     });
-}) ; 
+ });
