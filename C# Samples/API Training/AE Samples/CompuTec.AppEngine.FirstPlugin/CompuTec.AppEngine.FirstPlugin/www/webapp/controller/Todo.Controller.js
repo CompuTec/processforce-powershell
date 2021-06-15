@@ -3,40 +3,26 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
-	"computec/appengine/ui/model/http/Http"
+	"computec/appengine/ui/model/http/Http",
+	"sap/ui/core/Fragment"
 
 ], function(BaseController,
 	JSONModel,
 	MessageToast,
 	MessageBox,
-	Http) {
+	Http,
+	Fragment) {
 	"use strict";
 
 	return BaseController.extend("computec.appengine.firstPlugin.controller.ToDo", {
 		
 		onInit : function (){
 			BaseController.prototype.onInit.call(this);
-
 			this.setPageName("First Plugin");
-
-            var oViewModel = new JSONModel({
-                hasUIChanges: false,
-                order: 0
-            });
-
-            this.getView().setModel(oViewModel, "todoView");
-
 		},
-
-
 		onAdd : function (oEvent){
 			var oBinding = this.getBinding();
-			var oDatak = {
-					U_TaskName : "name",
-					description : "description",
-					priority : "priority"
-				
-			};
+			var oDatak = oEvent.getSource().getModel().getData();
 			oBinding.create(oDatak);
 		},
 
@@ -48,28 +34,7 @@ sap.ui.define([
             });
         },
 		
-		onCreate : function () {
-            var oList = this.byId("todoList"), 
-                oBinding = oList.getBindingContext("items"),
-
-                oContext = oBinding.create({
-                'Code' : 10,
-				'DocEntry' : 10,
-				'U_TaskName' : 'By Add',
-				'U_Description' : 'by add description',
-				'U_Priority' : 'M'
-                });
-
-            this._setUIChanges(true);
-
-            oList.getItems().some(function (oItem) {
-                if (oItem.getBindingContext() === oContext) {
-                    oItem.focus();
-                    oItem.setSelected(true);
-                    return true;
-                }
-            });
-        },
+	
 		_setUIChanges: function (bHasUIChanges) {
             if (bHasUIChanges === undefined) {
                 bHasUIChanges = this.getView().getModel().hasPendingChanges();
@@ -99,6 +64,39 @@ sap.ui.define([
 			return null;
 		},
 
+		AddFragment : async function (data){
+			const that = this;
+			var oView = this.getView();
+			const fnOpenDialog = function (){
+				const oViewModel = new JSONModel({
+					U_TaskName : "n",
+					U_Description : "d",
+					U_Priority : "S"
+				})
+				this.getView().setModel(oViewModel, "model");
+				this._taskDialog.open();
+				
+			} 
+			if(!this._taskDialog){
+				Fragment.load({
+					id : oView.getId(),
+					name : "computec.appengine.firstplugin.view.AddToDo",
+					controller : this
+				}).then(function (oDialog){
+					
+					oView.addDependent(oDialog);
+					that._taskDialog = oDialog;
+					fnOpenDialog();
+
+				})
+
+			}
+			else{
+				fnOpenDialog();
+				
+			}
+		},
+
 	_get: function (sUrl) {
 			return new Promise((resolve, reject) => {
 				Http.request({
@@ -125,3 +123,4 @@ sap.ui.define([
 	
     });
  });
+   

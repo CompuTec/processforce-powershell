@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {},
   "devDependencies": {
-    "@sapui5/ts-types": "1.76.1",
+    "@sapui5/ts-types": "1.79.2",
     "eslint": "^6.8.0"
   }
 }

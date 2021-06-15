@@ -6,12 +6,19 @@ controllerName="computec.appengine.firstplugin.controller.SalesOrders"
   xmlns:tnt="sap.tnt"
   xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
   xmlns:ae="computec.appengine.ui.controls"
-	displayBlock="true"
+displayBlock="true"
 >
   
   <Table id="idProductsTable"
 		inset="false"
 		items="{path:'AE>/CustomViews/Views.Custom(Id=\'FirstPlugin%3ASalesOrderList\')'}">
+		<headerToolbar>
+			<Toolbar>
+			   <Title text="{i18n>invoiceListTitle}"/>
+			   <ToolbarSpacer/>
+			   <SearchField width="50%" search=".onFilter"/>
+			</Toolbar>
+		 </headerToolbar>
 		<columns>
 			<Column
 				width="50%">

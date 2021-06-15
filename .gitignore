@@ -24,6 +24,7 @@ x86/
 [Oo]bj/
 [Ll]og/
 [Pp]ackages/
+node_modules/
 
 
 HeatFiles.wxs

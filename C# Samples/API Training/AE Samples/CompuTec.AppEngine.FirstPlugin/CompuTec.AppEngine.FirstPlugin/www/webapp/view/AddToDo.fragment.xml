@@ -1,0 +1,41 @@
+<core:FragmentDefinition
+    controllerName="computec.appengine.firstplugin.controller.Todo"
+   xmlns="sap.m"
+   xmlns:core="sap.ui.core"
+   xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+   xmlns:u="sap.ui.unified" 
+   >
+   <Dialog
+        id="addtododialog"
+      title="Add ToDo"
+      contentWidth = "50%">
+
+      <List>
+		<InputListItem label="Name">
+			<Input
+				placeholder="Name"
+				value="{model>/U_TaskName}" />
+		</InputListItem>
+		<InputListItem label="Description">
+			<Input
+				placeholder="Description"
+				value="{ model>/U_Description }" />
+		</InputListItem>
+		<InputListItem label="Priority">
+			<Select>
+				<core:Item key="S" text="Small" />
+				<core:Item key="M" text="Medium" />
+				<core:Item key="L" text="Large" />
+			</Select>
+		</InputListItem>
+		
+	</List>
+    <buttons>
+        <Button 
+        id="AddButton"
+        press=".onAdd"
+        text="Add"
+        ></Button>
+    </buttons>
+   </Dialog>
+</core:FragmentDefinition>
