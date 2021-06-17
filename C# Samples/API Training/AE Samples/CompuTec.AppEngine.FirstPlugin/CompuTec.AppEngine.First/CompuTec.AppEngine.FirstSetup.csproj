@@ -160,9 +160,12 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="DBInstall\CustomUDOFields.cs" />
+    <Compile Include="DBInstall\Tables\RequirementTable.cs" />
     <Compile Include="DBInstall\Tables\ToDoTable.cs" />
     <Compile Include="Info.cs" />
+    <Compile Include="Objects\IRequirement.cs" />
     <Compile Include="Objects\IToDo.cs" />
+    <Compile Include="Objects\Requirement.cs" />
     <Compile Include="Objects\ToDo.cs" />
     <Compile Include="Objects\ToDo.properties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

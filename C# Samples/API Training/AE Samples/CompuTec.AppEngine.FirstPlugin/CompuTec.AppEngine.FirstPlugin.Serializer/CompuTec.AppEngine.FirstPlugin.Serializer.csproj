@@ -124,6 +124,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializers\Objects\RequirementSerializer.generated.cs" />
     <Compile Include="Serializers\Objects\ToDoSerializer.generated.cs" />
   </ItemGroup>
   <ItemGroup>

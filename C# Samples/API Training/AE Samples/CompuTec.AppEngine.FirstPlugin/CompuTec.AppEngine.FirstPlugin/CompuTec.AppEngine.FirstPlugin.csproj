@@ -249,8 +249,8 @@
     <Compile Include="AppStart\Setup.cs" />
     <Compile Include="AppStart\Initializer.cs" />
     <Compile Include="Controllers\Api\RandomController.cs" />
-    <Compile Include="Controllers\Api\ToDoController.generated.cs" />
     <Compile Include="Controllers\Api\CountController.cs" />
+    <Compile Include="Controllers\Api\ToDoController.generated.cs" />
     <Compile Include="Controllers\OData\ToDoController.generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppStart\Registry.cs" />

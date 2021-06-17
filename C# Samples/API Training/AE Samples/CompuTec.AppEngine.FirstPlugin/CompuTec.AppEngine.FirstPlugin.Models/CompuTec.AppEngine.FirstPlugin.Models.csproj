@@ -252,6 +252,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Objects\Requirement.generated.cs" />
     <Compile Include="Models\Objects\ToDo.generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Todo\Task.cs" />

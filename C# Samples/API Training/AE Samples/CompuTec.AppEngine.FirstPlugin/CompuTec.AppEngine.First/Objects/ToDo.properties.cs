@@ -43,5 +43,11 @@ namespace CompuTec.AppEngine.First.Objects
 			get { return FieldDictionary["U_Priority"].Value; }
 			set { FieldDictionary["U_Priority"].Value = value; }
 		}
+		public IRequirement Requirements
+		{
+			get => this.Childs["Requirements"].CurrentChild as IRequirement;
+			set { }
+		}
+	
 	}
 }

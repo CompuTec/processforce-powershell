@@ -17,5 +17,7 @@ namespace CompuTec.AppEngine.First.Objects
 		string U_Description { get; set; }
 		string U_Priority { get; set; }
 
+		IRequirement Requirements { get; set; }
+
 	}
 }

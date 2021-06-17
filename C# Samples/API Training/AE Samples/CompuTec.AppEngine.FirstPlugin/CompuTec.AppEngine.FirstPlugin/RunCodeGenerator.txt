@@ -1,0 +1,16 @@
+﻿                        
+                                                
+                                    /*
+            IToDo - 1, []
+  *Code  string
+  *Name  string
+  *U_Deadline  System.DateTime
+  *U_TaskName  string
+  *U_Description  string
+  *U_Priority  string
+	IRequirement - 0, [IToDo]
+	  *Code  string
+	  *Name  string
+            */
+            
+            

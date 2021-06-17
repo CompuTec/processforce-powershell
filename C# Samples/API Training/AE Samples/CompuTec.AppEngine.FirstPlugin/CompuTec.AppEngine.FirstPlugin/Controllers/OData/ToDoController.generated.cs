@@ -24,5 +24,97 @@ namespace CompuTec.AppEngine.FirstPlugin.Controllers.OData
         protected override string KeyName => "Code";
         protected override string ObjectType => "Sample_ToDo";
         protected override eUDOVersion UDOVersion => eUDOVersion.UDO_20;
+
+        public int RequirementsLineNum { get; private set; }
+
+        [HttpGet]
+        [EnableQuery(MaxExpansionDepth = 10)]
+        [ODataRoute("({Code})/Requirements")]
+        public IQueryable<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement> GetRequirement([FromODataUri] string Code)
+        {
+            var udo = GetObjectInstance(Code);
+            var model = Serializer.ToModel(udo);
+            var Requirements = model.Requirements;
+            return Requirements.AsQueryable<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>();
+        }
+
+        [HttpGet]
+        [EnableQuery(MaxExpansionDepth = 10)]
+        [ODataRoute("({Code})/Requirements({RequirementsCode})")]
+        public SingleResult<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement> GetRequirement([FromODataUri] string Code, [FromODataUri] string RequirementsCode)
+        {
+            var udo = GetObjectInstance(Code);
+            var model = Serializer.ToModel(udo);
+            var Requirements = model.Requirements.FirstOrDefault(item => RequirementsCode == item.Code);
+            if (Requirements == null)
+                throw new NotFoundException("Requirements", "Requirements");
+            return SingleResult.Create(new List<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>()
+            {Requirements}.AsQueryable());
+        }
+
+        [HttpPost]
+        [ODataRoute("({Code})/Requirements")]
+        public IHttpActionResult PostRequirement([FromODataUri] string Code, CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement model)
+        {
+            var udo = GetObjectInstance(Code);
+            //if(model.WithDefauls == null)
+            //     ((CompuTec.Core2.Beans.IAdvancedUDOBean)udo).SetChangingFromUdo(!(bool)model.WithDefauls);
+            var serializer = GetService<ISerializerHandler>().Get(typeof(CompuTec.AppEngine.First.Objects.IRequirement)) as UdoChildBeanSerializer<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement, CompuTec.AppEngine.First.Objects.IRequirement>;
+            udo.Requirements.Add();
+            udo.Requirements.SetCurrentLine(udo.Requirements.Count - 1);
+            serializer.FillNew(udo.Requirements, model);
+            Update(udo);
+            return Ok<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>(serializer.ToModel(udo.Requirements));
+        }
+
+        [HttpPut]
+        [ODataRoute("({Code})/Requirements({RequirementsCode})")]
+        public IHttpActionResult PutRequirement([FromODataUri] string Code, [FromODataUri] string RequirementsCode, CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement model)
+        {
+            var udo = GetObjectInstance(Code);
+            var serializer = GetService<ISerializerHandler>().Get(typeof(CompuTec.AppEngine.First.Objects.IRequirement)) as UdoChildBeanSerializer<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement, CompuTec.AppEngine.First.Objects.IRequirement>;
+            var Requirements = udo.Requirements.FirstOrDefault(item => RequirementsCode == item.Code);
+            if (Requirements == null)
+                throw new NotFoundException("Requirements not found", "Requirements not found");
+            serializer.Update(Requirements, model);
+            Update(udo);
+            return Ok<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>(serializer.ToModel(Requirements));
+        }
+
+        [HttpPatch]
+        [ODataRoute("({Code})/Requirements({RequirementsCode})")]
+        public IHttpActionResult PatchRequirement([FromODataUri] string Code, [FromODataUri] string RequirementsCode, DeepDelta<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement> model)
+        {
+            var udo = GetObjectInstance(Code);
+            var serializer = GetService<ISerializerHandler>().Get(typeof(CompuTec.AppEngine.First.Objects.IRequirement)) as UdoChildBeanSerializer<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement, CompuTec.AppEngine.First.Objects.IRequirement>;
+            var Requirements = udo.Requirements.FirstOrDefault(item => RequirementsCode == item.Code);
+            if (Requirements == null)
+                throw new NotFoundException("Requirements", "Requirements");
+            var currentModel = serializer.ToModel(Requirements);
+            model.Patch(currentModel);
+            serializer.Update(Requirements, currentModel);
+            Update(udo);
+            return Ok<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>(serializer.ToModel(Requirements));
+        }
+
+        [HttpDelete]
+        [ODataRoute("({Code})/Requirements({RequirementsCode})")]
+        public IHttpActionResult DeleteRequirement([FromODataUri] string Code, [FromODataUri] string RequirementsCode)
+        {
+            var udo = GetObjectInstance(Code);
+            var udoToDelete = (udo.Requirements as CompuTec.Core2.Beans.IAdvancedUDOChildBean).IMasterBean.Childs.FirstOrDefault(childBean => (childBean as CompuTec.AppEngine.First.Objects.IRequirement).U_LineNum == RequirementsLineNum && (childBean as CompuTec.Core2.Beans.IAdvancedUDOChildBean).IsRowFilled());
+            if (udoToDelete != null)
+            {
+                var position = (udoToDelete as CompuTec.Core2.Beans.IAdvancedUDOChildBean).CurrentPosition;
+                udo.Requirements.DelRowAtPos(position);
+            }
+            else
+            {
+                throw new NotFoundException("udo", "udo");
+            }
+
+            Update(udo);
+            return Ok();
+        }
     }
 }

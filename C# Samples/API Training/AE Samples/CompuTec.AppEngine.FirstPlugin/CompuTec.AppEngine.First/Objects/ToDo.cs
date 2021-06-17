@@ -17,11 +17,16 @@ namespace CompuTec.AppEngine.First.Objects
 
 			this.Childs = new Dictionary<string, ChildBeans>();
 			this.ChildDictionary = new Dictionary<string, string>();
+
+			this.Childs.Add("Requirements", new Requirement());
+			this.ChildDictionary.Add(DBInstall.Tables.RequirementTable.TABLE_NAME, "Requirements");
 		}
+
+	
 
 		protected override bool BeforeAdd()
 		{
-			this.U_Deadline = DateTime.Now;
+			this.U_Deadline = DateTime.Now; 
 			this.Code = "Sample_Code";
 			
 			return base.BeforeAdd();
@@ -29,7 +34,6 @@ namespace CompuTec.AppEngine.First.Objects
 
 		protected override bool BeforeUpdate()
 		{
-			
 			
 			return base.BeforeUpdate();
 		}
