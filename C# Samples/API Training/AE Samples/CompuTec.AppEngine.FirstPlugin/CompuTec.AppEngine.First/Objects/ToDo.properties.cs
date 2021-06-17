@@ -46,7 +46,7 @@ namespace CompuTec.AppEngine.First.Objects
 		public IRequirement Requirements
 		{
 			get => this.Childs["Requirements"].CurrentChild as IRequirement;
-			set { }
+			set { this.Childs["Requirements"].CurrentChild = value as IRequirement; }
 		}
 	
 	}

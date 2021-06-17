@@ -24,9 +24,6 @@ namespace CompuTec.AppEngine.FirstPlugin.Controllers.OData
         protected override string KeyName => "Code";
         protected override string ObjectType => "Sample_ToDo";
         protected override eUDOVersion UDOVersion => eUDOVersion.UDO_20;
-
-        public int RequirementsLineNum { get; private set; }
-
         [HttpGet]
         [EnableQuery(MaxExpansionDepth = 10)]
         [ODataRoute("({Code})/Requirements")]

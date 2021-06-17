@@ -32,18 +32,15 @@ namespace CompuTec.AppEngine.First.Objects
 			get { return FieldDictionary["Quantity"].Value; }
 			set { FieldDictionary["U_Quantity"].Value = value; }
 		}
-		 public IEnumerator<Requirement> GetEnumerator()
+		 public IEnumerator<IRequirement> GetEnumerator()
 		{
-			return new ChildBeansEnum<Requirement>(this);
+			return new ChildBeansEnum<IRequirement>(this);
 		}
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return (IEnumerator<Requirement>)GetEnumerator();
+			return (IEnumerator<IRequirement>)GetEnumerator();
 		}
 
-        IEnumerator<IRequirement> IEnumerable<IRequirement>.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

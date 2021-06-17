@@ -13,8 +13,7 @@ namespace CompuTec.AppEngine.First.Objects
 		String Code { get; set; }
 		String Name { get; set; }
         int Quantity { get; set; }
-		IEnumerator<Requirement> GetEnumerator();
-		new int U_LineNum { get; set; }
+        new int U_LineNum { get; set; }
 
-	}
+    }
 }

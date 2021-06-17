@@ -89,10 +89,11 @@
       </ColumnListItem>
     </items>
   </Table>
+  
   <Button
       id="AddNewButton"
       text="Add new"
       press=".AddFragment" />
 
-
+     
 </mvc:View>
