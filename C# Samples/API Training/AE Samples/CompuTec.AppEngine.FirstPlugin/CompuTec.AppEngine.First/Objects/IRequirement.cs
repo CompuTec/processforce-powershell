@@ -9,7 +9,6 @@ namespace CompuTec.AppEngine.First.Objects
 	[AppEngineUDOChildBean()]
 	public interface IRequirement : IUDOChildBean, IEnumerable<IRequirement>
 	{
-		[AppEngineProperty(IsMasterKey = true)]
 		String Code { get; set; }
 		String Name { get; set; }
         int Quantity { get; set; }

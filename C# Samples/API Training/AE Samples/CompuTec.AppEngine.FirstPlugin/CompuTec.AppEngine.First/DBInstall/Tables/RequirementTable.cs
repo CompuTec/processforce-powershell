@@ -22,40 +22,18 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 
 		protected override IUDOTable CreateUDOTable()
 		{
-			List<IUDOField> fields = this.CreateFieldsForHeaderTable();
-			List<IUDOFindColumn> findColumns = this.CreateFindColumnsList();
+			List<IUDOField> fields = this.CreateFieldsForLinesTable();
 
-			IUDOTable UdoTable = new UDOTable(fields, findColumns, TABLE_NAME, TABLE_DESCRIPTION, BoUTBTableType.bott_MasterData, this.CreateKeys());
+			IUDOTable UdoTable = new UDOTable(fields, TABLE_NAME, TABLE_DESCRIPTION, BoUTBTableType.bott_MasterDataLines);
 
 			UdoTable.RegisteredUDOName = TABLE_NAME;
 			UdoTable.RegisteredUDOCode = OBJECT_CODE;
-
-			UdoTable.CanArchive = BoYesNoEnum.tYES;
-			UdoTable.CanCancel = BoYesNoEnum.tNO;
-			UdoTable.CanClose = BoYesNoEnum.tNO;
-			UdoTable.CanCreateDefaultForm = BoYesNoEnum.tNO;
-			UdoTable.CanDelete = BoYesNoEnum.tYES;
-			UdoTable.CanFind = BoYesNoEnum.tYES;
-			UdoTable.CanLog = BoYesNoEnum.tYES;
-			UdoTable.CanYearTransfer = BoYesNoEnum.tNO;
 			UdoTable.ArchiveTableName = ARCHIVE_TABLE_NAME;
 
 			return UdoTable;
 		}
 
-		private List<IUDOFindColumn> CreateFindColumnsList()
-		{
-			List<IUDOFindColumn> findList = new List<IUDOFindColumn>();
-
-			var taskName = new UDOFindColumn();
-			taskName.SetColumnAlias("U_Name");
-			taskName.SetColumnDescription("Task Name");
-			findList.Add(taskName);
-
-			return findList;
-		}
-
-		private List<IUDOField> CreateFieldsForHeaderTable()
+		private List<IUDOField> CreateFieldsForLinesTable()
 		{
 			var fields = new List<IUDOField>();
 
@@ -104,15 +82,10 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 			return fields;
 
 		}
-		private List<IUDOTableKey> CreateKeys()
-		{
-			List<IUDOTableKey> list = new List<IUDOTableKey>();
-			return list;
-		}
 
 		protected override void SetChildTables()
 		{
-
 		}
+
 	}
 }

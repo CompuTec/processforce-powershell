@@ -112,7 +112,7 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 
 		protected override void SetChildTables()
 		{
-
+			ChildTablesClasses.AddRange(new string[] { "RequirementTable" });
 		}
 	}
 }

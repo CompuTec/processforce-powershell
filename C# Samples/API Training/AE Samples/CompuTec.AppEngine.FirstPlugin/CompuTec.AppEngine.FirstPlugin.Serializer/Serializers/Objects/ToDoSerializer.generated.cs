@@ -25,6 +25,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                 model.Requirements.Add(requirements);
                 requirements.Code = udoRequirements.Code;
                 requirements.Name = udoRequirements.Name;
+                requirements.U_LineNum = udoRequirements.U_LineNum;
                 UDFsToModel(udoRequirements, requirements);
             });
             return model;
@@ -89,6 +90,15 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                     requirementsItem.Code = requirements.Code;
                 if (requirements.Name != null)
                     requirementsItem.Name = requirements.Name;
+                if (requirements.U_LineNum != null)
+                {
+                    requirementsItem.U_LineNum = (int)requirements.U_LineNum;
+                }
+                else
+                {
+                    requirementsItem.U_LineNum = default(int);
+                }
+
                 UDFsToUdo(requirementsItem, requirements);
             });
             return udo;
@@ -137,6 +147,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                     udo.Requirements.Code = requirements.Code;
                 if (requirements.Name != null)
                     udo.Requirements.Name = requirements.Name;
+                if (requirements.U_LineNum != null)
+                    udo.Requirements.U_LineNum = (int)requirements.U_LineNum;
                 UDFsToUdo(udo.Requirements, requirements);
             });
             return udo;
@@ -185,6 +197,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                     udo.Requirements.Code = requirements.Code;
                 if (requirements.Name != null)
                     udo.Requirements.Name = requirements.Name;
+                if (requirements.U_LineNum != null)
+                    udo.Requirements.U_LineNum = (int)requirements.U_LineNum;
                 UDFsToUdo(udo.Requirements, requirements);
             });
             return udo;

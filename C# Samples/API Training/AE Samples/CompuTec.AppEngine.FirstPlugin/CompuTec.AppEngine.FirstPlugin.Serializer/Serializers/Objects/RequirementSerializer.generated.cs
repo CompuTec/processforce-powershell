@@ -14,6 +14,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
             var model = new CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement();
             model.Code = udoChild.Code;
             model.Name = udoChild.Name;
+            model.U_LineNum = udoChild.U_LineNum;
             UDFsToModel(udoChild, model);
             return model;
         }
@@ -25,6 +26,15 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                 udoChild.Code = model.Code;
             if (model.Name != null)
                 udoChild.Name = model.Name;
+            if (model.U_LineNum != null)
+            {
+                udoChild.U_LineNum = (int)model.U_LineNum;
+            }
+            else
+            {
+                udoChild.U_LineNum = default(int);
+            }
+
             UDFsToUdo(udoChild, model);
             return udoChild;
         }
@@ -36,6 +46,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                 udoChild.Code = model.Code;
             if (model.Name != null)
                 udoChild.Name = model.Name;
+            if (model.U_LineNum != null)
+                udoChild.U_LineNum = (int)model.U_LineNum;
             UDFsToUdo(udoChild, model);
             return udoChild;
         }
@@ -47,6 +59,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                 udoChild.Code = model.Code;
             if (model.Name != null)
                 udoChild.Name = model.Name;
+            if (model.U_LineNum != null)
+                udoChild.U_LineNum = (int)model.U_LineNum;
             UDFsToUdo(udoChild, model);
             return udoChild;
         }
