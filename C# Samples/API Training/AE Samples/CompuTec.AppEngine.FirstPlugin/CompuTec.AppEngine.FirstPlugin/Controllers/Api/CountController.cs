@@ -15,9 +15,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Controllers.Api
         [HttpGet]
         public int CountSupplierDocuments(string supplier)
         {
-            string connectionString =
-                "Server=CTL027;Database=SBODemoPL;User Id=sa;Password=CTsa*2020;";
-            SqlConnection conn = new SqlConnection(connectionString);
+            //string connectionString = ;
+            SqlConnection conn = new SqlConnection("connectionString");
             conn.Open();
             SqlCommand comm = new SqlCommand($"SELECT COUNT(*) FROM ORDR WHERE CardName = '{supplier}'", conn);
             Int32 count = Convert.ToInt32(comm.ExecuteScalar());

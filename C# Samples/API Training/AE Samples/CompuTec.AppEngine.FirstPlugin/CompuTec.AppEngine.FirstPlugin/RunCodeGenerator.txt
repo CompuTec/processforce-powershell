@@ -9,8 +9,8 @@
   *U_Description  string
   *U_Priority  string
 	IRequirement - 0, [IToDo]
-	  *Code  string
-	  *Name  string
+	  *U_Name  string
+	  *U_Quantity  int
 	  *U_LineNum  int
             */
             

@@ -12,8 +12,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
         {
             var udo = (udoChild as CompuTec.Core2.Beans.IAdvancedUDOChildBean).Parent as CompuTec.AppEngine.First.Objects.IToDo;
             var model = new CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement();
-            model.Code = udoChild.Code;
-            model.Name = udoChild.Name;
+            model.U_Name = udoChild.U_Name;
+            model.U_Quantity = udoChild.U_Quantity;
             model.U_LineNum = udoChild.U_LineNum;
             UDFsToModel(udoChild, model);
             return model;
@@ -22,10 +22,17 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
         public override CompuTec.AppEngine.First.Objects.IRequirement Update(CompuTec.AppEngine.First.Objects.IRequirement udoChild, CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement model)
         {
             var udo = (udoChild as CompuTec.Core2.Beans.IAdvancedUDOChildBean).Parent as CompuTec.AppEngine.First.Objects.IToDo;
-            if (model.Code != null)
-                udoChild.Code = model.Code;
-            if (model.Name != null)
-                udoChild.Name = model.Name;
+            if (model.U_Name != null)
+                udoChild.U_Name = model.U_Name;
+            if (model.U_Quantity != null)
+            {
+                udoChild.U_Quantity = (int)model.U_Quantity;
+            }
+            else
+            {
+                udoChild.U_Quantity = default(int);
+            }
+
             if (model.U_LineNum != null)
             {
                 udoChild.U_LineNum = (int)model.U_LineNum;
@@ -42,10 +49,10 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
         public override CompuTec.AppEngine.First.Objects.IRequirement FillNew(CompuTec.AppEngine.First.Objects.IRequirement udoChild, CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement model)
         {
             var udo = (udoChild as CompuTec.Core2.Beans.IAdvancedUDOChildBean).Parent as CompuTec.AppEngine.First.Objects.IToDo;
-            if (model.Code != null)
-                udoChild.Code = model.Code;
-            if (model.Name != null)
-                udoChild.Name = model.Name;
+            if (model.U_Name != null)
+                udoChild.U_Name = model.U_Name;
+            if (model.U_Quantity != null)
+                udoChild.U_Quantity = (int)model.U_Quantity;
             if (model.U_LineNum != null)
                 udoChild.U_LineNum = (int)model.U_LineNum;
             UDFsToUdo(udoChild, model);
@@ -55,10 +62,10 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
         protected override CompuTec.AppEngine.First.Objects.IRequirement FillNewExtended(CompuTec.AppEngine.First.Objects.IRequirement udoChild, CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement model)
         {
             var udo = (udoChild as CompuTec.Core2.Beans.IAdvancedUDOChildBean).Parent as CompuTec.AppEngine.First.Objects.IToDo;
-            if (model.Code != null)
-                udoChild.Code = model.Code;
-            if (model.Name != null)
-                udoChild.Name = model.Name;
+            if (model.U_Name != null)
+                udoChild.U_Name = model.U_Name;
+            if (model.U_Quantity != null)
+                udoChild.U_Quantity = (int)model.U_Quantity;
             if (model.U_LineNum != null)
                 udoChild.U_LineNum = (int)model.U_LineNum;
             UDFsToUdo(udoChild, model);

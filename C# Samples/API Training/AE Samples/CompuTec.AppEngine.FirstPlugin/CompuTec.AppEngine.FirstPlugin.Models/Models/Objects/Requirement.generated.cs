@@ -10,9 +10,9 @@ namespace CompuTec.AppEngine.FirstPlugin.Models.Models.Objects
 {
     public class Requirement : AppEngineUdo, ICloneable
     {
-        public string Code { get; set; }
+        public string U_Name { get; set; }
 
-        public string Name { get; set; }
+        public int? U_Quantity { get; set; }
 
         [Key]
         public int? U_LineNum { get; set; }

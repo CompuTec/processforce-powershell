@@ -23,8 +23,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
             {
                 var requirements = new CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement();
                 model.Requirements.Add(requirements);
-                requirements.Code = udoRequirements.Code;
-                requirements.Name = udoRequirements.Name;
+                requirements.U_Name = udoRequirements.U_Name;
+                requirements.U_Quantity = udoRequirements.U_Quantity;
                 requirements.U_LineNum = udoRequirements.U_LineNum;
                 UDFsToModel(udoRequirements, requirements);
             });
@@ -86,10 +86,17 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                         throw new NotFoundException($"CompuTec.AppEngine.First.Objects.IRequirement.U_LineNum", $"{requirements.U_LineNum}");
                 }
 
-                if (requirements.Code != null)
-                    requirementsItem.Code = requirements.Code;
-                if (requirements.Name != null)
-                    requirementsItem.Name = requirements.Name;
+                if (requirements.U_Name != null)
+                    requirementsItem.U_Name = requirements.U_Name;
+                if (requirements.U_Quantity != null)
+                {
+                    requirementsItem.U_Quantity = (int)requirements.U_Quantity;
+                }
+                else
+                {
+                    requirementsItem.U_Quantity = default(int);
+                }
+
                 if (requirements.U_LineNum != null)
                 {
                     requirementsItem.U_LineNum = (int)requirements.U_LineNum;
@@ -143,10 +150,10 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                     udo.Requirements.SetCurrentLine(udo.Requirements.Count - 1);
                 }
 
-                if (requirements.Code != null)
-                    udo.Requirements.Code = requirements.Code;
-                if (requirements.Name != null)
-                    udo.Requirements.Name = requirements.Name;
+                if (requirements.U_Name != null)
+                    udo.Requirements.U_Name = requirements.U_Name;
+                if (requirements.U_Quantity != null)
+                    udo.Requirements.U_Quantity = (int)requirements.U_Quantity;
                 if (requirements.U_LineNum != null)
                     udo.Requirements.U_LineNum = (int)requirements.U_LineNum;
                 UDFsToUdo(udo.Requirements, requirements);
@@ -193,10 +200,10 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.Objects
                     udo.Requirements.SetCurrentLine(udo.Requirements.Count - 1);
                 }
 
-                if (requirements.Code != null)
-                    udo.Requirements.Code = requirements.Code;
-                if (requirements.Name != null)
-                    udo.Requirements.Name = requirements.Name;
+                if (requirements.U_Name != null)
+                    udo.Requirements.U_Name = requirements.U_Name;
+                if (requirements.U_Quantity != null)
+                    udo.Requirements.U_Quantity = (int)requirements.U_Quantity;
                 if (requirements.U_LineNum != null)
                     udo.Requirements.U_LineNum = (int)requirements.U_LineNum;
                 UDFsToUdo(udo.Requirements, requirements);

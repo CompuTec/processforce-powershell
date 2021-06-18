@@ -17,19 +17,14 @@ namespace CompuTec.AppEngine.First.Objects
 		public Requirement(ChildBeans childBeans) : base(childBeans) { }
 		public Requirement(bool master, UDOBean baseUDO) : base(master, baseUDO) { }
 
-		public String Code
+		public String U_Name
 		{
-			get { return FieldDictionary["Code"].Value; }
-			set { FieldDictionary["Code"].Value = value; }
+			get { return FieldDictionary["U_Name"].Value; }
+			set { FieldDictionary["U_Name"].Value = value; }
 		}
-		public String Name
+		public int U_Quantity
 		{
-			get { return FieldDictionary["Name"].Value; }
-			set { FieldDictionary["Name"].Value = value; }
-		}
-		public int Quantity
-		{
-			get { return FieldDictionary["Quantity"].Value; }
+			get { return FieldDictionary["U_Quantity"].Value; }
 			set { FieldDictionary["U_Quantity"].Value = value; }
 		}
 		 public IEnumerator<IRequirement> GetEnumerator()

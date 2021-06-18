@@ -22,7 +22,7 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 
 		protected override IUDOTable CreateUDOTable()
 		{
-			List<IUDOField> fields = this.CreateFieldsForLinesTable();
+			List<IUDOField> fields = this.DefineChildFields();
 
 			IUDOTable UdoTable = new UDOTable(fields, TABLE_NAME, TABLE_DESCRIPTION, BoUTBTableType.bott_MasterDataLines);
 
@@ -33,14 +33,14 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 			return UdoTable;
 		}
 
-		private List<IUDOField> CreateFieldsForLinesTable()
+		private List<IUDOField> DefineChildFields()
 		{
 			var fields = new List<IUDOField>();
 
 			//adding task name column
 			var TaskName = new UDOTableField();
 			TaskName.SetName("Name");
-			TaskName.SetDescription("Task Name");
+			TaskName.SetDescription("Requirement Name");
 			TaskName.SetType(BoFieldTypes.db_Alpha);
 			TaskName.SetEditSize(100);
 			fields.Add(TaskName);
@@ -48,36 +48,13 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 
 			//description column
 			var TaskDescription = new UDOTableField();
-			TaskDescription.SetName("Description");
-			TaskDescription.SetDescription("Task description");
-			TaskDescription.SetType(BoFieldTypes.db_Alpha);
-			TaskDescription.SetEditSize(254);
+			TaskDescription.SetName("Quantity");
+			TaskDescription.SetDescription("Quantity");
+			TaskDescription.SetType(BoFieldTypes.db_Numeric);
+			TaskDescription.SetEditSize(11);
 			fields.Add(TaskDescription);
 
-			//priority column
-			var TaskPriority = new UDOTableField();
-			TaskPriority.SetName("Priority");
-			TaskPriority.SetDescription("priority of the task");
-			TaskPriority.SetType(BoFieldTypes.db_Alpha);
-			TaskPriority.ValidValuesMD = new Dictionary<string, string>()
-			{
-				{ "L","Low Priority" },
-				{ "M", "Medium Priority" },
-				{ "H", "Huge Priority" }
-			};
-			TaskPriority.DefaultValue = "L";
-			TaskPriority.SetEditSize(11);
-			fields.Add(TaskPriority);
-
-
-			//deadline column
-			var TaskDeadline = new UDOTableField();
-			TaskDeadline.SetName("Deadline");
-			TaskDeadline.SetDescription("Deadline");
-			TaskDeadline.SetType(BoFieldTypes.db_Date);
-			TaskDeadline.SetEditSize(11);
-			fields.Add(TaskDeadline);
-
+			
 
 			return fields;
 

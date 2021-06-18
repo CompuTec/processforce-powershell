@@ -200,8 +200,8 @@ sap.ui.define([
 			const oSource = oEvent.getSource();
 			const Name = encodeURIComponent(this.getCustomDataForElement(oSource, "CountName"));
 			const sUrl = `api/FirstPlugin/Count?supplier=${Name}`;
-			var p = await this._get(sUrl);
-			alert(p);
+			var response = await this._get(sUrl);
+			alert(response);
 		},
 
 		_get: function (sUrl) {

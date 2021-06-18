@@ -9,9 +9,8 @@ namespace CompuTec.AppEngine.First.Objects
 	[AppEngineUDOChildBean()]
 	public interface IRequirement : IUDOChildBean, IEnumerable<IRequirement>
 	{
-		String Code { get; set; }
-		String Name { get; set; }
-        int Quantity { get; set; }
+		String U_Name { get; set; }
+        int U_Quantity { get; set; }
         new int U_LineNum { get; set; }
 
     }

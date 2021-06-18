@@ -73,8 +73,8 @@ sap.ui.define([
 					U_Description : "d",
 					U_Priority : "S"
 				})
-				this.getView().setModel(oViewModel, "model");
-				this._taskDialog.open();
+				that.getView().setModel(oViewModel, "model");
+				that._taskDialog.open();
 				
 			} 
 			if(!this._taskDialog){
@@ -120,7 +120,6 @@ sap.ui.define([
 					});
 				});
 			},
-	
     });
  });
    

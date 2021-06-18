@@ -88,7 +88,7 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 				{ "H", "Huge Priority" }
 			};
 			TaskPriority.DefaultValue = "L";
-			TaskPriority.SetEditSize(11);
+			TaskPriority.SetEditSize(1);
 			fields.Add(TaskPriority);
 
 
@@ -97,7 +97,7 @@ namespace CompuTec.AppEngine.First.DBInstall.Tables
 			TaskDeadline.SetName("Deadline");
 			TaskDeadline.SetDescription("Deadline");
 			TaskDeadline.SetType(BoFieldTypes.db_Date);
-			TaskDeadline.SetEditSize(11);
+			TaskDeadline.SetEditSize(10);
 			fields.Add(TaskDeadline);
 
 
