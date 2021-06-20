@@ -1,4 +1,5 @@
-﻿using CompuTec.ProcessForce.API;
+﻿using CompuTec.Core.DI.Database;
+using CompuTec.ProcessForce.API;
 using CompuTec.ProcessForce.API.Core;
 using CompuTec.ProcessForce.API.Documents.BillOfMaterials;
 using CompuTec.ProcessForce.API.Documents.ItemDetails;
@@ -14,7 +15,59 @@ namespace API_Training
 {
     class Program
     {
-        static CompuTec.ProcessForce.API.IProcessForceCompany pfCompany;
+        private static IProcessForceCompany pfCompany;
+
+        public static void UseSApObject()
+        {
+            SAPbobsCOM.Items itm = pfCompany.SapCompany.GetBusinessObject(BoObjectTypes.oItems);
+            itm.ItemCode = "testItm";
+            itm.Add();
+        }
+        /// <summary>
+        /// One Line Query
+        /// </summary>
+        public static void UseQueries1()
+        {
+            //select "ItemName" from OITM where "ItemCode"='Active-Item-01' 
+            var itemName= QueryManager.ExecuteSimpleQuery<string>(pfCompany.Token, "OITM", "ItemName", "ItemCode", "Active-Item-01");
+        }
+        //Simple queries
+        public static void UseQueries2()
+        {
+            //select "ItemName","ItmGrpCode" from OITM where "ItemCode" in ('Active-Item-01', 'Active-Item-02')
+
+            var qm = new QueryManager();
+            qm.SimpleTableName = "OITM";
+            qm.SetSimpleWhereFields("ItemCode");
+            qm.SetSimpleResultFields("ItemName", "ItmGrpCod");
+            using (var rs = qm.ExecuteSimpleParameters(pfCompany.Token, QueryManager.GenerateSqlInStatment<string>(new string[] { "Active-Item-01", "Active-Item-02" })))
+            {
+                for (int i = 0; i < rs.RecordCount; i++)
+                {
+                    var itmname = rs.Fields.Item("ItemName").Value;
+                    var itmGrpCode= rs.Fields.Item("ItmGrpCod").Value;
+                    rs.MoveNext();
+                }
+            }
+
+        }
+        const string Query = @" select t0.""ItemCode"" from ""OITM"" t0 inner join ""OITW"" t1 on t0.""ItemCode""=t1.""ItemCode"" where t1.""WhsCode"" like @param1 and t0.""ItmGrpCod"" = @GrpCode";
+        //most complicated queries
+        public static void UseQueries3()
+        {
+            var qm = new QueryManager();
+            qm.CommandText = Query;
+            qm.AddParameter("param1", "a$");
+            qm.AddParameter("GrpCode", 12);
+            using (var rs = qm.Execute(pfCompany.Token))
+            {
+                for (int i = 0; i < rs.RecordCount; i++)
+                {
+                    var itmCode = rs.Fields.Item(0).Value;
+                    rs.MoveNext();
+                }
+            }
+        }
         static void Main(string[] args)
         {
             Connect();
@@ -63,13 +116,11 @@ namespace API_Training
             {
                // CompuTec.Core.Connection.ConnectionHolder.ConType = CompuTec.Core.Connection.ConnectionType.DI;
                 //set connection constaint
-                pfCompany.SQLServer = "";
-                pfCompany.UseTrusted = true;
-                pfCompany.UserName = "";
-                pfCompany.Password = "";
-                pfCompany.LicenseServer = ":"; // server:port
-                pfCompany.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_MSSQL2016;
-                pfCompany.Databasename = "";
+                pfCompany.SLDAddress = "hanadev:40000";
+                pfCompany.UserName = "manager";
+                pfCompany.Password = "1234";
+                pfCompany.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_HANADB;
+                pfCompany.Databasename = "PROD_20210122_SPROC_11212";
                 pfCompany.Language = SAPbobsCOM.BoSuppLangs.ln_English;
                 //Connect to Company
                 if (pfCompany.Connect() == 1)
@@ -141,7 +192,6 @@ namespace API_Training
             {
                 Console.WriteLine(string.Format(" Revision {0} for Item{0} was not added", string.Format("Rev0{0}", revisionCount), ItemCode));
             }
-
         }
 
         private static void CreateNewBillOfMaterial(string ItemCOde, string Revision)
