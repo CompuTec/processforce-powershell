@@ -22,7 +22,8 @@ sap.ui.define([
 		},
 		onAdd : function (oEvent){
 			var oBinding = this.getBinding();
-			var oDatak = oEvent.getSource().getModel().getData();
+			var oDatak = oEvent.getSource().getModel("model").getData();
+			oDatak.U_Priority = 
 			oBinding.create(oDatak);
 		},
 
@@ -50,6 +51,9 @@ sap.ui.define([
 		getTable : function () {
 			return this.byId("todoList");
 		},
+		onCloseFragment: function(e) {
+            e.getSource().destroy();
+        },
 
 		onParamButton : function (oEvent) {
 			const oSource = oEvent.getSource();
@@ -69,9 +73,9 @@ sap.ui.define([
 			var oView = this.getView();
 			const fnOpenDialog = function (){
 				const oViewModel = new JSONModel({
-					U_TaskName : "n",
-					U_Description : "d",
-					U_Priority : "S"
+					U_TaskName : "",
+					U_Description : "",
+					U_Priority : "L"
 				})
 				that.getView().setModel(oViewModel, "model");
 				that._taskDialog.open();

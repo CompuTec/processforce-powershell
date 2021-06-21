@@ -19,13 +19,14 @@
 		<InputListItem label="Description">
 			<Input
 				placeholder="Description"
-				value="{ model>/U_Description }" />
+				value="{model>/U_Description}" />
 		</InputListItem>
-		<InputListItem label="Priority">
+		<InputListItem label="Priority"
+        value="{model>/U_Priority}">
 			<Select>
-				<core:Item key="S" text="Small" />
+				<core:Item key="L" text="Low" />
 				<core:Item key="M" text="Medium" />
-				<core:Item key="L" text="Large" />
+				<core:Item key="H" text="Huge" />
 			</Select>
 		</InputListItem>
 		
@@ -36,6 +37,10 @@
         press=".onAdd"
         text="Add"
         ></Button>
+        <Button
+      id="CloseButton"
+      text="Close"
+      press=".onCloseFragment" />
     </buttons>
    </Dialog>
 </core:FragmentDefinition>

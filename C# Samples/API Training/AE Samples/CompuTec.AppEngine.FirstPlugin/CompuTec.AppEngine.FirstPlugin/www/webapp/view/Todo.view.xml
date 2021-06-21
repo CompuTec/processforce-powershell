@@ -7,26 +7,6 @@
     xmlns:tnt="sap.tnt"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns:ae="computec.appengine.ui.controls">
-  <tnt:ToolHeader>
-    <Input
-        value="{ /task/name }"
-        width="15%"
-        valueLiveUpdate="true" />
-
-
-    <Input
-        value="{ /task/description }"
-        width="25%"
-        valueLiveUpdate="true" />
-
-    <Input
-        value="{ /task/priority }"
-        width="15%"
-        valueLiveUpdate="true" />
-    <Button
-        text="{i18n>AddButton}"
-        press=".onAdd" />
-  </tnt:ToolHeader>
 
   <ae:Link
       text="move to MRP"
@@ -69,11 +49,11 @@
     <items>
       <ColumnListItem>
         <cells>
-          <Button
+          <!-- <Button
           icon="sap-icon://notes"
 				text="Show Popover"
 				press="handlePopoverPress"
-				ariaHasPopup="Dialog" />
+				ariaHasPopup="Dialog" /> -->
           <Input value="{ path: 'FP>U_TaskName' }" />
         </cells>
         <cells>
@@ -99,6 +79,7 @@
       id="AddNewButton"
       text="Add new"
       press=".AddFragment" />
+      
 
      
 </mvc:View>
