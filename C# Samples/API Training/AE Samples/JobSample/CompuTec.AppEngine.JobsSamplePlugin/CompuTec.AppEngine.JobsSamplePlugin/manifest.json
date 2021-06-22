@@ -1,0 +1,29 @@
+﻿{
+  "version": "1.0.0",
+  "id": "JobsSamplePlugin",
+  "name": "JobsSamplePlugin",
+  "icon": "sap-icon://activate",
+
+  "company": "",
+  "api": {
+    "routePrefix": "CompuTec.AppEngine.JobsSamplePlugin",
+    "setupAssembly": "CompuTec.AppEngine.JobsSamplePlugin",
+    "assemblies": [
+    ],
+    "dependencies": {
+    }
+  },
+  "ui": {
+    "apps": [
+      {
+        "icon": "sap-icon://example",
+        "namespace": "computec.appengine.jobssampleplugin",
+        "tile": "CompuTec.AppEngine.JobsSamplePlugin",
+        "target": "home",
+        "type": "User",
+        "sapForms": [
+        ]
+      }
+    ]
+  }
+}

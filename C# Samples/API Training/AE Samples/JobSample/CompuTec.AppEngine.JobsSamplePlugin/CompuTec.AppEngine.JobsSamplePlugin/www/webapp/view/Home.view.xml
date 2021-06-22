@@ -1,0 +1,19 @@
+<mvc:View
+    controllerName="computec.appengine.jobssampleplugin.controller.Home"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout">
+  <Panel>
+    <l:HorizontalLayout allowWrapping="true">
+      <GenericTile
+          class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+          header="{i18n>todoTileHeader}"
+          subheader="{i18n>todoTileSubheader}"
+          press="onTodoListPress">
+        <TileContent>
+          <ImageContent src="sap-icon://activity-2" />
+        </TileContent>
+      </GenericTile>
+    </l:HorizontalLayout>
+  </Panel>
+</mvc:View>

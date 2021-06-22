@@ -1,0 +1,3 @@
+﻿This is bbusiness Logic layer 
+this projevct should contains all services or object that can be reused acroos projects that implements all business logic handlers services etc..
+in this example you can see implememntation of ToDo Business Object some validations and other logic 
