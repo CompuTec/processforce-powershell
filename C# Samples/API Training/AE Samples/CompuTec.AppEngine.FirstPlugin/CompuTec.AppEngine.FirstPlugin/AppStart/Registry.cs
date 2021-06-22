@@ -1,5 +1,4 @@
-﻿using CompuTec.AppEngine.FirstPlugin.Api.Services;
-using StructureMap;
+﻿using StructureMap;
 
 namespace CompuTec.AppEngine.FirstPlugin.AppStart
 {
@@ -7,8 +6,7 @@ namespace CompuTec.AppEngine.FirstPlugin.AppStart
     {
         public DIRegistry()
         {
-            For<DataSource>().Singleton().Use<DataSource>();
-            For<ITodoService>().Use<TodoService>();
+            ///here you can register custom services
         }
     }
 }

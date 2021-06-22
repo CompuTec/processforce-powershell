@@ -72,9 +72,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CompuTec.AppEngine.DataAnnotations, Version=1.0.0.0, Culture=neutral, PublicKeyToken=481e6d68a5467cbe, processorArchitecture=MSIL">
-      <HintPath>..\packages\CompuTec.AppEngine.DataAnnotations.2.0.1.4\lib\net47\CompuTec.AppEngine.DataAnnotations.dll</HintPath>
-    </Reference>
     <Reference Include="CompuTec.LabelPrinting.WebApiClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ea7f5d59e1cc26d2, processorArchitecture=MSIL">
       <HintPath>..\packages\CompuTec.LabelPrinting.1.0.0\lib\net47\CompuTec.LabelPrinting.WebApiClient.dll</HintPath>
     </Reference>

@@ -7,8 +7,8 @@
   *U_Deadline  System.DateTime
   *U_TaskName  string
   *U_Description  string
-  *U_Priority  string
-	IRequirement - 0, [IToDo]
+  *U_Priority  CompuTec.AppEngine.FirstPlugin.API.Enums.ToDoPriority
+	IToDoRequirement - 0, [IToDo]
 	  *U_Name  string
 	  *U_Quantity  int
 	  *U_LineNum  int

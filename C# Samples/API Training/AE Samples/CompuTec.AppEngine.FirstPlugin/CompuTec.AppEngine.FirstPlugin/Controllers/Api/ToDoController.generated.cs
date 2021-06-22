@@ -9,9 +9,9 @@ using CompuTec.AppEngine.Base.Infrastructure.Controllers.OData.Delta;
 
 namespace CompuTec.AppEngine.FirstPlugin.Controllers.Api
 {
-    public partial class ToDoController : AppEngineCore2Controller<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.ToDo, CompuTec.AppEngine.First.Objects.IToDo, string>
+    public partial class ToDoController : AppEngineCore2Controller<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDo, CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDo, string>
     {
-        protected override string TableName => "@SAMPLE_TODO";
+        protected override string TableName => "@CT_TST_OTDO";
         protected override string KeyName => "Code";
         protected override string ObjectType => "Sample_ToDo";
         protected override eUDOVersion UDOVersion => eUDOVersion.UDO_20;

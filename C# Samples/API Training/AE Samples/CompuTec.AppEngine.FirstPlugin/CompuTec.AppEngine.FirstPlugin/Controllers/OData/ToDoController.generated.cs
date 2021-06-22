@@ -18,72 +18,72 @@ using CompuTec.AppEngine.FirstPlugin.Serializer.Serializers;
 namespace CompuTec.AppEngine.FirstPlugin.Controllers.OData
 {
     [ODataRoutePrefix("ToDo")]
-    public partial class ToDoController : AppEngineCore2ODataBatchController<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.ToDo, CompuTec.AppEngine.First.Objects.IToDo, string>
+    public partial class ToDoController : AppEngineCore2ODataBatchController<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDo, CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDo, string>
     {
-        protected override string TableName => "@SAMPLE_TODO";
+        protected override string TableName => "@CT_TST_OTDO";
         protected override string KeyName => "Code";
         protected override string ObjectType => "Sample_ToDo";
         protected override eUDOVersion UDOVersion => eUDOVersion.UDO_20;
         [HttpGet]
         [EnableQuery(MaxExpansionDepth = 10)]
         [ODataRoute("({Code})/Requirements")]
-        public IQueryable<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement> GetRequirement([FromODataUri] string Code)
+        public IQueryable<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement> GetToDoRequirement([FromODataUri] string Code)
         {
             var udo = GetObjectInstance(Code);
             var model = Serializer.ToModel(udo);
             var Requirements = model.Requirements;
-            return Requirements.AsQueryable<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>();
+            return Requirements.AsQueryable<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement>();
         }
 
         [HttpGet]
         [EnableQuery(MaxExpansionDepth = 10)]
         [ODataRoute("({Code})/Requirements({RequirementsLineNum})")]
-        public SingleResult<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement> GetRequirement([FromODataUri] string Code, [FromODataUri] int RequirementsLineNum)
+        public SingleResult<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement> GetToDoRequirement([FromODataUri] string Code, [FromODataUri] int RequirementsLineNum)
         {
             var udo = GetObjectInstance(Code);
             var model = Serializer.ToModel(udo);
             var Requirements = model.Requirements.FirstOrDefault(item => RequirementsLineNum == item.U_LineNum);
             if (Requirements == null)
                 throw new NotFoundException("Requirements", "Requirements");
-            return SingleResult.Create(new List<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>()
+            return SingleResult.Create(new List<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement>()
             {Requirements}.AsQueryable());
         }
 
         [HttpPost]
         [ODataRoute("({Code})/Requirements")]
-        public IHttpActionResult PostRequirement([FromODataUri] string Code, CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement model)
+        public IHttpActionResult PostToDoRequirement([FromODataUri] string Code, CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement model)
         {
             var udo = GetObjectInstance(Code);
             //if(model.WithDefauls == null)
             //     ((CompuTec.Core2.Beans.IAdvancedUDOBean)udo).SetChangingFromUdo(!(bool)model.WithDefauls);
-            var serializer = GetService<ISerializerHandler>().Get(typeof(CompuTec.AppEngine.First.Objects.IRequirement)) as UdoChildBeanSerializer<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement, CompuTec.AppEngine.First.Objects.IRequirement>;
+            var serializer = GetService<ISerializerHandler>().Get(typeof(CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDoRequirement)) as UdoChildBeanSerializer<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement, CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDoRequirement>;
             udo.Requirements.Add();
             udo.Requirements.SetCurrentLine(udo.Requirements.Count - 1);
             serializer.FillNew(udo.Requirements, model);
             Update(udo);
-            return Ok<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>(serializer.ToModel(udo.Requirements));
+            return Ok<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement>(serializer.ToModel(udo.Requirements));
         }
 
         [HttpPut]
         [ODataRoute("({Code})/Requirements({RequirementsLineNum})")]
-        public IHttpActionResult PutRequirement([FromODataUri] string Code, [FromODataUri] int RequirementsLineNum, CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement model)
+        public IHttpActionResult PutToDoRequirement([FromODataUri] string Code, [FromODataUri] int RequirementsLineNum, CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement model)
         {
             var udo = GetObjectInstance(Code);
-            var serializer = GetService<ISerializerHandler>().Get(typeof(CompuTec.AppEngine.First.Objects.IRequirement)) as UdoChildBeanSerializer<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement, CompuTec.AppEngine.First.Objects.IRequirement>;
+            var serializer = GetService<ISerializerHandler>().Get(typeof(CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDoRequirement)) as UdoChildBeanSerializer<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement, CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDoRequirement>;
             var Requirements = udo.Requirements.FirstOrDefault(item => RequirementsLineNum == item.U_LineNum);
             if (Requirements == null)
                 throw new NotFoundException("Requirements not found", "Requirements not found");
             serializer.Update(Requirements, model);
             Update(udo);
-            return Ok<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>(serializer.ToModel(Requirements));
+            return Ok<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement>(serializer.ToModel(Requirements));
         }
 
         [HttpPatch]
         [ODataRoute("({Code})/Requirements({RequirementsLineNum})")]
-        public IHttpActionResult PatchRequirement([FromODataUri] string Code, [FromODataUri] int RequirementsLineNum, DeepDelta<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement> model)
+        public IHttpActionResult PatchToDoRequirement([FromODataUri] string Code, [FromODataUri] int RequirementsLineNum, DeepDelta<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement> model)
         {
             var udo = GetObjectInstance(Code);
-            var serializer = GetService<ISerializerHandler>().Get(typeof(CompuTec.AppEngine.First.Objects.IRequirement)) as UdoChildBeanSerializer<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement, CompuTec.AppEngine.First.Objects.IRequirement>;
+            var serializer = GetService<ISerializerHandler>().Get(typeof(CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDoRequirement)) as UdoChildBeanSerializer<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement, CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDoRequirement>;
             var Requirements = udo.Requirements.FirstOrDefault(item => RequirementsLineNum == item.U_LineNum);
             if (Requirements == null)
                 throw new NotFoundException("Requirements", "Requirements");
@@ -91,15 +91,15 @@ namespace CompuTec.AppEngine.FirstPlugin.Controllers.OData
             model.Patch(currentModel);
             serializer.Update(Requirements, currentModel);
             Update(udo);
-            return Ok<CompuTec.AppEngine.FirstPlugin.Models.Models.Objects.Requirement>(serializer.ToModel(Requirements));
+            return Ok<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement>(serializer.ToModel(Requirements));
         }
 
         [HttpDelete]
         [ODataRoute("({Code})/Requirements({RequirementsLineNum})")]
-        public IHttpActionResult DeleteRequirement([FromODataUri] string Code, [FromODataUri] int RequirementsLineNum)
+        public IHttpActionResult DeleteToDoRequirement([FromODataUri] string Code, [FromODataUri] int RequirementsLineNum)
         {
             var udo = GetObjectInstance(Code);
-            var udoToDelete = (udo.Requirements as CompuTec.Core2.Beans.IAdvancedUDOChildBean).IMasterBean.Childs.FirstOrDefault(childBean => (childBean as CompuTec.AppEngine.First.Objects.IRequirement).U_LineNum == RequirementsLineNum && (childBean as CompuTec.Core2.Beans.IAdvancedUDOChildBean).IsRowFilled());
+            var udoToDelete = (udo.Requirements as CompuTec.Core2.Beans.IAdvancedUDOChildBean).IMasterBean.Childs.FirstOrDefault(childBean => (childBean as CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDoRequirement).U_LineNum == RequirementsLineNum && (childBean as CompuTec.Core2.Beans.IAdvancedUDOChildBean).IsRowFilled());
             if (udoToDelete != null)
             {
                 var position = (udoToDelete as CompuTec.Core2.Beans.IAdvancedUDOChildBean).CurrentPosition;

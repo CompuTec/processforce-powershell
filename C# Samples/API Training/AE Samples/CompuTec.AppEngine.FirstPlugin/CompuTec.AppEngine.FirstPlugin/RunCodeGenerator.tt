@@ -14,7 +14,7 @@
                     TargetProjectName = "CompuTec.AppEngine.FirstPlugin", 
                     TargeSerializersProjectName = "CompuTec.AppEngine.FirstPlugin.Serializer",
                     TargetModelProjectNames = new List<string>(){ "CompuTec.AppEngine.FirstPlugin.Models" }, 
-                    SourceProjectName = "CompuTec.AppEngine.FirstSetup",
+                    SourceProjectName = "CompuTec.AppEngine.FirstPlugin.API",
                     
                     DevMode = false
                   
