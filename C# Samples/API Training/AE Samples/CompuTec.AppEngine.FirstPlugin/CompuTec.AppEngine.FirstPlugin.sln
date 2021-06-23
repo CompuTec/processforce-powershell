@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompuTec.AppEngine.FirstPlu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompuTec.AppEngine.FirstPlugin.Serializer", "CompuTec.AppEngine.FirstPlugin.Serializer\CompuTec.AppEngine.FirstPlugin.Serializer.csproj", "{58771DD8-7069-4C2D-83DE-D3C30286BFDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompuTec.AppEngine.FirstPlugin.Setup", "CompuTec.AppEngine.First\CompuTec.AppEngine.FirstPlugin.Setup.csproj", "{C630479D-86CB-4B34-A0DE-B3E6D9F891A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompuTec.AppEngine.FirstPlugin.Setup", "CompuTec.AppEngine.FirstPlugin.Setup\CompuTec.AppEngine.FirstPlugin.Setup.csproj", "{C630479D-86CB-4B34-A0DE-B3E6D9F891A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
