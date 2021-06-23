@@ -41,6 +41,7 @@
       id="CloseButton"
       text="Close"
       press=".onCloseFragment" />
+      <!-- SD -->
     </buttons>
    </Dialog>
 </core:FragmentDefinition>

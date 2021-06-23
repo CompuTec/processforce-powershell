@@ -1,0 +1,92 @@
+<mvc:View
+controllerName="computec.appengine.firstplugin.controller.MyToDo"
+	xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:tnt="sap.tnt"
+  xmlns:ae="computec.appengine.ui.controls"
+	displayBlock="true"
+>
+  <tnt:ToolHeader>
+  <Input
+                  text = "name"
+                  value="{ /task/name }"
+                  width = "15%"
+                  valueLiveUpdate = "true"
+                   />
+                   
+  <Input
+                  value="{ /task/description }"
+                  width = "25%"
+                  valueLiveUpdate = "true"
+                   />
+                   
+  <Input
+                  value="{ /task/priority }"
+                  width = "15%"
+                  valueLiveUpdate = "true"
+                   />
+  <Button text="{i18n>AddButton}" press="onAdd" />
+  </tnt:ToolHeader>
+  <tnt:ToolHeader>
+  <Button text="{i18n>DeleteButton}" press="onDelete" />
+  </tnt:ToolHeader>
+            
+            <Link
+								text="move to MRP"
+								objectType="CT_PF_SSC"
+								objectSubType="Resource"
+								key="{path: 'FP>Code', type: 'sap.ui.model.type.String', targetType : 'any'}">
+                </Link>
+			<Table
+          id="todoList"
+          growing="true"
+          growingThreshold="10"
+          items="{
+								path: 'FP>/ToDo',
+								parameters: {
+									$count: true
+								}
+              }"
+          fixedLayout="false">
+        <headerToolbar>
+         
+        </headerToolbar>
+        <columns>
+          <Column
+              id="TaskNameColumn"
+              width="10rem">
+            <Text text="{i18n>TaskNameColumn}" />
+          </Column>
+          <Column id="DescriptionColumn">
+            <Text text="{i18n>DescriptionColumn}" />
+          </Column>
+          <Column
+              id="PriorityColumn"
+              width="10rem">
+            <Text text="{i18n>PriorityColumn}" />
+          </Column>
+        </columns>
+        <items>
+          <ColumnListItem>
+            <cells>
+              <Input
+                  value="{ path: 'FP>U_TaskName' }"
+                   />
+            </cells>
+            <cells>
+              <Input
+                  value="{ path: 'FP>U_Description' }"
+                  />
+            </cells>
+            <cells>
+              <Input
+                  value="{ path: 'FP>U_Priority' }"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+      <Image 
+          app:Id="{path:'FP>ResourceCode', type:'sap.ui.model.odata.type.String'}"
+										src="{ parts: ['FP>ResourceCode','FP>U_ResourceImage'], formatter: '.setResourceImageForResourceTable'}"
+										width="150px"/>
+</mvc:View>

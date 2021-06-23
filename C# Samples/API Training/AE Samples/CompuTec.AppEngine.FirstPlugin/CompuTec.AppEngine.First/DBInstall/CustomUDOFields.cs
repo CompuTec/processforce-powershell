@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CompuTec.Core2.DI.Setup.UDO.Model;
 
-namespace CompuTec.AppEngine.FirstPlugin.Setup.DBInstall
+namespace CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables
 {
     public class CustomUDOFields
     {

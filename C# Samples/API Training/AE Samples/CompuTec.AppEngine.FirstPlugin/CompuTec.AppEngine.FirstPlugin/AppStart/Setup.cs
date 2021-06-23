@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CompuTec.AppEngine.Base.Infrastructure.Plugins;
 using CompuTec.AppEngine.FirstPlugin.API;
-using CompuTec.AppEngine.FirstPlugin.Setup.DBInstall;
+using CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables;
 
 namespace CompuTec.AppEngine.FirstPlugin.Plugin.AppStart
 {
@@ -26,7 +26,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Plugin.AppStart
 
             Console.WriteLine("Update");
 
-            List<CompuTec.Core2.DI.Setup.UDO.Model.ICustomField> customUdoFieldList =  CustomUDOFields.getCustomFields();
+
+            List<CompuTec.Core2.DI.Setup.UDO.Model.ICustomField> customUdoFieldList = CustomUDOFields.getCustomFields();
             CompuTec.Core2.DI.Setup.UDO.Setup setup = new CompuTec.Core2.DI.Setup.UDO.Setup(token, customUdoFieldList, false, System.Reflection.Assembly
                 .GetAssembly(typeof(FirstPlugin.Setup.DBInstall.Tables.ToDoObjectDefinition.ToDoTable)), "CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables", "CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables",
                 "CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables", "CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables", "CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables");

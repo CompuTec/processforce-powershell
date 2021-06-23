@@ -7,15 +7,15 @@ using System;
 using System.Collections.Generic;
 
 
-namespace CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables.ToDoObjectDefinition
+namespace CompuTec.AppEngine.First.DBInstall.Tables
 {
 	[TableInstall]
 	public class ToDoTable : UDOManager
 	{
 		public const String OBJECT_CODE = "Sample_ToDo";
-		public const String TABLE_NAME = "CT_TST_OTDO";
-		public const String TABLE_DESCRIPTION = "SampleTable";
-		public const String ARCHIVE_TABLE_NAME = "CT_TST_ATDO";
+		public const String TABLE_NAME = "SAMPLE_TODO";
+		public const String TABLE_DESCRIPTION = "Sample table";
+		public const String ARCHIVE_TABLE_NAME = "SAMPLE_ATDO";
 
 		public ToDoTable(IDIConnection connection) : base(connection) { }
 
@@ -79,16 +79,16 @@ namespace CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables.ToDoObjectDefini
 			//priority column
 			var TaskPriority = new UDOTableField();
 			TaskPriority.SetName("Priority");
-			TaskPriority.SetDescription("Priority");
+			TaskPriority.SetDescription("priority of the task");
 			TaskPriority.SetType(BoFieldTypes.db_Alpha);
 			TaskPriority.ValidValuesMD = new Dictionary<string, string>()
 			{
-                { "L","Low Priority" },
+				{ "L","Low Priority" },
 				{ "M", "Medium Priority" },
-				{ "H", "High Priority" }
+				{ "H", "Huge Priority" }
 			};
 			TaskPriority.DefaultValue = "L";
-			TaskPriority.SetEditSize(1);
+			TaskPriority.SetEditSize(11);
 			fields.Add(TaskPriority);
 
 
@@ -97,7 +97,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables.ToDoObjectDefini
 			TaskDeadline.SetName("Deadline");
 			TaskDeadline.SetDescription("Deadline");
 			TaskDeadline.SetType(BoFieldTypes.db_Date);
-			TaskDeadline.SetEditSize(10);
+			TaskDeadline.SetEditSize(11);
 			fields.Add(TaskDeadline);
 
 
@@ -112,7 +112,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables.ToDoObjectDefini
 
 		protected override void SetChildTables()
 		{
-			ChildTablesClasses.AddRange(new string[] { "ToDoTableRequirementsTable" });
+
 		}
 	}
 }
