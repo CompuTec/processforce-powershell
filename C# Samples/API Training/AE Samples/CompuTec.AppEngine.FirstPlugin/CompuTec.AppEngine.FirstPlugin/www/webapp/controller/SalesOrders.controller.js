@@ -35,55 +35,59 @@ sap.ui.define([
 		},
 
 
-		onAdd : function (oEvent){
-			var oBinding = this.getBinding();
-			var oDatak = {
-					U_TaskName : "name",
-					description : "description",
-					priority : "priority"
+		// onAdd : function (oEvent){
+		// 	var oBinding = this.getBinding();
+		// 	var oDatak = {
+		// 			U_TaskName : "name",
+		// 			description : "description",
+		// 			priority : "priority"
 				
-			};
-			oBinding.create(oDatak);
-		},
+		// 	};
+		// 	oBinding.create(oDatak);
+		// },
 
-		onDelete: function (oEvent) {
-            oEvent.getSource().getBindingContext("FP").delete("$auto").then(function () {
-                MessageToast.show("deleted");
-            }.bind(this), function (oError) {
-                MessageBox.error(oError.message);
-            });
+		onCloseFragment: function() {
+            this.byId("AttachmentDialog").close();
         },
+
+		// onDelete: function (oEvent) {
+        //     oEvent.getSource().getBindingContext("FP").delete("$auto").then(function () {
+        //         MessageToast.show("deleted");
+        //     }.bind(this), function (oError) {
+        //         MessageBox.error(oError.message);
+        //     });
+        // },
 		
-		onCreate : function () {
-            var oList = this.byId("todoList"), 
-                oBinding = oList.getBindingContext("items"),
+		// onCreate : function () {
+        //     var oList = this.byId("todoList"), 
+        //         oBinding = oList.getBindingContext("items"),
 
-                oContext = oBinding.create({
-                'Code' : 10,
-				'DocEntry' : 10,
-				'U_TaskName' : 'By Add',
-				'U_Description' : 'by add description',
-				'U_Priority' : 'M'
-                });
+        //         oContext = oBinding.create({
+        //         'Code' : 10,
+		// 		'DocEntry' : 10,
+		// 		'U_TaskName' : 'By Add',
+		// 		'U_Description' : 'by add description',
+		// 		'U_Priority' : 'M'
+        //         });
 
-            this._setUIChanges(true);
+        //     this._setUIChanges(true);
 
-            oList.getItems().some(function (oItem) {
-                if (oItem.getBindingContext() === oContext) {
-                    oItem.focus();
-                    oItem.setSelected(true);
-                    return true;
-                }
-            });
-        },
-		_setUIChanges: function (bHasUIChanges) {
-            if (bHasUIChanges === undefined) {
-                bHasUIChanges = this.getView().getModel().hasPendingChanges();
-            }
+        //     oList.getItems().some(function (oItem) {
+        //         if (oItem.getBindingContext() === oContext) {
+        //             oItem.focus();
+        //             oItem.setSelected(true);
+        //             return true;
+        //         }
+        //     });
+        // },
+		// _setUIChanges: function (bHasUIChanges) {
+        //     if (bHasUIChanges === undefined) {
+        //         bHasUIChanges = this.getView().getModel().hasPendingChanges();
+        //     }
 
-            var oModel = this.getView().getModel("todoView");
-            oModel.setProperty("/hasUIChanges", bHasUIChanges);
-        },
+        //     var oModel = this.getView().getModel("todoView");
+        //     oModel.setProperty("/hasUIChanges", bHasUIChanges);
+        // },
 		getBinding : function () {
 			return this.getTable().getBinding("items");
 		},

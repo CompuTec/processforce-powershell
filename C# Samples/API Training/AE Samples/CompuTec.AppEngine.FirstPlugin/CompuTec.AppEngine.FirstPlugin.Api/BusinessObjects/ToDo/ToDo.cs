@@ -18,7 +18,7 @@ namespace CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo
 			this.Childs = new Dictionary<string, ChildBeans>();
 			this.ChildDictionary = new Dictionary<string, string>();
 
-			this.Childs.Add("Requirements", new ToDoRequirement());
+			this.Childs.Add("Requirements", new ToDoRequirement(true, this));
 			this.ChildDictionary.Add("CT_TST_TDO1", "Requirements");
 
 		}

@@ -49,20 +49,9 @@
     <items>
       <ColumnListItem>
         <cells>
-          <!-- <Button
-          icon="sap-icon://notes"
-				text="Show Popover"
-				press="handlePopoverPress"
-				ariaHasPopup="Dialog" /> -->
           <Input value="{ path: 'FP>U_TaskName' }" />
-        </cells>
-        <cells>
           <Input value="{ path: 'FP>U_Description' }" />
-        </cells>
-        <cells>
-          <Input value="{ path: 'FP>U_Priority' }" />
-        </cells>
-        <cells>
+          <Input value="{ path: 'FP>U_Priority' , type:'sap.ui.model.odata.type.String' }" />
           <Button
               id="deleteTaskButton"
               icon="sap-icon://delete"

@@ -10,6 +10,6 @@ namespace CompuTec.AppEngine.FirstPlugin.API.Enums
 
     public enum  ToDoPriority
     {
-        Low=1,Medium=2,High=3
+        Low=1,Medium=2,Huge=3
     }
 }

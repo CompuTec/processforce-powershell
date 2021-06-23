@@ -29,11 +29,7 @@
               width="10%">
             <Text text="Download" />
           </Column>
-          <!-- <Column
-              id="DeleteAttachmentColumn"
-              width="20%">
-            <Text text="Delete" />
-          </Column> -->
+          
         </columns>
         <items>
           <ColumnListItem>
@@ -46,13 +42,7 @@
             press=".onDownloadInNewTab"
             app:AbsEntry="{path: 'AT>AbsEntry'}"
             app:Line="{path: 'AT>Line'}"/>
-              <!-- <Button
-            id="deleteAttachment"
-            icon="sap-icon://delete"
-            press=".onDelete"/> -->
             </cells>
-            
-          
           </ColumnListItem>
         </items>
       </Table>
@@ -68,11 +58,15 @@
                 id="AddNewButton"
             text = "Add Attachment"
             press=".onAddAttachment"
-            >
-
-                
+            >   
                 </Button>
-                </beginButton>
+                <Button
+                id="CloseButton"
+                text="Close"
+                press=".onCloseFragment" />
+                
+              </beginButton>
+
 
    </Dialog>
 </core:FragmentDefinition>

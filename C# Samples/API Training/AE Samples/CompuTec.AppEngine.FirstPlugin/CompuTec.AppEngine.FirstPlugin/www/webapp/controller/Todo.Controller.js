@@ -22,8 +22,9 @@ sap.ui.define([
 		},
 		onAdd : function (oEvent){
 			var oBinding = this.getBinding();
+			var prior = this.getView().byId("Sel").getSelectedKey();
 			var oDatak = oEvent.getSource().getModel("model").getData();
-			oDatak.U_Priority = 
+			oDatak.U_Priority = prior;
 			oBinding.create(oDatak);
 		},
 
@@ -35,7 +36,6 @@ sap.ui.define([
             });
         },
 		
-	
 		_setUIChanges: function (bHasUIChanges) {
             if (bHasUIChanges === undefined) {
                 bHasUIChanges = this.getView().getModel().hasPendingChanges();
@@ -44,6 +44,7 @@ sap.ui.define([
             var oModel = this.getView().getModel("todoView");
             oModel.setProperty("/hasUIChanges", bHasUIChanges);
         },
+
 		getBinding : function () {
 			return this.getTable().getBinding("items");
 		},
@@ -51,8 +52,9 @@ sap.ui.define([
 		getTable : function () {
 			return this.byId("todoList");
 		},
-		onCloseFragment: function(e) {
-            e.getSource().destroy();
+
+		onCloseFragment: function() {
+            this.byId("addtododialog").close();
         },
 
 		onParamButton : function (oEvent) {
@@ -60,6 +62,7 @@ sap.ui.define([
 			const cardName = this.getCustomDataForElement(oSource, "CardName")
 			
 		},
+
 
 		getCustomDataForElement: function (oElement, sCustomDataCode) {
 			let oCustomData = oElement.getCustomData().find(x => x.getKey() === sCustomDataCode);
@@ -75,7 +78,7 @@ sap.ui.define([
 				const oViewModel = new JSONModel({
 					U_TaskName : "",
 					U_Description : "",
-					U_Priority : "L"
+					U_Priority : ""
 				})
 				that.getView().setModel(oViewModel, "model");
 				that._taskDialog.open();
