@@ -83,7 +83,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables.ToDoObjectDefini
 			TaskPriority.SetType(BoFieldTypes.db_Alpha);
 			TaskPriority.ValidValuesMD = new Dictionary<string, string>()
 			{
-                { "L","Low Priority" },
+				{ "L","Low Priority" },
 				{ "M", "Medium Priority" },
 				{ "H", "High Priority" }
 			};
