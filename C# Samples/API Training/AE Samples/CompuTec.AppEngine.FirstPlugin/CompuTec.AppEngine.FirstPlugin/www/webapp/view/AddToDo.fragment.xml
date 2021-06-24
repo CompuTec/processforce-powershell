@@ -10,7 +10,7 @@
       title="Add ToDo"
       contentWidth = "50%">
 
-      <List>
+      
 		<InputListItem label="Name">
 			<Input
 				placeholder="Name"
@@ -30,7 +30,6 @@
 			</Select>
 		</InputListItem>
 
-	</List>
     <buttons>
         <Button 
         id="AddButton"

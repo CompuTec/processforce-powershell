@@ -8,11 +8,6 @@
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns:ae="computec.appengine.ui.controls">
 
-  <ae:Link
-      text="move to MRP"
-      objectType="CT_PF_SSC"
-      objectSubType="Resource"
-      key="{path: 'FP>Code', type: 'sap.ui.model.type.String', targetType : 'any'}"></ae:Link>
   <Table
       id="todoList"
       growing="true"

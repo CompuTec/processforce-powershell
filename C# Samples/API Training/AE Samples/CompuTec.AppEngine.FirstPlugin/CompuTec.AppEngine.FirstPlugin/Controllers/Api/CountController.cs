@@ -15,12 +15,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Controllers.Api
         [HttpGet]
         public int CountSupplierDocuments(string supplier)
         {
-            //string connectionString = ;
-            SqlConnection conn = new SqlConnection("connectionString");
-            conn.Open();
-            SqlCommand comm = new SqlCommand($"SELECT COUNT(*) FROM ORDR WHERE CardName = '{supplier}'", conn);
-            Int32 count = Convert.ToInt32(comm.ExecuteScalar());
-            conn.Close();
+            int count = supplier.Length;
             return count;
 
         }

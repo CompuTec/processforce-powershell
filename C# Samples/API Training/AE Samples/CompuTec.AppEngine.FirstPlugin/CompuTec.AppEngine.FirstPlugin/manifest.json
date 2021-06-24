@@ -30,7 +30,7 @@
           {
             "uniqueId": "Sample_todo",
             "formMode": false,
-            "url": "mytodo",
+            "url": "salesorder",
             "fatherUID": "43543",
             "menuItem": true,
             "menuCaption": "Sample-FP"

@@ -1,16 +1,16 @@
 <core:FragmentDefinition
+  controllerName ="computec.appengine.firstplugin.controller.SalesOrders"
    xmlns="sap.m"
    xmlns:core="sap.ui.core"
    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
    xmlns:u="sap.ui.unified" 
    >
    <Dialog
-        id="AttachmentDialog"
+        id="atd"
       title="Hello {/recipient/name}"
       contentWidth = "50%">
 
       	<Table
-          id="attachmentsTable"
           growing="true"
           growingThreshold="10"
           inset="false"
@@ -20,13 +20,11 @@
         </headerToolbar>
         <columns>
           <Column
-              id="AttachmentColumn"
               width="50%">
             <Text text="Attachment Name" />
           </Column>
            <Column
-              id="DOwnloadAttachmentColumn"
-              width="10%">
+              width="30%">
             <Text text="Download" />
           </Column>
           
@@ -37,7 +35,6 @@
               <Text text = "{path: 'AT>FileName'}">
               </Text>
               <Button
-            id="downloadAttachment"
             icon="sap-icon://download"
             press=".onDownloadInNewTab"
             app:AbsEntry="{path: 'AT>AbsEntry'}"
@@ -47,25 +44,20 @@
         </items>
       </Table>
       <u:FileUploader
-      id="FileUploader"
       fileType="txt"
       placeholder="Upload File"
      width="100%"
       change="onChangeFileUploader">
        </u:FileUploader>
-                <beginButton>
                 <Button
-                id="AddNewButton"
             text = "Add Attachment"
             press=".onAddAttachment"
             >   
                 </Button>
                 <Button
-                id="CloseButton"
                 text="Close"
                 press=".onCloseFragment" />
                 
-              </beginButton>
 
 
    </Dialog>

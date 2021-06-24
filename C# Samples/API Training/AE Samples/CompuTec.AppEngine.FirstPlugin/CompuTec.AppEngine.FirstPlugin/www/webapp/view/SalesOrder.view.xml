@@ -24,6 +24,10 @@ displayBlock="true"
 				width="50%">
 				<Text text="Sales Order" />
 			</Column>
+			<Column
+				width="5%">
+				<Text text="Go to" />
+			</Column>
       <Column
 				>
 				<Text text="Count Documents" />
@@ -39,9 +43,14 @@ displayBlock="true"
 					<StandardListItem
           title="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
           counter="{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int32'}"/>
+		  <ae:Link
+      text=""
+      objectType="fo_Order"
+      objectSubType=""
+      key="{path: 'AE>DocEntry', type: 'sap.ui.model.odata.type.Int32', targetType : 'any'}"></ae:Link>
           <Button
           app:CountName = "{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}" 
-          text="Count Documents"
+          text="Count characters"
           press=".onCountButton"/>
           <Button
           app:CardName = "{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"

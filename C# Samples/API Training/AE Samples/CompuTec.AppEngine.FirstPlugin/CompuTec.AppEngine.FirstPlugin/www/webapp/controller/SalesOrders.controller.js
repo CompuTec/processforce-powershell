@@ -35,59 +35,11 @@ sap.ui.define([
 		},
 
 
-		// onAdd : function (oEvent){
-		// 	var oBinding = this.getBinding();
-		// 	var oDatak = {
-		// 			U_TaskName : "name",
-		// 			description : "description",
-		// 			priority : "priority"
-				
-		// 	};
-		// 	oBinding.create(oDatak);
-		// },
 
 		onCloseFragment: function() {
-            this.byId("AttachmentDialog").close();
+            this.byId("atd").close();
         },
 
-		// onDelete: function (oEvent) {
-        //     oEvent.getSource().getBindingContext("FP").delete("$auto").then(function () {
-        //         MessageToast.show("deleted");
-        //     }.bind(this), function (oError) {
-        //         MessageBox.error(oError.message);
-        //     });
-        // },
-		
-		// onCreate : function () {
-        //     var oList = this.byId("todoList"), 
-        //         oBinding = oList.getBindingContext("items"),
-
-        //         oContext = oBinding.create({
-        //         'Code' : 10,
-		// 		'DocEntry' : 10,
-		// 		'U_TaskName' : 'By Add',
-		// 		'U_Description' : 'by add description',
-		// 		'U_Priority' : 'M'
-        //         });
-
-        //     this._setUIChanges(true);
-
-        //     oList.getItems().some(function (oItem) {
-        //         if (oItem.getBindingContext() === oContext) {
-        //             oItem.focus();
-        //             oItem.setSelected(true);
-        //             return true;
-        //         }
-        //     });
-        // },
-		// _setUIChanges: function (bHasUIChanges) {
-        //     if (bHasUIChanges === undefined) {
-        //         bHasUIChanges = this.getView().getModel().hasPendingChanges();
-        //     }
-
-        //     var oModel = this.getView().getModel("todoView");
-        //     oModel.setProperty("/hasUIChanges", bHasUIChanges);
-        // },
 		getBinding : function () {
 			return this.getTable().getBinding("items");
 		},
@@ -99,9 +51,14 @@ sap.ui.define([
 
 
 		onOpenDialog : function (data){
+			const that = this;
 			var oView = this.getView();
-			
-			if(!this.byId("SalesOrderAttachment")){
+			const fnOpenDialog = function (){
+				
+				that.getView().setModel(new JSONModel(data),"AT");
+				that._taskDialog.open();
+			}
+			if(!this.byId("atd")){
 				Fragment.load({
 					id : oView.getId(),
 					name : "computec.appengine.firstplugin.view.SalesOrderAttachment",
@@ -109,22 +66,19 @@ sap.ui.define([
 				}).then(function (oDialog){
 					
 					oView.addDependent(oDialog);
-					oDialog.setModel(new JSONModel(data),"AT");
-					oDialog.open();
-
+					that._taskDialog = oDialog;
+					fnOpenDialog()
 				})
 
 			}
 			else{
-				this.byId("SalesOrderAttachment").setModel(new JSONModel(data),"AT");
-				this.byId("SalesOrderAttachment").open();
-				
+				fnOpenDialog();
 			}
 		},
 
 		onCloseDialog : function(){
 			
-			this.byId("SalesOrderAttachment").close();
+			this.byId("atd").close();
 		},
 
 		
