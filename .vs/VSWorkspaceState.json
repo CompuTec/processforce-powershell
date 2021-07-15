@@ -1,9 +1,17 @@
 {
   "ExpandedNodes": [
     "",
+    "\\C# Samples",
+    "\\C# Samples\\API Training",
+    "\\C# Samples\\API Training\\API Training",
+    "\\C# Samples\\API Training\\PFUIEventServer",
+    "\\C# Samples\\API Training\\PFUIEventServer\\PFUIEventServerSample",
     "\\PlantMaintenance",
-    "\\PlantMaintenance\\PMSchedule_GenerateScheduledMaintainanceOrders"
+    "\\PlantMaintenance\\PMSchedule_GenerateScheduledMaintainanceOrders",
+    "\\Production",
+    "\\Production\\Manufacturing Order",
+    "\\Production\\Manufacturing Order\\Manufacturing Order"
   ],
-  "SelectedNode": "\\PlantMaintenance\\PMSchedule_GenerateScheduledMaintainanceOrders\\PMSchedule_GenerateScheduledMaintainanceOrders.ps1",
+  "SelectedNode": "\\C# Samples\\API Training\\PFUIEventServer\\PFUIEventServerSample\\PFUIEventServerSample.sln",
   "PreviewInSolutionExplorer": false
 }

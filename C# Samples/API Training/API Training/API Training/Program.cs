@@ -315,9 +315,7 @@ namespace API_Training
             por.PickedItems.U_BnDistNumber = "2012-04-18-3";
             por.PickedItems.U_Quantity = 1;
             por.PickedItems.U_ReqItmLn = por.RequiredItems.U_LineNum;
-            //por.Relations.U_PickItemLineNo = pickedItemsLineNum; // relations are obsolete since 9.2 PL09 version - use U_ReqItmLine instead (as line above)
-            //por.Relations.U_ReqItemLineNo = reqItemLineNUm;
-            //por.Relations.Add();
+         
             #region  IF Bin Allocation on whs enabled
             por.BinAllocations.U_BinAbsEntry = 2;
             por.BinAllocations.U_Quantity = 1;
@@ -327,6 +325,50 @@ namespace API_Training
             por.PickedItems.Add(); 
             #endregion
     
+            por.Update();
+        }
+        public static void UpdateMultipleBatchesPickOrder(int DE)
+        {
+            CompuTec.ProcessForce.API.Documents.PickOrder.IPickOrder por = pfCompany.CreatePFObject(ObjectTypes.PickOrder);
+            por.GetByKey(DE.ToString());
+            por.RequiredItems.SetCurrentLine(0);
+            var reqItemLineNUm = por.RequiredItems.U_LineNum;
+            por.RequiredItems.U_PickedQty = 2;
+            por.PickedItems.SetCurrentLine(0);
+
+
+            #region Foreach Batch to pick
+            var pickedItemsLineNum = por.PickedItems.U_LineNum;
+            por.PickedItems.U_ItemCode = por.RequiredItems.U_ItemCode;
+            por.PickedItems.U_BnDistNumber = "2012-04-18-3";
+            por.PickedItems.U_Quantity = 1;
+            por.PickedItems.U_ReqItmLn = por.RequiredItems.U_LineNum;
+
+            #region  IF Bin Allocation on whs enabled
+            por.BinAllocations.U_BinAbsEntry = 2;
+            por.BinAllocations.U_Quantity = 1;
+            por.BinAllocations.U_SnAndBnLine = pickedItemsLineNum;
+            por.BinAllocations.Add();
+
+            #endregion
+            por.PickedItems.Add();
+
+             pickedItemsLineNum = por.PickedItems.U_LineNum;
+            por.PickedItems.U_ItemCode = por.RequiredItems.U_ItemCode;
+            por.PickedItems.U_BnDistNumber = "2012-04-18-4";
+            por.PickedItems.U_Quantity = 1;
+            por.PickedItems.U_ReqItmLn = por.RequiredItems.U_LineNum;
+
+            #region  IF Bin Allocation on whs enabled
+            por.BinAllocations.U_BinAbsEntry = 2;
+            por.BinAllocations.U_Quantity = 1;
+            por.BinAllocations.U_SnAndBnLine = pickedItemsLineNum;
+            por.BinAllocations.Add();
+
+            #endregion
+            por.PickedItems.Add();
+            #endregion
+
             por.Update();
         }
         public static void CreateProductionGoodsIssue(int docentry)
