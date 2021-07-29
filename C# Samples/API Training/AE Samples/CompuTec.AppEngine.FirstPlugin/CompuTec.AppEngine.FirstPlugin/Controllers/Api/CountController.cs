@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using CompuTec.AppEngine.Base.Infrastructure.Plugins;
 
 namespace CompuTec.AppEngine.FirstPlugin.Controllers.Api
 {
@@ -15,6 +16,11 @@ namespace CompuTec.AppEngine.FirstPlugin.Controllers.Api
         [HttpGet]
         public int CountSupplierDocuments(string supplier)
         {
+            var conf = Container.GetInstance<IPluginConfiguration>();
+
+            var message = conf.Get<string>("Message");
+            Console.WriteLine(message);
+
             int count = supplier.Length;
             return count;
 

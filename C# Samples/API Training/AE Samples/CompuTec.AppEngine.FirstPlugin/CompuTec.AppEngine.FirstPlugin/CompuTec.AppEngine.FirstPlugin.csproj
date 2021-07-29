@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props" Condition="Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props')" />
   <Import Project="..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props" Condition="Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props')" />
   <Import Project="..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.props" Condition="Exists('..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.props')" />
   <Import Project="..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props')" />
@@ -252,6 +253,9 @@
     <Compile Include="Controllers\Api\CountController.cs" />
     <Compile Include="Controllers\Api\ToDoController.generated.cs" />
     <Compile Include="Controllers\OData\ToDoController.generated.cs" />
+    <Compile Include="Jobs\CronJob.cs" />
+    <Compile Include="Jobs\OnAddToDoJob.cs" />
+    <Compile Include="Jobs\OneTimeJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppStart\Registry.cs" />
   </ItemGroup>
@@ -342,6 +346,8 @@
     <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.targets'))" />
     <Error Condition="!Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props'))" />
     <Error Condition="!Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets'))" />
   </Target>
   <Import Project="..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.33\build\CompuTec.ProcessForce.Scheduling.targets" Condition="Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.33\build\CompuTec.ProcessForce.Scheduling.targets')" />
   <Import Project="..\packages\PostSharp.6.3.9\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.6.3.9\build\PostSharp.targets')" />
@@ -359,4 +365,5 @@
   <Import Project="..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets')" />
   <Import Project="..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.targets" Condition="Exists('..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.targets')" />
   <Import Project="..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets" Condition="Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets')" />
+  <Import Project="..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets" Condition="Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets')" />
 </Project>

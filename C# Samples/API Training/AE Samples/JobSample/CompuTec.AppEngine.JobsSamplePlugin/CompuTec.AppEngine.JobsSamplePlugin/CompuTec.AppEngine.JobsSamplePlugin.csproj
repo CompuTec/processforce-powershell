@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props" Condition="Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props')" />
+  <Import Project="..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props" Condition="Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props')" />
   <Import Project="..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props" Condition="Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props')" />
-  <Import Project="..\packages\CompuTec.ProcessForce.API.2.10.10.7\build\CompuTec.ProcessForce.API.props" Condition="Exists('..\packages\CompuTec.ProcessForce.API.2.10.10.7\build\CompuTec.ProcessForce.API.props')" />
+  <Import Project="..\packages\CompuTec.ProcessForce.API.2.10.10.67\build\CompuTec.ProcessForce.API.props" Condition="Exists('..\packages\CompuTec.ProcessForce.API.2.10.10.67\build\CompuTec.ProcessForce.API.props')" />
   <Import Project="..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.props" Condition="Exists('..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.props')" />
   <Import Project="..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props')" />
-  <Import Project="..\packages\CompuTec.Core.2.10.10.7\build\CompuTec.Core.props" Condition="Exists('..\packages\CompuTec.Core.2.10.10.7\build\CompuTec.Core.props')" />
+  <Import Project="..\packages\CompuTec.Core.2.10.10.67\build\CompuTec.Core.props" Condition="Exists('..\packages\CompuTec.Core.2.10.10.67\build\CompuTec.Core.props')" />
   <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.props" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.props')" />
   <Import Project="..\packages\PostSharp.6.3.9\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.6.3.9\build\PostSharp.props')" />
-  <Import Project="..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.7\build\CompuTec.ProcessForce.Scheduling.props" Condition="Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.7\build\CompuTec.ProcessForce.Scheduling.props')" />
+  <Import Project="..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.67\build\CompuTec.ProcessForce.Scheduling.props" Condition="Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.67\build\CompuTec.ProcessForce.Scheduling.props')" />
+  <Import Project="..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props" Condition="Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props')" />
   <Import Project="..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.props" Condition="Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -142,6 +143,18 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CompuTec.LabelPrinting.WebApiClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ea7f5d59e1cc26d2, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuTec.LabelPrinting.1.0.0\lib\net47\CompuTec.LabelPrinting.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="CompuTec.LabelPrinting.WebApiData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0e63b9197a80ea29, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuTec.LabelPrinting.1.0.0\lib\net47\CompuTec.LabelPrinting.WebApiData.dll</HintPath>
+    </Reference>
+    <Reference Include="CompuTec.License.Data, Version=5.7.0.0, Culture=neutral, PublicKeyToken=9c1de76b77434c3d, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuTec.License.5.7.1.8\lib\net47\CompuTec.License.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="CompuTec.LicenseServer.Client.API, Version=5.7.0.0, Culture=neutral, PublicKeyToken=10819f1f68b2c2c9, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuTec.License.5.7.1.8\lib\net47\CompuTec.LicenseServer.Client.API.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.0.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
@@ -236,6 +249,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Translations\messages.xml" />
     <None Include="app.config" />
+    <Content Include="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="CompuTec.SAP.Config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -244,9 +260,6 @@
     </Content>
     <None Include="CompuTecSAP.config" />
     <None Include="packages.config" />
-    <Content Include="manifest.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="www\eslintrc" />
     <None Include="www\gitignore" />
     <None Include="www\package.json" />
@@ -266,33 +279,36 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.props'))" />
     <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.7\build\CompuTec.ProcessForce.Scheduling.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.7\build\CompuTec.ProcessForce.Scheduling.props'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.7\build\CompuTec.ProcessForce.Scheduling.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.7\build\CompuTec.ProcessForce.Scheduling.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.67\build\CompuTec.ProcessForce.Scheduling.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.67\build\CompuTec.ProcessForce.Scheduling.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.67\build\CompuTec.ProcessForce.Scheduling.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.67\build\CompuTec.ProcessForce.Scheduling.targets'))" />
     <Error Condition="!Exists('..\packages\PostSharp.6.3.9\build\PostSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.3.9\build\PostSharp.props'))" />
     <Error Condition="!Exists('..\packages\PostSharp.6.3.9\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.3.9\build\PostSharp.targets'))" />
     <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.props'))" />
     <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.targets'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.Core.2.10.10.7\build\CompuTec.Core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core.2.10.10.7\build\CompuTec.Core.props'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.Core.2.10.10.7\build\CompuTec.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core.2.10.10.7\build\CompuTec.Core.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core.2.10.10.67\build\CompuTec.Core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core.2.10.10.67\build\CompuTec.Core.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core.2.10.10.67\build\CompuTec.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core.2.10.10.67\build\CompuTec.Core.targets'))" />
     <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props'))" />
     <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets'))" />
     <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.props'))" />
     <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.targets'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.API.2.10.10.7\build\CompuTec.ProcessForce.API.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.API.2.10.10.7\build\CompuTec.ProcessForce.API.props'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.API.2.10.10.7\build\CompuTec.ProcessForce.API.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.API.2.10.10.7\build\CompuTec.ProcessForce.API.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.API.2.10.10.67\build\CompuTec.ProcessForce.API.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.API.2.10.10.67\build\CompuTec.ProcessForce.API.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.API.2.10.10.67\build\CompuTec.ProcessForce.API.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.API.2.10.10.67\build\CompuTec.ProcessForce.API.targets'))" />
     <Error Condition="!Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props'))" />
     <Error Condition="!Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.props'))" />
-    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets'))" />
+    <Error Condition="!Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props'))" />
+    <Error Condition="!Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets'))" />
   </Target>
   <Import Project="..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets" Condition="Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets')" />
-  <Import Project="..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.7\build\CompuTec.ProcessForce.Scheduling.targets" Condition="Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.7\build\CompuTec.ProcessForce.Scheduling.targets')" />
+  <Import Project="..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets" Condition="Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets')" />
+  <Import Project="..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.67\build\CompuTec.ProcessForce.Scheduling.targets" Condition="Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.10.67\build\CompuTec.ProcessForce.Scheduling.targets')" />
   <Import Project="..\packages\PostSharp.6.3.9\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.6.3.9\build\PostSharp.targets')" />
   <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.targets" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.targets')" />
-  <Import Project="..\packages\CompuTec.Core.2.10.10.7\build\CompuTec.Core.targets" Condition="Exists('..\packages\CompuTec.Core.2.10.10.7\build\CompuTec.Core.targets')" />
+  <Import Project="..\packages\CompuTec.Core.2.10.10.67\build\CompuTec.Core.targets" Condition="Exists('..\packages\CompuTec.Core.2.10.10.67\build\CompuTec.Core.targets')" />
   <Import Project="..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets')" />
   <Import Project="..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.targets" Condition="Exists('..\packages\CompuTec.AppEngine.Adapter.2.0.1.4\build\CompuTec.AppEngine.Adapter.targets')" />
-  <Import Project="..\packages\CompuTec.ProcessForce.API.2.10.10.7\build\CompuTec.ProcessForce.API.targets" Condition="Exists('..\packages\CompuTec.ProcessForce.API.2.10.10.7\build\CompuTec.ProcessForce.API.targets')" />
+  <Import Project="..\packages\CompuTec.ProcessForce.API.2.10.10.67\build\CompuTec.ProcessForce.API.targets" Condition="Exists('..\packages\CompuTec.ProcessForce.API.2.10.10.67\build\CompuTec.ProcessForce.API.targets')" />
   <Import Project="..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets" Condition="Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets')" />
-  <Import Project="..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets" Condition="Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets')" />
+  <Import Project="..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets" Condition="Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets')" />
 </Project>
