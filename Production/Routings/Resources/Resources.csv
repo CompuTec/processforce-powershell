@@ -1,3 +1,3 @@
-﻿ResourceType;ResourceCode;ResourceName;ResourceGroup;QueTime;QueTimeUoM;SetupTime;SetupTimeUoM;RunTime;RunTimeUoM;StockTime;StockTimeUoM;ResourceNumber;HasCycle;CycleCapacity;VendorCode;ItemCode;ResourceAccountingCode;Project;Dimension1;Dimension2;Dimension3;Dimension4;Dimension5;IssueWhsCode;IssueBinAbs;ReceiptWhsCode;ReceiptBinAbs;PlanningWarningTable;PlanningWarningField;PlanningWarningSQLEnabled;PlanningWarningSqlQuery;Infinite
+﻿ResourceType;ResourceCode;ResourceName;ResourceGroup;QueTime;QueTimeUoM;SetupTime;SetupTimeUoM;RunTime;RunTimeUoM;StockTime;StockTimeUoM;ResourceNumber;HasCycle;CycleCapacity;VendorCode;ItemCode;ResourceAccountingCode;Project;Dimension1;Dimension2;Dimension3;Dimension4;Dimension5;IssueWhsCode;IssueBinAbs;ReceiptWhsCode;ReceiptBinAbs;PlanningWarningTable;PlanningWarningField;PlanningWarningSQLEnabled;PlanningWarningSqlQuery;Infinite;IssueType
 4;01;Name 01;01;30;2;20;2;20;9;10;2;2;2;0;00001;Item;;;;;;;;01;;Test;1;CT_PF_OMOR;U_ItemCode;N;;Y;
-1;02;Name 02;02;30;2;20;2;100;1;10;2;2;1;50;;;01;P1;;D1;;;;;;;;
+1;02;Name 02;02;30;2;20;2;100;1;10;2;2;1;50;;;01;P1;;D1;;;;;;;;;;;;;
