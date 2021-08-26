@@ -324,10 +324,17 @@ try {
 			if (([string]$csvItem.Infinite).ToUpper() -eq 'Y') {
 				$res.U_Infinite = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes;
 			}
-			else {
+			elseif (([string]$csvItem.Infinite).ToUpper() -eq 'N') {
 				$res.U_Infinite = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No;
 			}
-    
+
+			if ($csvItem.IssueType -eq 'B') {
+				$res.U_IssueMthd = [CompuTec.ProcessForce.API.Enumerators.IssueType]::BackFlush;
+			}
+			elseif ($csvItem.IssueType -eq 'M') {
+				$res.U_IssueMthd = [CompuTec.ProcessForce.API.Enumerators.IssueType]::Manual;
+			}
+
 			#$res.UDFItems.Item("U_UDF1").Value = $csvItem.UDF1 ## how to import UDFs
 	
 			if ($res.U_RscType -eq 'Subcontractor') {
