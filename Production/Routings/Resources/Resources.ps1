@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import Resources
 ########################################################################
-$SCRIPT_VERSION = "3.2"
+$SCRIPT_VERSION = "3.3"
 # Last tested PF version: ProcessForce 10 (10.0.4) (64-bit)
 # Description:
 #      Import Resources. Script add new or will update existing Resources.
@@ -321,6 +321,12 @@ try {
 			$res.U_RWhsCode = $csvItem.ReceiptWhsCode
 			$res.U_RBinAbs = $csvItem.ReceiptBinAbs
 
+			if (([string]$csvItem.Infinite).ToUpper() -eq 'Y') {
+				$res.U_Infinite = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::Yes;
+			}
+			else {
+				$res.U_Infinite = [CompuTec.ProcessForce.API.Enumerators.YesNoType]::No;
+			}
     
 			#$res.UDFItems.Item("U_UDF1").Value = $csvItem.UDF1 ## how to import UDFs
 	
@@ -363,14 +369,14 @@ try {
 
 			#region LINKED TOOLS
 			[array]$resTools = $resourcesToolsDict[$csvItem.ResourceCode]
-			if($resTools.count -gt 0) {
+			if ($resTools.count -gt 0) {
 				#Deleting all existing tools
 				$count = $res.LinkedTools.Count;
-				for ($i = $count-1; $i -ge 0; $i--) {
+				for ($i = $count - 1; $i -ge 0; $i--) {
 					$dummy = $res.LinkedTools.DelRowAtPos($i);
 				}
 
-				foreach($tool in $resTools){
+				foreach ($tool in $resTools) {
 					$res.LinkedTools.U_LinkToolCode = $tool.ResourceLinkedToolCode;
 					$dummy = $res.LinkedTools.Add();
 				}
