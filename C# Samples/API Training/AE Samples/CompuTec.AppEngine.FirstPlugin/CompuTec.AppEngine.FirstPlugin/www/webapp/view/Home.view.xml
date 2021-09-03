@@ -1,27 +1,27 @@
 <mvc:View
-    controllerName="computec.appengine.firstplugin.controller.Home"
-    xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns:l="sap.ui.layout">
-  <Panel>
-    <l:HorizontalLayout allowWrapping="true">
-      <GenericTile
-          class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-          header="SalesOrder"
-          press="onSalesOrderPress">
-        <TileContent>
-          <ImageContent src="sap-icon://activity-2" />
-        </TileContent>
-      </GenericTile>
-     <GenericTile
-          class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-          header="toDo"
-          press="onToDoPress">
-        <TileContent>
-          <ImageContent src="sap-icon://activity-2" />
-        </TileContent>
-      </GenericTile>
-    </l:HorizontalLayout>
-  </Panel>
-  
+		controllerName="computec.appengine.firstplugin.controller.Home"
+		xmlns="sap.m"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:l="sap.ui.layout">
+	<Panel>
+		<l:HorizontalLayout allowWrapping="true">
+			<GenericTile
+					class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+					header="toDo"
+					press="onToDoPress">
+				<TileContent>
+					<ImageContent src="sap-icon://activity-2"/>
+				</TileContent>
+			</GenericTile>
+
+			<GenericTile
+					class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+					header="SalesOrder"
+					press="onSalesOrderPress">
+				<TileContent>
+					<ImageContent src="sap-icon://activity-2"/>
+				</TileContent>
+			</GenericTile>
+		</l:HorizontalLayout>
+	</Panel>
 </mvc:View>
