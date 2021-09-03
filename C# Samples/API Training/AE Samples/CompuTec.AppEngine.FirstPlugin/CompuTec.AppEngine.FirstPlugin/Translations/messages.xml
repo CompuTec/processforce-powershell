@@ -96,4 +96,20 @@
     <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Priorytet</translation>
   </Message>
 
+  <Message id="salesOrderTableTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Sales Orders</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Sales Orders</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zlecenia sprzedaży</translation>
+  </Message>
+  <Message id="salesOrderDocumentNumberColumnLabel" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Document Number</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Document Number</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Number dokumentu</translation>
+  </Message>
+  <Message id="salesOrderBusinessPartnerColumnLabel" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Business Partner</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Business Partner</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Business Partner</translation>
+  </Message>
+
 </messageTranslations>

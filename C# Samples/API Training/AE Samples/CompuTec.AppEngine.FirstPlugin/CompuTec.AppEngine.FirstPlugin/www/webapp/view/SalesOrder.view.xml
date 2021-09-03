@@ -1,12 +1,14 @@
 <mvc:View
 		xmlns:mvc="sap.ui.core.mvc"
+  		xmlns:ae="computec.appengine.ui.controls"
 		xmlns="sap.m">
 	<Table
 			id="idProductsTable"
+			inset="false"
 			items="{AE>/CustomViews/Views.Custom(Id='FirstPlugin%3ASalesOrderList')}">
 		<headerToolbar>
 			<Toolbar>
-				<Title text="Sales Orders List"/>
+				<Title text="{i18n>salesOrderTableTitle}"/>
 				<ToolbarSpacer/>
 				<SearchField
 						width="50%"
@@ -15,10 +17,10 @@
 		</headerToolbar>
 		<columns>
 			<Column>
-				<Text text="Document Number"/>
+				<Text text="{i18n>salesOrderDocumentNumberColumnLabel}"/>
 			</Column>
 			<Column>
-				<Text text="Busines Partner"/>
+				<Text text="{i18n>salesOrderBusinessPartnerColumnLabel}"/>
 			</Column>
 			<Column width="5%">
 				<Text text="Go to"/>

@@ -7,8 +7,9 @@
 		<l:HorizontalLayout allowWrapping="true">
 			<GenericTile
 					class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-					header="toDo"
-					press="onToDoPress">
+					header="{i18n>todoTileHeader}"
+					subheader="{i18n>todoTileSubheader}"
+					press="onTodoListPress">
 				<TileContent>
 					<ImageContent src="sap-icon://activity-2"/>
 				</TileContent>
