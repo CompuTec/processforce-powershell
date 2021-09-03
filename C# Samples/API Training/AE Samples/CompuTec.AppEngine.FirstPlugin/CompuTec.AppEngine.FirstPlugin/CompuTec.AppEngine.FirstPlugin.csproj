@@ -5,6 +5,7 @@
     <OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
     <TransformOutOfDateOnly>false</TransformOutOfDateOnly>
   </PropertyGroup>-->
+  <Import Project="..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.1.4\build\CompuTec.AppEngine.PluginCodeGenerator.props" Condition="Exists('..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.1.4\build\CompuTec.AppEngine.PluginCodeGenerator.props')" />
   <Import Project="..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props" Condition="Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props')" />
   <Import Project="..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props" Condition="Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props')" />
   <Import Project="..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.props" Condition="Exists('..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.props')" />
@@ -179,9 +180,6 @@
       <HintPath>..\packages\Microsoft.Spatial.7.2.0\lib\portable-net45+win8+wpa81\Microsoft.Spatial.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -213,14 +211,8 @@
       <HintPath>..\packages\System.Linq.Expressions.4.1.0\lib\net463\System.Linq.Expressions.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Numerics" />
@@ -350,6 +342,8 @@
     <Error Condition="!Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets'))" />
     <Error Condition="!Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props'))" />
     <Error Condition="!Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.1.4\build\CompuTec.AppEngine.PluginCodeGenerator.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.1.4\build\CompuTec.AppEngine.PluginCodeGenerator.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.1.4\build\CompuTec.AppEngine.PluginCodeGenerator.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.1.4\build\CompuTec.AppEngine.PluginCodeGenerator.targets'))" />
   </Target>
   <Import Project="..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets" Condition="Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets')" />
   <Import Project="..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets" Condition="Exists('..\packages\CompuTec.AppEngine.EventBus.2.0.1.4\build\CompuTec.AppEngine.EventBus.targets')" />
@@ -362,4 +356,5 @@
   <Import Project="..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.targets" Condition="Exists('..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.targets')" />
   <Import Project="..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets" Condition="Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets')" />
   <Import Project="..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets" Condition="Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets')" />
+  <Import Project="..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.1.4\build\CompuTec.AppEngine.PluginCodeGenerator.targets" Condition="Exists('..\packages\CompuTec.AppEngine.PluginCodeGenerator.2.0.1.4\build\CompuTec.AppEngine.PluginCodeGenerator.targets')" />
 </Project>

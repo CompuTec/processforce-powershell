@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using CompuTec.AppEngine.Base.Infrastructure.Controllers;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.OData.Builder;
 
 namespace CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo
 {
