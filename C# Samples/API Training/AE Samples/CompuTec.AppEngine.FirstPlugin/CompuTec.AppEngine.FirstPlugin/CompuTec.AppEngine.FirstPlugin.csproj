@@ -300,7 +300,7 @@
       <Name>CompuTec.AppEngine.FirstPlugin.Serializer</Name>
     </ProjectReference>
     <ProjectReference Include="..\CompuTec.AppEngine.FirstPlugin.Setup\CompuTec.AppEngine.FirstPlugin.Setup.csproj">
-      <Project>{c630479d-86cb-4b34-a0de-b3e6d9f891a3}</Project>
+      <Project>{817e2817-73f2-41f9-aba9-94107bfc92fe}</Project>
       <Name>CompuTec.AppEngine.FirstPlugin.Setup</Name>
     </ProjectReference>
   </ItemGroup>

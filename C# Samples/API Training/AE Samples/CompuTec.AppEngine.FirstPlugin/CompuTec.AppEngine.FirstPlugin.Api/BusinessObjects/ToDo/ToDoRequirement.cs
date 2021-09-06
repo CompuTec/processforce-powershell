@@ -1,9 +1,6 @@
 ﻿using CompuTec.Core2.Beans;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections;
 
 namespace CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo

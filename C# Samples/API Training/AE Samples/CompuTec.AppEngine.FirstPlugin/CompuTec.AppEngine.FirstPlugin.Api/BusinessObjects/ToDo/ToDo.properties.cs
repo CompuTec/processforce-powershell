@@ -1,7 +1,5 @@
 ﻿using CompuTec.AppEngine.FirstPlugin.API.Enums;
 using CompuTec.Core2.Beans;
-using CompuTec.Core2.DI.Attributes;
-using CompuTec.Core2.Enumerators;
 using System;
 
 namespace CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo

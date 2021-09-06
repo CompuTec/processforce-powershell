@@ -1,45 +1,40 @@
 ﻿using CompuTec.BaseLayer.Connection;
 using CompuTec.BaseLayer.DI;
-using CompuTec.Core2.Beans.DataLayer.UDOXmlStructure;
 using CompuTec.Core2.DI.Setup.Attributes;
 using CompuTec.Core2.DI.Setup.UDO.Model;
 using System;
 using System.Collections.Generic;
 
-
-namespace CompuTec.AppEngine.FirstPlugin.Setup.DBInstall.Tables.ToDoObjectDefinition
+namespace CompuTec.AppEngine.FirstPlugin.Setup.Tables.ToDo
 {
 	[TableInstall]
 	public class ToDoTable : UDOManager
 	{
-		public const String OBJECT_CODE = "Sample_ToDo";
-		public const String TABLE_NAME = "CT_TST_OTDO";
-		public const String TABLE_DESCRIPTION = "SampleTable";
-		public const String ARCHIVE_TABLE_NAME = "CT_TST_ATDO";
+		public const String OBJECT_CODE = "SAMPLE_TO_DO";
+		public const String TABLE_NAME = "SAMPLE_OTDO";
+		public const String TABLE_DESCRIPTION = "Sample To Do";
+		public const String ARCHIVE_TABLE_NAME = "SAMPLE_ATDO";
 
 		public ToDoTable(IDIConnection connection) : base(connection) { }
 
-
-        protected override IUDOTable CreateUDOTable()
+		protected override IUDOTable CreateUDOTable()
 		{
 			List<IUDOField> fields = this.CreateFieldsForHeaderTable();
 			List<IUDOFindColumn> findColumns = this.CreateFindColumnsList();
-
-			IUDOTable UdoTable = new UDOTable(fields, findColumns, TABLE_NAME, TABLE_DESCRIPTION, BoUTBTableType.bott_MasterData, this.CreateKeys());
-
-			UdoTable.RegisteredUDOName = TABLE_NAME;
-			UdoTable.RegisteredUDOCode = OBJECT_CODE;
-
-			UdoTable.CanArchive = BoYesNoEnum.tYES;
-			UdoTable.CanCancel = BoYesNoEnum.tNO;
-			UdoTable.CanClose = BoYesNoEnum.tNO;
-			UdoTable.CanCreateDefaultForm = BoYesNoEnum.tNO;
-			UdoTable.CanDelete = BoYesNoEnum.tYES;
-			UdoTable.CanFind = BoYesNoEnum.tYES;
-			UdoTable.CanLog = BoYesNoEnum.tYES;
-			UdoTable.CanYearTransfer = BoYesNoEnum.tNO;
-			UdoTable.ArchiveTableName = ARCHIVE_TABLE_NAME;
-
+			var UdoTable = new UDOTable(fields, findColumns, TABLE_NAME, TABLE_DESCRIPTION, BoUTBTableType.bott_MasterData, this.CreateKeys())
+			{
+				RegisteredUDOName = TABLE_NAME,
+				RegisteredUDOCode = OBJECT_CODE,
+				CanArchive = BoYesNoEnum.tYES,
+				CanCancel = BoYesNoEnum.tNO,
+				CanClose = BoYesNoEnum.tYES,
+				CanCreateDefaultForm = BoYesNoEnum.tYES,
+				CanDelete = BoYesNoEnum.tYES,
+				CanFind = BoYesNoEnum.tYES,
+				CanLog = BoYesNoEnum.tYES,
+				CanYearTransfer = BoYesNoEnum.tYES,
+				ArchiveTableName = ARCHIVE_TABLE_NAME
+			};
 			return UdoTable;
 		}
 

@@ -1,20 +1,17 @@
 ﻿using CompuTec.AppEngine.DataAnnotations;
 using CompuTec.AppEngine.FirstPlugin.API.Enums;
 using CompuTec.Core2.Beans;
-using CompuTec.Core2.Enumerators;
 using System;
 using System.ComponentModel;
 
 namespace CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo
 {
-
-
 	/// <summary>
-	/// public interface that is exposed to 3rd party application - can be used in powershell import etc
+	/// Public interface that is exposed to 3rd party application - can be used in powershell import etc
 	/// 
 	/// AppEngine Annonations are used to descripte REST and OData Modes and Serializers used in Plugin controlers
 	/// </summary>
-	[AppEngineUDOBean(Ignore = false, ObjectType = "Sample_ToDo", TableName = "@CT_TST_OTDO")]
+	[AppEngineUDOBean(Ignore = false, ObjectType = "SAMPLE_TO_DO", TableName = "@SAMPLE_OTDO")]
 	public interface IToDo : IUDOBean
 	{
 		[AppEngineProperty(IsMasterKey = true)]
@@ -27,6 +24,5 @@ namespace CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo
 		[DefaultValue(ToDoPriority.Medium)]
 		ToDoPriority U_Priority { get; set; }
 		IToDoRequirement Requirements { get; set; }
-
 	}
 }

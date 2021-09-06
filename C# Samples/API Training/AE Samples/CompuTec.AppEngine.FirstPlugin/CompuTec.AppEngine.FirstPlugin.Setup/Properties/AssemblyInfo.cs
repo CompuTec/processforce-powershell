@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CompuTec.AppEngine.First")]
+[assembly: AssemblyTitle("CompuTec.AppEngine.FirstPlugin.Setup")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CompuTec.AppEngine.First")]
+[assembly: AssemblyProduct("CompuTec.AppEngine.FirstPlugin.Setup")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c630479d-86cb-4b34-a0de-b3e6d9f891a3")]
+[assembly: Guid("817e2817-73f2-41f9-aba9-94107bfc92fe")]
 
 // Version information for an assembly consists of the following four values:
 //

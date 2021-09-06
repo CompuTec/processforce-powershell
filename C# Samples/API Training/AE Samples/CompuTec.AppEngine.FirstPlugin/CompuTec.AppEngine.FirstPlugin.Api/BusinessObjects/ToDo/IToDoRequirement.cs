@@ -1,6 +1,5 @@
 ﻿using CompuTec.AppEngine.DataAnnotations;
 using CompuTec.Core2.Beans;
-using CompuTec.Core2.Enumerators;
 using System;
 using System.Collections.Generic;
 
