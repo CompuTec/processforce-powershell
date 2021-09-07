@@ -11,9 +11,9 @@ namespace CompuTec.AppEngine.FirstPlugin.Controllers.Api
 {
     public partial class ToDoController : AppEngineCore2Controller<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDo, CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo.IToDo, string>
     {
-        protected override string TableName => "@CT_TST_OTDO";
+        protected override string TableName => "@SAMPLE_OTDO";
         protected override string KeyName => "Code";
-        protected override string ObjectType => "Sample_ToDo";
+        protected override string ObjectType => "SAMPLE_TO_DO";
         protected override eUDOVersion UDOVersion => eUDOVersion.UDO_20;
     }
 }

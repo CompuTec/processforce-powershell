@@ -1,6 +1,7 @@
 <mvc:View
 		xmlns:mvc="sap.ui.core.mvc"
   		xmlns:ae="computec.appengine.ui.controls"
+		  xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 		xmlns="sap.m">
 	<Table
 			id="idProductsTable"

@@ -278,9 +278,9 @@
       <LastGenOutput>RunCodeGenerator.txt</LastGenOutput>
     </Content>
     <Content Include="RunCodeGenerator.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>RunCodeGenerator.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Content>
     <Content Include="www\webapp\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

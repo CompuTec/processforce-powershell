@@ -29,14 +29,13 @@ namespace CompuTec.AppEngine.FirstPlugin.API {
 		/// <param name="Token"></param>
 		/// <param name="ObjectType"></param>
 		/// <returns>returns null if this library does not implement this object 
-		/// returns new instance of object for specidied type
+		/// returns new instance of object for specified type
 		/// </returns>
         public override dynamic CreateObject(string Token, string ObjectType)
 		{
 		
 			if (ObjectType.Equals(BusinessObjects.BusinessObjects.ToDoObjectCode))
 			{
-
 				IToDo x = CoreManager.GetUDO<ToDo>(Token) as IToDo;
 				return x;
 			}

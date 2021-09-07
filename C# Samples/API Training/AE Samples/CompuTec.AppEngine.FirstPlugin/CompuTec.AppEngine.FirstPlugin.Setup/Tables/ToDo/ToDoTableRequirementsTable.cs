@@ -35,12 +35,12 @@ namespace CompuTec.AppEngine.FirstPlugin.Setup.Tables.ToDo
 			var fields = new List<IUDOField>();
 
 			//adding task name column
-			var ItemName = new UDOTableField();
-			ItemName.SetName("ItemName");
-			ItemName.SetDescription("Item Name");
-			ItemName.SetType(BoFieldTypes.db_Alpha);
-			ItemName.SetEditSize(100);
-			fields.Add(ItemName);
+			var Name = new UDOTableField();
+			Name.SetName("Name");
+			Name.SetDescription("Name");
+			Name.SetType(BoFieldTypes.db_Alpha);
+			Name.SetEditSize(100);
+			fields.Add(Name);
 
 			//description column
 			var Quantity = new UDOTableField();
