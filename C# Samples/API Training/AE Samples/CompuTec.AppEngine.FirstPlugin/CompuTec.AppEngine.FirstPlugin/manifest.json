@@ -28,12 +28,12 @@
         "type": "User",
         "sapForms": [
           {
-            "uniqueId": "Sample_todo",
+            "uniqueId": "firstplugin_salesorder",
             "formMode": false,
             "url": "salesorder",
-            "fatherUID": "43543",
+            "fatherUID": "2048",
             "menuItem": true,
-            "menuCaption": "Sample-FP"
+            "menuCaption": "FP Sales Orders"
           }
         ]
       }
