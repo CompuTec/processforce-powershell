@@ -1,7 +1,7 @@
 <mvc:View
 		xmlns:mvc="sap.ui.core.mvc"
-  		xmlns:ae="computec.appengine.ui.controls"
-		  xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+		xmlns:ae="computec.appengine.ui.controls"
+		xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 		xmlns="sap.m">
 	<Table
 			id="idProductsTable"
@@ -23,9 +23,6 @@
 			<Column>
 				<Text text="{i18n>salesOrderBusinessPartnerColumnLabel}"/>
 			</Column>
-			<Column width="5%">
-				<Text text="Go to"/>
-			</Column>
 			<Column>
 				<Text text="Count Documents"/>
 			</Column>
@@ -36,17 +33,21 @@
 		<items>
 			<ColumnListItem>
 				<cells>
-					<ObjectIdentifier
-							title="{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int32'}"
-							text="{path: 'AE>DocEntry', type: 'sap.ui.model.odata.type.Int32'}"/>
-					<ObjectIdentifier
-							title="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
-							text="{path: 'AE>CardCode', type: 'sap.ui.model.odata.type.String'}"/>
 					<ae:Link
-							text=""
+							text="{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int32'} ({path: 'AE>DocEntry', type: 'sap.ui.model.odata.type.Int32'})"
 							objectType="fo_Order"
 							objectSubType=""
-							key="{path: 'AE>DocEntry', type: 'sap.ui.model.odata.type.Int32', targetType : 'any'}"></ae:Link>
+							key="{path: 'AE>DocEntry', type: 'sap.ui.model.odata.type.Int32'}"/>
+					<HBox>
+						<ae:Link
+								text=""
+								objectType="fo_BusinessPartner"
+								objectSubType=""
+								key="{path: 'AE>CardCode', type: 'sap.ui.model.odata.type.String'}"/>
+						<ObjectIdentifier
+								title="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
+								text="{path: 'AE>CardCode', type: 'sap.ui.model.odata.type.String'}"/>
+					</HBox>
 					<Button
 							app:CountName="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
 							text="Count characters"
