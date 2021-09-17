@@ -5,7 +5,12 @@
 		"noEmit": true,
 		"checkJs": true,
 		"allowJs": true,
-		"types": ["@sapui5/ts-types"]
-		
-	}
-  }
+		"types": [
+			"@sapui5/ts-types"
+		]
+	},
+	"include": [
+		"./webapp/**/*",
+		"C:\\Projects\\AEEcoSystem\\AE\\Source\\CompuTec.AppEngine\\www\\libs\\computec\\appengine\\typings\\appengine.d.ts"
+	]
+}

@@ -111,5 +111,10 @@
     <translation lang="ln_English" Date="2011-08-09T15:55:59">Business Partner</translation>
     <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Business Partner</translation>
   </Message>
+  <Message id="salesOrderAttachmentsColumnLabel" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Attachments</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Attachments</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Załączniki</translation>
+  </Message>
 
 </messageTranslations>

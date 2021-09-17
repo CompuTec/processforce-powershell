@@ -2,7 +2,7 @@
   "Id": "SalesOrderList",
   "Description": "Sales Order List",
   "Source": {
-    "Hana": "SELECT \"DocEntry\", \"DocNum\", \"CardCode\", \"CardName\"  FROM ORDR",
-    "MsSql": "SELECT DocEntry, DocNum, CardCode, CardName  FROM ORDR"
+    "Hana": "SELECT SO.\"DocEntry\", SO.\"DocNum\", SO.\"CardCode\", SO.\"CardName\", SO.\"AtcEntry\", Count(AT.\"AbsEntry\") AS \"NumberOfAttachments\" FROM ORDR SO LEFT OUTER JOIN ATC1 AT ON AT.\"AbsEntry\" = SO.\"AtcEntry\" GROUP BY SO.\"DocEntry\", SO.\"DocNum\", SO.\"CardCode\", SO.\"CardName\", SO.\"AtcEntry\"",
+    "MsSql": "SELECT SO.\"DocEntry\", SO.\"DocNum\", SO.\"CardCode\", SO.\"CardName\", SO.\"AtcEntry\", Count(AT.\"AbsEntry\") AS \"NumberOfAttachments\" FROM ORDR SO LEFT OUTER JOIN ATC1 AT ON AT.\"AbsEntry\" = SO.\"AtcEntry\" GROUP BY SO.\"DocEntry\", SO.\"DocNum\", SO.\"CardCode\", SO.\"CardName\", SO.\"AtcEntry\""
   }
 }

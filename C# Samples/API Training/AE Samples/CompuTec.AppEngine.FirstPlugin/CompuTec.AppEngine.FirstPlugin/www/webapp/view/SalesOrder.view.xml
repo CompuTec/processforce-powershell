@@ -1,19 +1,15 @@
 <mvc:View
+		controllerName="computec.appengine.firstplugin.controller.SalesOrder"
 		xmlns:mvc="sap.ui.core.mvc"
 		xmlns:ae="computec.appengine.ui.controls"
 		xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 		xmlns="sap.m">
 	<Table
-			id="idProductsTable"
-			inset="false"
+			inset="true"
 			items="{AE>/CustomViews/Views.Custom(Id='FirstPlugin%3ASalesOrderList')}">
 		<headerToolbar>
 			<Toolbar>
 				<Title text="{i18n>salesOrderTableTitle}"/>
-				<ToolbarSpacer/>
-				<SearchField
-						width="50%"
-						search=".onFilter"/>
 			</Toolbar>
 		</headerToolbar>
 		<columns>
@@ -24,10 +20,7 @@
 				<Text text="{i18n>salesOrderBusinessPartnerColumnLabel}"/>
 			</Column>
 			<Column>
-				<Text text="Count Documents"/>
-			</Column>
-			<Column hAlign="End">
-				<Text text="Go to attachments"/>
+				<Text text="{i18n>salesOrderAttachmentsColumnLabel}"/>
 			</Column>
 		</columns>
 		<items>
@@ -48,15 +41,17 @@
 								title="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
 								text="{path: 'AE>CardCode', type: 'sap.ui.model.odata.type.String'}"/>
 					</HBox>
-					<Button
-							app:CountName="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
-							text="Count characters"
-							press=".onCountButton"/>
-					<Button
-							app:CardName="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
-							app:DocNum="{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int32'}"
-							text="Attachments"
-							press=".onParamAttachmentButton"></Button>
+					<GenericTag
+							app:AtcEntry="{path: 'AE>AtcEntry', type: 'sap.ui.model.odata.type.Int32'}"
+							design="StatusIconHidden"
+							visible="{= %{path: 'AE>NumberOfAttachments', type: 'sap.ui.model.odata.type.Int32'} &gt; 0}"
+							press=".onAttachmentsButtonPress">
+						<ObjectNumber
+								state="Information"
+								emphasized="false"
+								number="{path: 'AE>NumberOfAttachments', type: 'sap.ui.model.odata.type.Int32'}"
+								unit=""/>
+					</GenericTag>
 				</cells>
 			</ColumnListItem>
 		</items>
