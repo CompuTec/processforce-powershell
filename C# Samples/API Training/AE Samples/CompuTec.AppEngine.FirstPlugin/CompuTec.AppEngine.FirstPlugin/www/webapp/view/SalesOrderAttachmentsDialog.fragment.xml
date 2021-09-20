@@ -17,7 +17,7 @@
 				growing="true"
 				growingThreshold="10"
 				inset="false"
-				items="{AT>/}"
+				items="{AT>/Attachmnets}"
 				fixedLayout="false">
 			<columns>
 				<Column>

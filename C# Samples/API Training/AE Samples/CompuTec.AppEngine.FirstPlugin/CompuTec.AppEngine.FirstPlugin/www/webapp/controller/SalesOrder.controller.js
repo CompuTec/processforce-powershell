@@ -26,10 +26,21 @@ sap.ui.define([
 				const oGenericTag = oEvent.getSource();
 
 				const nAtcEntry = this.getCustomDataForElement(oGenericTag, "AtcEntry");
-				const data = await this.getAttachmentsByDocEntry(nAtcEntry);
-				this.onOpenDialog(data.value);
+				const nDocEntry = this.getCustomDataForElement(oGenericTag, "DocEntry");
+
+
+				const result = await this.getAttachmentsByDocEntry(nAtcEntry);
+				const data = {
+					Attachmnets: result.value,
+					DocEntry: nDocEntry,
+					AtcEntry: nAtcEntry
+				};
+				this.onOpenDialog(data);
 			},
 
+			onSalesOrderRefresh: function () {
+				this.byId('salesOrdersTable').getModel("AE").refresh();
+			},
 
 			onOpenDialog: async function (data) {
 				const oView = this.getView();
@@ -56,6 +67,7 @@ sap.ui.define([
 				const sUrl = `${window.location.origin}/api/Attachments/GetAttachmentByCustomKey/ORDR/DocEntry/${AbsEntry}/null/${Line}`;
 				window.open(sUrl, '_blank');
 			},
+
 
 
 			//#region ADD ATTACHMENTS DIALOG
@@ -94,12 +106,10 @@ sap.ui.define([
 					});
 					console.log(response);
 					const oATModel = this._attachmentsDialog.getModel("AT");
-					const aAttachments = oATModel.getProperty("/");
-					aAttachments.push({
-						FileName: file.name
-					});
-					oATModel.refresh();
-
+					const DocEntry = oATModel.getProperty("/DocEntry");
+					await this._addAttachmentToSalesOrder(DocEntry, file.name);
+					this._refreshAttachments();
+					this.onSalesOrderRefresh();
 				} catch (oError) {
 					console.log(oError);
 				} finally {
@@ -132,6 +142,39 @@ sap.ui.define([
 				return this._get(sUrl);
 			},
 
+			_refreshAttachments: async function () {
+				const oATModel = this._attachmentsDialog.getModel("AT");
+				const nAtcEntry = oATModel.getProperty("/AtcEntry");
+
+				const result = await this.getAttachmentsByDocEntry(nAtcEntry);
+
+				oATModel.setProperty("/Attachmnets", result.value);
+				oATModel.refresh();
+			},
+
+			_addAttachmentToSalesOrder: async function (nSalesOrderDocEntry, sFileName) {
+				const sUrl = `api/FirstPlugin/SalesOrder/AddAttachment`;
+				const aNameParts = sFileName.split(".");
+				let sExtension = null;
+				if (aNameParts.length > 1)
+					sExtension = aNameParts.pop();
+
+				const sName = aNameParts.join(".");
+
+				const oParams = {
+					"DocEntry": nSalesOrderDocEntry,
+					"FileName": sName,
+					"FileExtension": sExtension
+				};
+
+				try {
+					const res = await this._post(JSON.stringify(oParams), sUrl);
+					return;
+				} catch (error) {
+					throw error;
+				}
+			},
+
 			_get: function (sUrl) {
 				return new Promise((resolve, reject) => {
 					Http.request({
@@ -143,108 +186,6 @@ sap.ui.define([
 					});
 				});
 			},
-
-			//#endregion
-
-			onFilter: function (oEvent) {
-
-				var aFilter = [];
-				var sQuery = oEvent.getParameter("query");
-				if (sQuery) {
-					aFilter.push(new Filter("CardName", FilterOperator.Contains, sQuery));
-				}
-				const filter = new Filter({
-					filters: aFilter,
-					and: false
-				});
-
-				const sFilter = this.getStaticFilterExpression(filter);
-
-				var oList = this.byId("idProductsTable");
-				oList.getBinding("items").changeParameters({
-					$filter: sFilter
-				});
-
-			},
-
-
-
-			/**
-				 * Method that returns static filter expression
-				 * @param {sap.ui.model.Filter} oFilter this filter will be used to generate static filter expression
-				 * @returns {string} static filter expression
-				 */
-			getStaticFilterExpression: function (oFilter) {
-				// @ts-ignore
-				var aFilters = oFilter.aFilters;
-				var sFilterCurrent;
-				var sFilterChilds;
-				var sFilter;
-				// @ts-ignore
-				var sOperator = oFilter.bAnd ? 'and' : 'or';
-				// @ts-ignore
-				if (oFilter.sPath && oFilter.sPath.length > 0) {
-					// @ts-ignore
-					switch (oFilter.sOperator) {
-						case "EQ":
-							// @ts-ignore
-							let value = oFilter.oValue1;
-							if (typeof (value) === 'number') {
-								sFilterCurrent = oFilter.sPath + " eq " + value + "";
-							} else if (value.substring(0, 6) === 'Enums.')
-								sFilterCurrent = oFilter.sPath + " eq " + value + "";
-							else
-								sFilterCurrent = oFilter.sPath + " eq '" + value + "'";
-							break;
-						case "Contains":
-							// @ts-ignore
-							sFilterCurrent = "contains(" + oFilter.sPath + ", '" + oFilter.oValue1 + "')";
-							break;
-						default:
-							break;
-					}
-				}
-				if (aFilters && aFilters.length > 0) {
-					sFilterChilds = "";
-					for (var fi = 0; fi < aFilters.length; fi++) {
-						var oChildFilter = aFilters[fi];
-						sFilterChilds = sFilterChilds + this.getStaticFilterExpression(oChildFilter);
-						if (fi < aFilters.length - 1) {
-							sFilterChilds = sFilterChilds + " " + sOperator + " ";
-						}
-					}
-				}
-				if (sFilterCurrent || sFilterChilds) {
-					sFilter = "";
-					if (sFilterCurrent && sFilterCurrent.length > 0) {
-						sFilter = sFilter + sFilterCurrent + " ";
-						if (sFilterChilds && sFilterChilds.length > 0) {
-							sFilter = sFilter + " " + sOperator + " ";
-						}
-					}
-					if (sFilterChilds && sFilterChilds.length > 0) {
-						sFilter = sFilter + "(" + sFilterChilds + ")";
-					}
-				}
-				return sFilter;
-			},
-
-			onParamButton: function (oEvent) {
-				const oSource = oEvent.getSource();
-				const cardName = this.getCustomDataForElement(oSource, "CardName");
-
-			},
-
-
-
-			onCountButton: async function (oEvent) {
-				const oSource = oEvent.getSource();
-				const Name = encodeURIComponent(this.getCustomDataForElement(oSource, "CountName"));
-				const sUrl = `api/FirstPlugin/Count?supplier=${Name}`;
-				var response = await this._get(sUrl);
-				alert(response);
-			},
-
 
 			_post: function (sData, sUrl) {
 				return new Promise((resolve, reject) => {
@@ -258,6 +199,10 @@ sap.ui.define([
 					});
 				});
 			},
+
+			//#endregion
+
+
 		});
 	});
 
@@ -271,5 +216,105 @@ sap.ui.define([
 
 
 
+
+
+// onFilter: function (oEvent) {
+
+			// 	var aFilter = [];
+			// 	var sQuery = oEvent.getParameter("query");
+			// 	if (sQuery) {
+			// 		aFilter.push(new Filter("CardName", FilterOperator.Contains, sQuery));
+			// 	}
+			// 	const filter = new Filter({
+			// 		filters: aFilter,
+			// 		and: false
+			// 	});
+
+			// 	const sFilter = this.getStaticFilterExpression(filter);
+
+			// 	var oList = this.byId("idProductsTable");
+			// 	oList.getBinding("items").changeParameters({
+			// 		$filter: sFilter
+			// 	});
+
+			// },
+
+
+
+			// /**
+			// 	 * Method that returns static filter expression
+			// 	 * @param {sap.ui.model.Filter} oFilter this filter will be used to generate static filter expression
+			// 	 * @returns {string} static filter expression
+			// 	 */
+			// getStaticFilterExpression: function (oFilter) {
+			// 	// @ts-ignore
+			// 	var aFilters = oFilter.aFilters;
+			// 	var sFilterCurrent;
+			// 	var sFilterChilds;
+			// 	var sFilter;
+			// 	// @ts-ignore
+			// 	var sOperator = oFilter.bAnd ? 'and' : 'or';
+			// 	// @ts-ignore
+			// 	if (oFilter.sPath && oFilter.sPath.length > 0) {
+			// 		// @ts-ignore
+			// 		switch (oFilter.sOperator) {
+			// 			case "EQ":
+			// 				// @ts-ignore
+			// 				let value = oFilter.oValue1;
+			// 				if (typeof (value) === 'number') {
+			// 					sFilterCurrent = oFilter.sPath + " eq " + value + "";
+			// 				} else if (value.substring(0, 6) === 'Enums.')
+			// 					sFilterCurrent = oFilter.sPath + " eq " + value + "";
+			// 				else
+			// 					sFilterCurrent = oFilter.sPath + " eq '" + value + "'";
+			// 				break;
+			// 			case "Contains":
+			// 				// @ts-ignore
+			// 				sFilterCurrent = "contains(" + oFilter.sPath + ", '" + oFilter.oValue1 + "')";
+			// 				break;
+			// 			default:
+			// 				break;
+			// 		}
+			// 	}
+			// 	if (aFilters && aFilters.length > 0) {
+			// 		sFilterChilds = "";
+			// 		for (var fi = 0; fi < aFilters.length; fi++) {
+			// 			var oChildFilter = aFilters[fi];
+			// 			sFilterChilds = sFilterChilds + this.getStaticFilterExpression(oChildFilter);
+			// 			if (fi < aFilters.length - 1) {
+			// 				sFilterChilds = sFilterChilds + " " + sOperator + " ";
+			// 			}
+			// 		}
+			// 	}
+			// 	if (sFilterCurrent || sFilterChilds) {
+			// 		sFilter = "";
+			// 		if (sFilterCurrent && sFilterCurrent.length > 0) {
+			// 			sFilter = sFilter + sFilterCurrent + " ";
+			// 			if (sFilterChilds && sFilterChilds.length > 0) {
+			// 				sFilter = sFilter + " " + sOperator + " ";
+			// 			}
+			// 		}
+			// 		if (sFilterChilds && sFilterChilds.length > 0) {
+			// 			sFilter = sFilter + "(" + sFilterChilds + ")";
+			// 		}
+			// 	}
+			// 	return sFilter;
+			// },
+
+			// onParamButton: function (oEvent) {
+			// 	const oSource = oEvent.getSource();
+			// 	const cardName = this.getCustomDataForElement(oSource, "CardName");
+
+			// },
+
+
+
+			// onCountButton: async function (oEvent) {
+			// 	const oSource = oEvent.getSource();
+			// 	const Name = encodeURIComponent(this.getCustomDataForElement(oSource, "CountName"));
+			// 	const sUrl = `api/FirstPlugin/Count?supplier=${Name}`;
+			// 	var response = await this._get(sUrl);
+			// 	alert(response);
+			// },
 
 

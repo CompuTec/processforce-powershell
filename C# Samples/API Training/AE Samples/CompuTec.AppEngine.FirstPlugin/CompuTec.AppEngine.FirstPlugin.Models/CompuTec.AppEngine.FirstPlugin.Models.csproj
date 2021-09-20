@@ -245,6 +245,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Enums\ToDoPriority.generated.cs" />
+    <Compile Include="Models\SalesOrder\SalesOrderAttachment.cs" />
     <Compile Include="Models\ToDo\ToDo.generated.cs" />
     <Compile Include="Models\ToDo\ToDoRequirement.generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -5,15 +5,12 @@
 		xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 		xmlns="sap.m">
 	<Table
+			id="salesOrdersTable"
 			inset="true"
 			items="{AE>/CustomViews/Views.Custom(Id='FirstPlugin%3ASalesOrderList')}">
 		<headerToolbar>
 			<Toolbar>
 				<Title text="{i18n>salesOrderTableTitle}"/>
-				<ToolbarSpacer/>
-				<SearchField
-						width="50%"
-						search=".onFilter"/>
 			</Toolbar>
 		</headerToolbar>
 		<columns>
@@ -47,6 +44,7 @@
 					</HBox>
 					<GenericTag
 							app:AtcEntry="{path: 'AE>AtcEntry', type: 'sap.ui.model.odata.type.Int32'}"
+							app:DocEntry="{path: 'AE>DocEntry', type: 'sap.ui.model.odata.type.Int32'}"
 							design="StatusIconHidden"
 							visible="{= %{path: 'AE>NumberOfAttachments', type: 'sap.ui.model.odata.type.Int32'} &gt; 0}"
 							press=".onAttachmentsButtonPress">
