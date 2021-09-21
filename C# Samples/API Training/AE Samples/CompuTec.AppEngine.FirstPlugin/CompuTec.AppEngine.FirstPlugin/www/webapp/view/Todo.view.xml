@@ -1,69 +1,68 @@
 <mvc:View
-    controllerName="computec.appengine.firstplugin.controller.Todo"
-    displayBlock="true"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m"
-    xmlns:core="sap.ui.core"
-    xmlns:tnt="sap.tnt"
-    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-    xmlns:ae="computec.appengine.ui.controls">
+		controllerName="computec.appengine.firstplugin.controller.Todo"
+		displayBlock="true"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns="sap.m"
+		xmlns:core="sap.ui.core"
+		xmlns:tnt="sap.tnt"
+		xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+		xmlns:ae="computec.appengine.ui.controls">
 
-  <Table
-      id="todoList"
-      growing="true"
-      growingThreshold="10"
-      items="{
+	<Table
+			id="todoList"
+			growing="true"
+			growingThreshold="10"
+			items="{
                     path: 'FP>/ToDo',
                     parameters: {
                       $count: true
                     }
                   }"
-      fixedLayout="false">
-    <headerToolbar></headerToolbar>
-    <columns>
-      <Column
-          id="TaskNameColumn"
-          width="10rem">
-        <Text text="{i18n>TaskNameColumn}" />
-      </Column>
-      <Column id="DescriptionColumn">
-        <Text text="{i18n>DescriptionColumn}" />
-      </Column>
-      <Column
-          id="PriorityColumn"
-          width="10rem">
-        <Text text="{i18n>PriorityColumn}" />
-      </Column>
-      <Column
-          id="ButtonColumn"
-          width="5rem">
-        <Text text="delete" />
+			fixedLayout="false">
+		<headerToolbar></headerToolbar>
+		<columns>
+			<Column
+					id="TaskNameColumn"
+					width="10rem">
+				<Text text="{i18n>TaskNameColumn}"/>
+			</Column>
+			<Column id="DescriptionColumn">
+				<Text text="{i18n>DescriptionColumn}"/>
+			</Column>
+			<Column
+					id="PriorityColumn"
+					width="10rem">
+				<Text text="{i18n>PriorityColumn}"/>
+			</Column>
+			<Column
+					id="ButtonColumn"
+					width="5rem">
+				<Text text="delete"/>
 
-      </Column>
-    </columns>
-    <items>
-      <ColumnListItem>
-        <cells>
-          <Input value="{ path: 'FP>U_TaskName' }" />
-          <Input value="{ path: 'FP>U_Description' }" />
-          <Input value="{ path: 'FP>U_Priority' , type:'sap.ui.model.odata.type.String' }" />
-          <Button
-              id="deleteTaskButton"
-              icon="sap-icon://delete"
-              press=".onDelete" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Input value="{ path: 'FP>U_TaskName' }"/>
+					<Input value="{ path: 'FP>U_Description' }"/>
+					<Input value="{ path: 'FP>U_Priority' , type:'sap.ui.model.odata.type.String' }"/>
+					<Button
+							id="deleteTaskButton"
+							icon="sap-icon://delete"
+							press=".onDelete"/>
 
-        </cells>
+				</cells>
 
 
-      </ColumnListItem>
-    </items>
-  </Table>
-  
-  <Button
-      id="AddNewButton"
-      text="Add new"
-      press=".AddFragment" />
-      
+			</ColumnListItem>
+		</items>
+	</Table>
 
-     
+	<Button
+			id="AddNewButton"
+			text="Add new"
+			press=".AddFragment"/>
+
+
 </mvc:View>

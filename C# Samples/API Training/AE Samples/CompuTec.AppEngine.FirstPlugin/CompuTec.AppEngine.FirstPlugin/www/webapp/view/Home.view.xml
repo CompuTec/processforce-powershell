@@ -9,7 +9,7 @@
 					class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
 					header="{i18n>todoTileHeader}"
 					subheader="{i18n>todoTileSubheader}"
-					press="onTodoListPress">
+					press="onToDoPress">
 				<TileContent>
 					<ImageContent src="sap-icon://activity-2"/>
 				</TileContent>
