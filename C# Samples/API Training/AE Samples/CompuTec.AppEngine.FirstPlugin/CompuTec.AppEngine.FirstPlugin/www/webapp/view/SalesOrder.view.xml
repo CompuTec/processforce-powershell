@@ -11,6 +11,10 @@
 		<headerToolbar>
 			<Toolbar>
 				<Title text="{i18n>salesOrderTableTitle}"/>
+				<ToolbarSpacer/>
+				<SearchField
+						width="50%"
+						search=".onFilter"/>
 			</Toolbar>
 		</headerToolbar>
 		<columns>

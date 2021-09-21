@@ -2,7 +2,9 @@ sap.ui.define([
 	"computec/appengine/core/BaseController",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/json/JSONModel",
-	"computec/appengine/ui/model/http/Http"
+	"computec/appengine/ui/model/http/Http",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
 ],
 	/**
 	 * 
@@ -10,9 +12,12 @@ sap.ui.define([
 	 * @param {typeof sap.ui.core.Fragment} Fragment 
 	 * @param {typeof sap.ui.model.json.JSONModel} JSONModel
 	 * @param {typeof computec.appengine.ui.model.http.Http} Http
+	 * @param {typeof sap.ui.model.Filter} Filter
+	 * @param {typeof sap.ui.model.FilterOperator} FilterOperator
+	 *
 	 * @returns 
 	 */
-	function (BaseController, Fragment, JSONModel, Http) {
+	function (BaseController, Fragment, JSONModel, Http, Filter, FilterOperator) {
 		"use strict";
 
 		return BaseController.extend("computec.appengine.firstPlugin.controller.SalesOrder", {
@@ -201,7 +206,95 @@ sap.ui.define([
 			},
 
 			//#endregion
+			onFilter: function (oEvent) {
+				/** @type {Array<sap.ui.model.Filter>} */
+				const aFilter = [];
+				const sQuery = oEvent.getParameter("query");
+				if (typeof sQuery === 'string' && sQuery.length > 0) {
+					aFilter.push(new Filter({
+						path: 'CardCode',
+						operator: FilterOperator.EQ,
+						value1: sQuery
+					}));
+					aFilter.push(new Filter({
+						path: 'CardName',
+						operator: FilterOperator.Contains,
+						value1: sQuery
+					}));
+				}
+				const filter = new Filter({
+					filters: aFilter,
+					and: false
+				});
 
+				const sFilter = this.getStaticFilterExpression(filter);
+
+				var oList = this.byId("salesOrdersTable");
+				oList.getBinding("items").changeParameters({
+					$filter: sFilter
+				});
+
+			},
+
+			/**
+				 * Method that returns static filter expression
+				 * @param {sap.ui.model.Filter} oFilter this filter will be used to generate static filter expression
+				 * @returns {string} static filter expression
+				 */
+			getStaticFilterExpression: function (oFilter) {
+				// @ts-ignore
+				var aFilters = oFilter.aFilters;
+				var sFilterCurrent;
+				var sFilterChilds;
+				var sFilter;
+				// @ts-ignore
+				var sOperator = oFilter.bAnd ? 'and' : 'or';
+				// @ts-ignore
+				if (oFilter.sPath && oFilter.sPath.length > 0) {
+					// @ts-ignore
+					switch (oFilter.sOperator) {
+						case "EQ":
+							// @ts-ignore
+							let value = oFilter.oValue1;
+							if (typeof (value) === 'number') {
+								sFilterCurrent = oFilter.sPath + " eq " + value + "";
+							} else if (value.substring(0, 6) === 'Enums.')
+								sFilterCurrent = oFilter.sPath + " eq " + value + "";
+							else
+								sFilterCurrent = oFilter.sPath + " eq '" + value + "'";
+							break;
+						case "Contains":
+							// @ts-ignore
+							sFilterCurrent = "contains(" + oFilter.sPath + ", '" + oFilter.oValue1 + "')";
+							break;
+						default:
+							break;
+					}
+				}
+				if (aFilters && aFilters.length > 0) {
+					sFilterChilds = "";
+					for (var fi = 0; fi < aFilters.length; fi++) {
+						var oChildFilter = aFilters[fi];
+						sFilterChilds = sFilterChilds + this.getStaticFilterExpression(oChildFilter);
+						if (fi < aFilters.length - 1) {
+							sFilterChilds = sFilterChilds + " " + sOperator + " ";
+						}
+					}
+				}
+				if (sFilterCurrent || sFilterChilds) {
+					sFilter = "";
+					if (sFilterCurrent && sFilterCurrent.length > 0) {
+						sFilter = sFilter + sFilterCurrent + " ";
+						if (sFilterChilds && sFilterChilds.length > 0) {
+							sFilter = sFilter + " " + sOperator + " ";
+						}
+					}
+					if (sFilterChilds && sFilterChilds.length > 0) {
+						sFilter = sFilter + "(" + sFilterChilds + ")";
+					}
+				}
+				return sFilter;
+			},
 
 		});
 	});
@@ -218,103 +311,10 @@ sap.ui.define([
 
 
 
-// onFilter: function (oEvent) {
-
-			// 	var aFilter = [];
-			// 	var sQuery = oEvent.getParameter("query");
-			// 	if (sQuery) {
-			// 		aFilter.push(new Filter("CardName", FilterOperator.Contains, sQuery));
-			// 	}
-			// 	const filter = new Filter({
-			// 		filters: aFilter,
-			// 		and: false
-			// 	});
-
-			// 	const sFilter = this.getStaticFilterExpression(filter);
-
-			// 	var oList = this.byId("idProductsTable");
-			// 	oList.getBinding("items").changeParameters({
-			// 		$filter: sFilter
-			// 	});
-
-			// },
 
 
 
-			// /**
-			// 	 * Method that returns static filter expression
-			// 	 * @param {sap.ui.model.Filter} oFilter this filter will be used to generate static filter expression
-			// 	 * @returns {string} static filter expression
-			// 	 */
-			// getStaticFilterExpression: function (oFilter) {
-			// 	// @ts-ignore
-			// 	var aFilters = oFilter.aFilters;
-			// 	var sFilterCurrent;
-			// 	var sFilterChilds;
-			// 	var sFilter;
-			// 	// @ts-ignore
-			// 	var sOperator = oFilter.bAnd ? 'and' : 'or';
-			// 	// @ts-ignore
-			// 	if (oFilter.sPath && oFilter.sPath.length > 0) {
-			// 		// @ts-ignore
-			// 		switch (oFilter.sOperator) {
-			// 			case "EQ":
-			// 				// @ts-ignore
-			// 				let value = oFilter.oValue1;
-			// 				if (typeof (value) === 'number') {
-			// 					sFilterCurrent = oFilter.sPath + " eq " + value + "";
-			// 				} else if (value.substring(0, 6) === 'Enums.')
-			// 					sFilterCurrent = oFilter.sPath + " eq " + value + "";
-			// 				else
-			// 					sFilterCurrent = oFilter.sPath + " eq '" + value + "'";
-			// 				break;
-			// 			case "Contains":
-			// 				// @ts-ignore
-			// 				sFilterCurrent = "contains(" + oFilter.sPath + ", '" + oFilter.oValue1 + "')";
-			// 				break;
-			// 			default:
-			// 				break;
-			// 		}
-			// 	}
-			// 	if (aFilters && aFilters.length > 0) {
-			// 		sFilterChilds = "";
-			// 		for (var fi = 0; fi < aFilters.length; fi++) {
-			// 			var oChildFilter = aFilters[fi];
-			// 			sFilterChilds = sFilterChilds + this.getStaticFilterExpression(oChildFilter);
-			// 			if (fi < aFilters.length - 1) {
-			// 				sFilterChilds = sFilterChilds + " " + sOperator + " ";
-			// 			}
-			// 		}
-			// 	}
-			// 	if (sFilterCurrent || sFilterChilds) {
-			// 		sFilter = "";
-			// 		if (sFilterCurrent && sFilterCurrent.length > 0) {
-			// 			sFilter = sFilter + sFilterCurrent + " ";
-			// 			if (sFilterChilds && sFilterChilds.length > 0) {
-			// 				sFilter = sFilter + " " + sOperator + " ";
-			// 			}
-			// 		}
-			// 		if (sFilterChilds && sFilterChilds.length > 0) {
-			// 			sFilter = sFilter + "(" + sFilterChilds + ")";
-			// 		}
-			// 	}
-			// 	return sFilter;
-			// },
-
-			// onParamButton: function (oEvent) {
-			// 	const oSource = oEvent.getSource();
-			// 	const cardName = this.getCustomDataForElement(oSource, "CardName");
-
-			// },
 
 
-
-			// onCountButton: async function (oEvent) {
-			// 	const oSource = oEvent.getSource();
-			// 	const Name = encodeURIComponent(this.getCustomDataForElement(oSource, "CountName"));
-			// 	const sUrl = `api/FirstPlugin/Count?supplier=${Name}`;
-			// 	var response = await this._get(sUrl);
-			// 	alert(response);
-			// },
 
 
