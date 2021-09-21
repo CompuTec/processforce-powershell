@@ -1,4 +1,3 @@
-// @ts-ignore
 jQuery.sap.require("computec.appengine.plugin.PluginRouter");
 
 sap.ui.define([
@@ -19,7 +18,7 @@ sap.ui.define([
 
 			this.getRouter().initialize();
 
-			this.attachSLOdataModel("odata/FirstPlugin/", "FP");
+			this.attachSLOdataModel("odata/FirstPlugin/", "FirstPlugin");
 		},
 
 		destroy: function () {
