@@ -3,21 +3,13 @@
 		displayBlock="true"
 		xmlns="sap.m"
 		xmlns:mvc="sap.ui.core.mvc">
-
 	<Page showHeader="false">
-		<headerContent></headerContent>
 		<content>
 			<Table
 					id="todoList"
 					growing="true"
 					growingThreshold="10"
-					items="{
-								path: 'FirstPlugin>/Todo',
-								parameters: {
-									$count: true,
-									$$updateGroupId : 'todoGroup'
-								}
-              }"
+					items="{FirstPlugin>/ToDo}"
 					fixedLayout="false">
 				<headerToolbar>
 					<OverflowToolbar>
@@ -38,19 +30,28 @@
 							<Button
 									id="refreshTodoListButton"
 									icon="sap-icon://refresh"
-									enabled="{= !${appView>/hasUIChanges}}"
 									press=".onRefresh"/>
 						</content>
 					</OverflowToolbar>
 				</headerToolbar>
 				<columns>
 					<Column
+							id="taskColumnPriority"
+							width="8em">
+						<Text text="{i18n>todoTableTaskColumnPriority}"/>
+					</Column>
+					<Column
 							id="isDoneColumn"
 							width="3rem">
 						<Text text="{i18n>todoTableIsDoneColumnTitle}"/>
 					</Column>
-					<Column id="taskColumn">
+					<Column
+							id="taskColumn"
+							width="20em">
 						<Text text="{i18n>todoTableTaskColumnTitle}"/>
+					</Column>
+					<Column id="taskColumnDescription">
+						<Text text="{i18n>todoTableTaskColumnDescription}"/>
 					</Column>
 					<Column
 							id="actions"
@@ -61,42 +62,20 @@
 				<items>
 					<ColumnListItem>
 						<cells>
-							<CheckBox
-									text=""
-									select=".onInputChange"
-									selected="{ path: 'FirstPlugin>IsDone' }"/>
-						</cells>
-						<cells>
-							<Input
-									value="{ path: 'FirstPlugin>Title' }"
-									liveChange=".onInputChange"/>
+							<ObjectStatus
+									icon="{= ${path: 'FirstPlugin>U_Priority', type: 'sap.ui.model.odata.type.String', formatter: '.getIconForPriority'}}"
+									state="{= ${path: 'FirstPlugin>U_Priority', type: 'sap.ui.model.odata.type.String', formatter: '.getStateForPriority'}}"
+									text="{= ${path: 'FirstPlugin>U_Priority', type: 'sap.ui.model.odata.type.String'}}"/>
+							<CheckBox selected="{ path: 'FirstPlugin>U_Done', type: 'computec.appengine.ui.controls.YesNoBoolType'}"/>
+							<Input value="{FirstPlugin>U_TaskName}"/>
+							<Input value="{FirstPlugin>U_Description}"/>
 						</cells>
 						<Button
-								id="deleteTaskButton"
 								icon="sap-icon://delete"
-								press=".onDelete">
-							<layoutData>
-								<OverflowToolbarLayoutData priority="NeverOverflow"/>
-							</layoutData>
-						</Button>
+								press=".onDelete"></Button>
 					</ColumnListItem>
 				</items>
 			</Table>
 		</content>
-		<footer>
-			<Toolbar visible="{todoView>/hasUIChanges}">
-				<ToolbarSpacer/>
-				<Button
-						id="saveButton"
-						type="Emphasized"
-						text="{i18n>todoListSaveButtonText}"
-						press=".onSave"/>
-				<Button
-						id="doneButton"
-						text="{i18n>todoListCancelButtonText}"
-						press=".onResetChanges"/>
-			</Toolbar>
-		</footer>
 	</Page>
-
 </mvc:View>

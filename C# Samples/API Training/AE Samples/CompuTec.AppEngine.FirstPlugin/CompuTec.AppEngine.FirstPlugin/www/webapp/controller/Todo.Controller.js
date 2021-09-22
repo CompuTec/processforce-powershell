@@ -2,11 +2,14 @@ sap.ui.define([
 	"computec/appengine/core/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageBox",
+	"sap/m/MessageToast",
 	"sap/ui/model/Sorter",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/ui/model/FilterType",
-], function (BaseController, JSONModel, MessageBox, Sorter, Filter, FilterOperator, FilterType) {
+	"computec/appengine/ui/controls/YesNoBoolType"
+], function (BaseController, JSONModel, MessageBox, MessageToast,
+	Sorter, Filter, FilterOperator, FilterType, YesNoBoolType) {
 	"use strict";
 
 	return BaseController.extend("computec.appengine.firstplugin.controller.Todo", {
@@ -14,48 +17,23 @@ sap.ui.define([
 			BaseController.prototype.onInit.call(this);
 
 			this.setPageName("todoPageTitle");
-
-			var oViewModel = new JSONModel({
-				hasUIChanges: false,
-				order: 0
-			});
-
-			this.getView().setModel(oViewModel, "todoView");
 		},
-
-
 
 		onCreate: function () {
 			var oList = this.byId("todoList"),
 				oBinding = oList.getBinding("items"),
 
 				oContext = oBinding.create({
-					"IsDone": false,
-					"Title": ""
+					U_Priority: 'Low',
+					U_Done: 'No'
 				});
-
-			this._setUIChanges(true);
 
 			oList.getItems().some(function (oItem) {
 				if (oItem.getBindingContext() === oContext) {
 					oItem.focus();
-					oItem.setSelected(true);
 					return true;
 				}
 			});
-		},
-
-		onSave: function () {
-			var fnSuccess = function () {
-				this._setUIChanges(false);
-			}.bind(this);
-
-			var fnError = function (oError) {
-				this._setUIChanges(false);
-				MessageBox.error(oError.message);
-			}.bind(this);
-
-			this.getView().getModel("FirstPlugin").submitBatch("todoGroup").then(fnSuccess, fnError);
 		},
 
 		onDelete: function (oEvent) {
@@ -67,10 +45,8 @@ sap.ui.define([
 		},
 
 
-
 		onResetChanges: function () {
 			this.byId("todoList").getBinding("items").resetChanges();
-			this._setUIChanges(false);
 		},
 
 		onRefresh: function () {
@@ -83,31 +59,65 @@ sap.ui.define([
 			oBinding.refresh();
 		},
 
-		onInputChange: function (oEvent) {
-			if (oEvent.getParameter("escPressed")) {
-				this._setUIChanges(fasle);
-			} else {
-				this._setUIChanges(true);
-			}
-		},
-
-
 		onSearch: function () {
 			var oView = this.getView(),
-				sValue = oView.byId("searchField").getValue(),
-				oFilter = new Filter("Title", FilterOperator.Contains, sValue);
+				sValue = oView.byId("searchField").getValue();
 
-			oView.byId("todoList").getBinding("items").filter(oFilter, FilterType.Application);
-		},
-
-
-		_setUIChanges: function (bHasUIChanges) {
-			if (bHasUIChanges === undefined) {
-				bHasUIChanges = this.getView().getModel().hasPendingChanges();
+			const aFilters = [];
+			if (typeof sValue === 'string' && sValue.length > 0) {
+				aFilters.push(new Filter({
+					path: 'U_TaskName',
+					operator: FilterOperator.Contains,
+					value1: sValue
+				}));
+				aFilters.push(new Filter({
+					path: 'U_Description',
+					operator: FilterOperator.Contains,
+					value1: sValue
+				}));
 			}
 
-			var oModel = this.getView().getModel("todoView");
-			oModel.setProperty("/hasUIChanges", bHasUIChanges);
+			const oFilter = new Filter({
+				filters: aFilters,
+				and: false
+			});
+
+			oView.byId("todoList").getBinding("items").filter(oFilter);
 		},
+
+		getIconForPriority: function (sPriority) {
+			let sIcon;
+			switch (sPriority) {
+				case 'Low':
+					break;
+				case 'Medium':
+					sIcon = 'sap-icon://hint';
+					break;
+				case 'Huge':
+					sIcon = 'sap-icon://warning';
+					break;
+				default:
+					sIcon = null;
+					break;
+			}
+			return sIcon;
+		},
+		getStateForPriority: function (sPriority) {
+			let sState;
+			switch (sPriority) {
+				case 'Low':
+					break;
+				case 'Medium':
+					sState = 'Information';
+					break;
+				case 'Huge':
+					sState = 'Warning';
+					break;
+				default:
+					sState = 'None';
+					break;
+			}
+			return sState;
+		}
 	});
 });

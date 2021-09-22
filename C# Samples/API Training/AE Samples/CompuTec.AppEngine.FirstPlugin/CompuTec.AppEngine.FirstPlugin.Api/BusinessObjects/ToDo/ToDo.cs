@@ -23,8 +23,7 @@ namespace CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo
 		{
 
 			this.U_Deadline = DateTime.Today.AddDays(7);
-			this.Code = (this.U_TaskName + "Code").ToString();
-
+			this.Code = Guid.NewGuid().ToString();
 			return base.BeforeAdd();
 		}
 

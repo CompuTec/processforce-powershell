@@ -48,6 +48,18 @@
     <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zakończone</translation>
   </Message>
 
+  <Message id="todoTableTaskColumnDescription" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Description</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Description</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Opis</translation>
+  </Message>
+
+  <Message id="todoTableTaskColumnPriority" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Priority</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Priority</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Priorytet</translation>
+  </Message>
+
   <Message id="todoListCancelButtonText" param="0">
     <translation lang="Default" Date="2011-08-09T15:55:59">Cancel</translation>
     <translation lang="ln_English" Date="2011-08-09T15:55:59">Cancel</translation>
