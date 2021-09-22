@@ -1,7 +1,9 @@
 ﻿using CompuTec.AppEngine.Base.Infrastructure.Jobs;
 using CompuTec.AppEngine.Base.Infrastructure.Jobs.Annotations;
+using CompuTec.AppEngine.Base.Infrastructure.Plugins;
 using CompuTec.AppEngine.Base.Infrastructure.Security;
 using CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo;
+using CompuTec.AppEngine.FirstPlugin.API.Enums;
 using CompuTec.BaseLayer.DI;
 using CompuTec.Core2.DI.Database;
 using Newtonsoft.Json;
@@ -54,13 +56,20 @@ namespace CompuTec.AppEngine.FirstPlugin.Jobs
 			}
 
 		}
+
+		private ToDoPriority GetDefaultPriority()
+		{
+			var configuration = Container.GetInstance<IPluginConfiguration>();
+			string priority = configuration.Get<string>($"SalesOrderToApproveEventJob:TaskPriority");
+			return (ToDoPriority)Enum.Parse(typeof(ToDoPriority), priority);
+		}
+
 		private void AddNewToDoTask(int DocNum)
 		{
-
 			IToDo toDoTask = CompuTec.Core2.CoreManager.GetUDO(Session.Token, "SAMPLE_TO_DO");
 			toDoTask.U_TaskName = $"Confirmation";
 			toDoTask.U_Description = $"Review Sales Order number {DocNum}";
-			toDoTask.U_Priority = API.Enums.ToDoPriority.Medium;
+			toDoTask.U_Priority = GetDefaultPriority();
 			if (toDoTask.Add() != 0)
 				throw new Exception($"Exception while adding ToDo task: {Session.Company.GetLastErrorDescription()}");
 		}

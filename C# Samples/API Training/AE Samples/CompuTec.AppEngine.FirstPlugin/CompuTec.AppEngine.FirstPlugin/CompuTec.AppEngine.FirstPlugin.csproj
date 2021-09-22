@@ -238,6 +238,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppStart\PluginSettings.cs" />
     <Compile Include="AppStart\Setup.cs" />
     <Compile Include="AppStart\Initializer.cs" />
     <Compile Include="Controllers\Api\SalesOrderController.cs" />
