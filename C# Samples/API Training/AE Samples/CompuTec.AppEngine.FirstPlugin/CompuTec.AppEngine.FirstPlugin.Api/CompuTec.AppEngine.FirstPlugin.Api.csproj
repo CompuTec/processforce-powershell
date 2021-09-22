@@ -236,6 +236,7 @@
     <Compile Include="BusinessObjects\ToDo\ToDo.properties.cs" />
     <Compile Include="BusinessObjects\ToDo\ToDoRequirement.cs" />
     <Compile Include="Enums\ToDoPriority.cs" />
+    <Compile Include="Enums\YesNoType.cs" />
     <Compile Include="FirstPluginInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Info.txt" />

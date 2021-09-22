@@ -8,6 +8,7 @@
   *U_TaskName  string
   *U_Description  string
   *U_Priority  CompuTec.AppEngine.FirstPlugin.API.Enums.ToDoPriority
+  *U_Done  CompuTec.AppEngine.FirstPlugin.API.Enums.YesNoType
 	IToDoRequirement - 0, [IToDo]
 	  *U_Name  string
 	  *U_Quantity  int

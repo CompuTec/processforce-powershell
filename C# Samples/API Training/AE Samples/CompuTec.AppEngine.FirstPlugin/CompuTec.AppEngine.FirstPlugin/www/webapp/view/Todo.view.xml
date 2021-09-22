@@ -1,68 +1,102 @@
 <mvc:View
 		controllerName="computec.appengine.firstplugin.controller.Todo"
 		displayBlock="true"
-		xmlns:mvc="sap.ui.core.mvc"
 		xmlns="sap.m"
-		xmlns:core="sap.ui.core"
-		xmlns:tnt="sap.tnt"
-		xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-		xmlns:ae="computec.appengine.ui.controls">
+		xmlns:mvc="sap.ui.core.mvc">
 
-	<Table
-			id="todoList"
-			growing="true"
-			growingThreshold="10"
-			items="{
-                    path: 'FP>/ToDo',
-                    parameters: {
-                      $count: true
-                    }
-                  }"
-			fixedLayout="false">
-		<headerToolbar></headerToolbar>
-		<columns>
-			<Column
-					id="TaskNameColumn"
-					width="10rem">
-				<Text text="{i18n>TaskNameColumn}"/>
-			</Column>
-			<Column id="DescriptionColumn">
-				<Text text="{i18n>DescriptionColumn}"/>
-			</Column>
-			<Column
-					id="PriorityColumn"
-					width="10rem">
-				<Text text="{i18n>PriorityColumn}"/>
-			</Column>
-			<Column
-					id="ButtonColumn"
-					width="5rem">
-				<Text text="delete"/>
-
-			</Column>
-		</columns>
-		<items>
-			<ColumnListItem>
-				<cells>
-					<Input value="{ path: 'FP>U_TaskName' }"/>
-					<Input value="{ path: 'FP>U_Description' }"/>
-					<Input value="{ path: 'FP>U_Priority' , type:'sap.ui.model.odata.type.String' }"/>
-					<Button
-							id="deleteTaskButton"
-							icon="sap-icon://delete"
-							press=".onDelete"/>
-
-				</cells>
-
-
-			</ColumnListItem>
-		</items>
-	</Table>
-
-	<Button
-			id="AddNewButton"
-			text="Add new"
-			press=".AddFragment"/>
-
+	<Page showHeader="false">
+		<headerContent></headerContent>
+		<content>
+			<Table
+					id="todoList"
+					growing="true"
+					growingThreshold="10"
+					items="{
+								path: 'FirstPlugin>/Todo',
+								parameters: {
+									$count: true,
+									$$updateGroupId : 'todoGroup'
+								}
+              }"
+					fixedLayout="false">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<ToolbarSpacer/>
+							<SearchField
+									id="searchField"
+									width="30%"
+									search=".onSearch"/>
+							<Button
+									id="addTaskButton"
+									icon="sap-icon://add"
+									press=".onCreate">
+								<layoutData>
+									<OverflowToolbarLayoutData priority="NeverOverflow"/>
+								</layoutData>
+							</Button>
+							<Button
+									id="refreshTodoListButton"
+									icon="sap-icon://refresh"
+									enabled="{= !${appView>/hasUIChanges}}"
+									press=".onRefresh"/>
+						</content>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column
+							id="isDoneColumn"
+							width="3rem">
+						<Text text="{i18n>todoTableIsDoneColumnTitle}"/>
+					</Column>
+					<Column id="taskColumn">
+						<Text text="{i18n>todoTableTaskColumnTitle}"/>
+					</Column>
+					<Column
+							id="actions"
+							width="3rem">
+						<Text text=""/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<CheckBox
+									text=""
+									select=".onInputChange"
+									selected="{ path: 'FirstPlugin>IsDone' }"/>
+						</cells>
+						<cells>
+							<Input
+									value="{ path: 'FirstPlugin>Title' }"
+									liveChange=".onInputChange"/>
+						</cells>
+						<Button
+								id="deleteTaskButton"
+								icon="sap-icon://delete"
+								press=".onDelete">
+							<layoutData>
+								<OverflowToolbarLayoutData priority="NeverOverflow"/>
+							</layoutData>
+						</Button>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Toolbar visible="{todoView>/hasUIChanges}">
+				<ToolbarSpacer/>
+				<Button
+						id="saveButton"
+						type="Emphasized"
+						text="{i18n>todoListSaveButtonText}"
+						press=".onSave"/>
+				<Button
+						id="doneButton"
+						text="{i18n>todoListCancelButtonText}"
+						press=".onResetChanges"/>
+			</Toolbar>
+		</footer>
+	</Page>
 
 </mvc:View>

@@ -24,6 +24,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo
 
         public ToDoPriority? U_Priority { get; set; }
 
+        public YesNoType? U_Done { get; set; }
+
         [Contained]
         public List<ToDoRequirement> Requirements { get; set; }
 

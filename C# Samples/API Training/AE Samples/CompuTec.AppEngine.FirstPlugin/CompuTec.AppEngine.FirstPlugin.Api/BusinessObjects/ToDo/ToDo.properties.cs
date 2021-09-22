@@ -41,6 +41,11 @@ namespace CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo
 			get { return FieldDictionary["U_Priority"].Value; }
 			set { FieldDictionary["U_Priority"].Value = value; }
 		}
+		public YesNoType U_Done
+		{
+			get { return FieldDictionary["U_Done"].Value; }
+			set { FieldDictionary["U_Done"].Value = value; }
+		}
 		public IToDoRequirement Requirements
 		{
 			get => this.Childs["Requirements"].CurrentChild as IToDoRequirement;

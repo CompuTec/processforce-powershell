@@ -95,6 +95,18 @@ namespace CompuTec.AppEngine.FirstPlugin.Setup.Tables.ToDo
 			TaskDeadline.SetEditSize(10);
 			fields.Add(TaskDeadline);
 
+			var Done = new UDOTableField();
+			Done.SetName("Done");
+			Done.SetDescription("Done");
+			Done.SetType(BoFieldTypes.db_Alpha);
+			Done.ValidValuesMD = new Dictionary<string, string>()
+			{
+				{ "Y","Yes" },
+				{ "N", "No" }
+			};
+			Done.DefaultValue = "N";
+			Done.SetEditSize(1);
+			fields.Add(Done);
 
 			return fields;
 

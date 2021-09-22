@@ -23,6 +23,8 @@ namespace CompuTec.AppEngine.FirstPlugin.API.BusinessObjects.ToDo
 		string U_Description { get; set; }
 		[DefaultValue(ToDoPriority.Medium)]
 		ToDoPriority U_Priority { get; set; }
+		[DefaultValue(YesNoType.No)]
+		YesNoType U_Done { get; set; }
 		IToDoRequirement Requirements { get; set; }
 	}
 }

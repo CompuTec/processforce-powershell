@@ -18,6 +18,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.ToDo
             model.U_TaskName = udo.U_TaskName;
             model.U_Description = udo.U_Description;
             model.U_Priority = (ToDoPriority)((int)udo.U_Priority);
+            model.U_Done = (YesNoType)((int)udo.U_Done);
             UDFsToModel(udo, model);
             model.Requirements = new List<CompuTec.AppEngine.FirstPlugin.Models.Models.ToDo.ToDoRequirement>();
             udo.Requirements.Where(udoRequirements => (udoRequirements as CompuTec.Core2.Beans.IAdvancedUDOChildBean).IsRowFilled()).ToList().ForEach(udoRequirements =>
@@ -58,6 +59,15 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.ToDo
             else
             {
                 udo.U_Priority = default(CompuTec.AppEngine.FirstPlugin.API.Enums.ToDoPriority);
+            }
+
+            if (model.U_Done != null)
+            {
+                udo.U_Done = (CompuTec.AppEngine.FirstPlugin.API.Enums.YesNoType)((int)model.U_Done);
+            }
+            else
+            {
+                udo.U_Done = default(CompuTec.AppEngine.FirstPlugin.API.Enums.YesNoType);
             }
 
             UDFsToUdo(udo, model);
@@ -133,6 +143,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.ToDo
                 udo.U_Description = model.U_Description;
             if (model.U_Priority != null)
                 udo.U_Priority = (CompuTec.AppEngine.FirstPlugin.API.Enums.ToDoPriority)((int)model.U_Priority);
+            if (model.U_Done != null)
+                udo.U_Done = (CompuTec.AppEngine.FirstPlugin.API.Enums.YesNoType)((int)model.U_Done);
             UDFsToUdo(udo, model);
             if (model.Requirements == null)
             {
@@ -183,6 +195,8 @@ namespace CompuTec.AppEngine.FirstPlugin.Serializer.Serializers.ToDo
                 udo.U_Description = model.U_Description;
             if (model.U_Priority != null)
                 udo.U_Priority = (CompuTec.AppEngine.FirstPlugin.API.Enums.ToDoPriority)((int)model.U_Priority);
+            if (model.U_Done != null)
+                udo.U_Done = (CompuTec.AppEngine.FirstPlugin.API.Enums.YesNoType)((int)model.U_Done);
             UDFsToUdo(udo, model);
             if (model.Requirements == null)
             {
