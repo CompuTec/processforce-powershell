@@ -71,8 +71,8 @@ namespace API_Training
         static void Main(string[] args)
         {
             Connect();
-
-           var entry= CreateManufacturingOrder("Product-A", "code00", 100);
+            CreatePickReceipt(285);
+           //var entry= CreateManufacturingOrder("Product-A", "code00", 100);
           //var reslt=  pfCompany.GenerateAdditionalBatchDetails(0, 0);
           //  if (reslt.Success)
           //      Console.WriteLine("OK");
@@ -117,10 +117,11 @@ namespace API_Training
                // CompuTec.Core.Connection.ConnectionHolder.ConType = CompuTec.Core.Connection.ConnectionType.DI;
                 //set connection constaint
                 pfCompany.SLDAddress = "hanadev:40000";
+                pfCompany.SQLServer = "DEV@hanadev:30013";
                 pfCompany.UserName = "manager";
                 pfCompany.Password = "1234";
                 pfCompany.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_HANADB;
-                pfCompany.Databasename = "PROD_20210122_SPROC_11212";
+                pfCompany.Databasename = "PFDEMOGB";
                 pfCompany.Language = SAPbobsCOM.BoSuppLangs.ln_English;
                 //Connect to Company
                 if (pfCompany.Connect() == 1)

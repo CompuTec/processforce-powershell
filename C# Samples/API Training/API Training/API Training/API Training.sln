@@ -10,6 +10,9 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Debug10|Any CPU = Debug10|Any CPU
+		Debug10|x64 = Debug10|x64
+		Debug10|x86 = Debug10|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
@@ -21,6 +24,12 @@ Global
 		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Debug|x64.Build.0 = Debug|x64
 		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Debug|x86.ActiveCfg = Debug|x86
 		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Debug|x86.Build.0 = Debug|x86
+		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Debug10|Any CPU.ActiveCfg = Debug10|Any CPU
+		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Debug10|Any CPU.Build.0 = Debug10|Any CPU
+		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Debug10|x64.ActiveCfg = Debug10|x64
+		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Debug10|x64.Build.0 = Debug10|x64
+		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Debug10|x86.ActiveCfg = Debug10|x86
+		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Debug10|x86.Build.0 = Debug10|x86
 		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3E8E08DE-6684-43AB-9C82-554119E5B30E}.Release|x64.ActiveCfg = Debug10|x64
