@@ -1,0 +1,45 @@
+﻿<#@ output extension=".txt" #>
+            <#@ template debug="false" hostspecific="true" language="C#" #>
+            <#@ assembly name="$(ProjectDir)\CompuTec.AppEngine.PluginCodeGenerator.dll" #>
+
+            <#@ import namespace="System.Collections.Generic" #>
+            <#@ import namespace="CompuTec.AppEngine.PluginCodeGenerator.Extrator" #>
+            <#@ import namespace="CompuTec.AppEngine.PluginCodeGenerator.Tools" #>
+            <#@ import namespace="CompuTec.AppEngine.PluginCodeGenerator.Generator" #>
+
+            <#
+
+                var apiGenerator = new ApiGenerator(this.Host, new GeneratorSettings(){
+                    CoreNamespace = "CompuTec.Core2.Beans",
+                    TargetProjectName = "CompuTec.AppEngine.FirstPlugin", 
+                    TargeSerializersProjectName = "CompuTec.AppEngine.FirstPlugin.Serializer",
+                    TargetModelProjectNames = new List<string>(){ "CompuTec.AppEngine.FirstPlugin.Models" }, 
+                    SourceProjectName = "CompuTec.AppEngine.FirstPlugin.API",
+                    
+                    DevMode = false
+                  
+                });
+
+     
+
+                var result = apiGenerator.Generate();
+            #>
+            <#
+                result.UdoBeans.ForEach(udoBean => { 
+            #>
+            /*
+            <#= udoBean.ToString("") #>
+            */
+            <#
+                });
+            #>
+
+            <#
+                result.QueryGroups.ForEach(queryGroups => { 
+            #>
+            /*
+            <#= queryGroups.ToString() #>
+            */
+            <#
+                });
+            #>

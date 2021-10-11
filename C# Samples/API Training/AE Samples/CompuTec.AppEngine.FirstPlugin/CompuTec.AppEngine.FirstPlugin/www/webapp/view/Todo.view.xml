@@ -1,0 +1,81 @@
+<mvc:View
+		controllerName="computec.appengine.firstplugin.controller.Todo"
+		displayBlock="true"
+		xmlns="sap.m"
+		xmlns:mvc="sap.ui.core.mvc">
+	<Page showHeader="false">
+		<content>
+			<Table
+					id="todoList"
+					growing="true"
+					growingThreshold="10"
+					items="{FirstPlugin>/ToDo}"
+					fixedLayout="false">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<ToolbarSpacer/>
+							<SearchField
+									id="searchField"
+									width="30%"
+									search=".onSearch"/>
+							<Button
+									id="addTaskButton"
+									icon="sap-icon://add"
+									press=".onCreate">
+								<layoutData>
+									<OverflowToolbarLayoutData priority="NeverOverflow"/>
+								</layoutData>
+							</Button>
+							<Button
+									id="refreshTodoListButton"
+									icon="sap-icon://refresh"
+									press=".onRefresh"/>
+						</content>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column
+							id="taskColumnPriority"
+							width="8em">
+						<Text text="{i18n>todoTableTaskColumnPriority}"/>
+					</Column>
+					<Column
+							id="isDoneColumn"
+							width="3rem">
+						<Text text="{i18n>todoTableIsDoneColumnTitle}"/>
+					</Column>
+					<Column
+							id="taskColumn"
+							width="20em">
+						<Text text="{i18n>todoTableTaskColumnTitle}"/>
+					</Column>
+					<Column id="taskColumnDescription">
+						<Text text="{i18n>todoTableTaskColumnDescription}"/>
+					</Column>
+					<Column
+							id="actions"
+							width="3rem">
+						<Text text=""/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectStatus
+									icon="{= ${path: 'FirstPlugin>U_Priority', type: 'sap.ui.model.odata.type.String', formatter: '.getIconForPriority'}}"
+									state="{= ${path: 'FirstPlugin>U_Priority', type: 'sap.ui.model.odata.type.String', formatter: '.getStateForPriority'}}"
+									text="{= ${path: 'FirstPlugin>U_Priority', type: 'sap.ui.model.odata.type.String'}}"/>
+							<CheckBox selected="{ path: 'FirstPlugin>U_Done', type: 'computec.appengine.ui.controls.YesNoBoolType'}"/>
+							<Input value="{FirstPlugin>U_TaskName}"/>
+							<Input value="{FirstPlugin>U_Description}"/>
+						</cells>
+						<Button
+								icon="sap-icon://delete"
+								press=".onDelete"></Button>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+	</Page>
+</mvc:View>

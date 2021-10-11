@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props" Condition="Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props')" />
+  <Import Project="..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props" Condition="Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props')" />
+  <Import Project="..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.props" Condition="Exists('..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.props')" />
+  <Import Project="..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props')" />
+  <Import Project="..\packages\CompuTec.Core.2.10.11.20\build\CompuTec.Core.props" Condition="Exists('..\packages\CompuTec.Core.2.10.11.20\build\CompuTec.Core.props')" />
+  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.props" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.props')" />
+  <Import Project="..\packages\PostSharp.6.3.9\build\PostSharp.props" Condition="Exists('..\packages\PostSharp.6.3.9\build\PostSharp.props')" />
+  <Import Project="..\packages\CompuTec.ProcessForce.Scheduling.2.10.11.20\build\CompuTec.ProcessForce.Scheduling.props" Condition="Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.11.20\build\CompuTec.ProcessForce.Scheduling.props')" />
+  <Import Project="..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.props" Condition="Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DE05EC3A-B43A-4F43-B339-E245D7F83C36}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CompuTec.AppEngine.FirstPlugin.Api</RootNamespace>
+    <AssemblyName>CompuTec.AppEngine.FirstPlugin.Api</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Debug</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;Release</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Debug</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;Release</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug10|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug10\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug10|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug10\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Debug10</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug10|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug10\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Debug10</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release10|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release10\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release10|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Release10\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Release10</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release10|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Release10\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Release10</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CompuTec.AppEngine.DataAnnotations, Version=1.0.0.0, Culture=neutral, PublicKeyToken=481e6d68a5467cbe, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuTec.AppEngine.DataAnnotations.2.0.1.4\lib\net47\CompuTec.AppEngine.DataAnnotations.dll</HintPath>
+    </Reference>
+    <Reference Include="CompuTec.LabelPrinting.WebApiClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ea7f5d59e1cc26d2, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuTec.LabelPrinting.1.0.0\lib\net47\CompuTec.LabelPrinting.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="CompuTec.LabelPrinting.WebApiData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0e63b9197a80ea29, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuTec.LabelPrinting.1.0.0\lib\net47\CompuTec.LabelPrinting.WebApiData.dll</HintPath>
+    </Reference>
+    <Reference Include="CompuTec.License.Data, Version=5.7.0.0, Culture=neutral, PublicKeyToken=9c1de76b77434c3d, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuTec.License.5.7.1.8\lib\net47\CompuTec.License.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="CompuTec.LicenseServer.Client.API, Version=5.7.0.0, Culture=neutral, PublicKeyToken=10819f1f68b2c2c9, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuTec.License.5.7.1.8\lib\net47\CompuTec.LicenseServer.Client.API.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.0.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OData.Core, Version=7.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.OData.Core.7.2.0\lib\portable-net45+win8+wpa81\Microsoft.OData.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OData.Edm, Version=7.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.OData.Edm.7.2.0\lib\portable-net45+win8+wpa81\Microsoft.OData.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Spatial, Version=7.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Spatial.7.2.0\lib\portable-net45+win8+wpa81\Microsoft.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp, Version=6.3.9.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Redist.6.3.9\lib\net45\PostSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Common, Version=6.3.9.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Common.Redist.6.3.9\lib\net47\PostSharp.Patterns.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Diagnostics, Version=6.3.9.0, Culture=neutral, PublicKeyToken=e7f631e6ce13f078, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Patterns.Diagnostics.Redist.6.3.9\lib\net47\PostSharp.Patterns.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.7.0\lib\net45\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Linq, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.4.1.0\lib\net463\System.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq.Expressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Expressions.4.1.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Reflection, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.4.1.0\lib\net462\System.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.1.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.OData, Version=6.1.0.10907, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.OData.6.1.0\lib\net45\System.Web.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessObjects\BusinessObjects.cs" />
+    <Compile Include="BusinessObjects\ToDo\IToDo.cs" />
+    <Compile Include="BusinessObjects\ToDo\IToDoRequirement.cs" />
+    <Compile Include="BusinessObjects\ToDo\ToDo.cs" />
+    <Compile Include="BusinessObjects\ToDo\ToDo.properties.cs" />
+    <Compile Include="BusinessObjects\ToDo\ToDoRequirement.cs" />
+    <Compile Include="Enums\ToDoPriority.cs" />
+    <Compile Include="Enums\YesNoType.cs" />
+    <Compile Include="FirstPluginInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Info.txt" />
+    <None Include="app.config" />
+    <Content Include="CompuTec.SAP.Config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CompuTec.SAP.Generated.Config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="CompuTecSAP.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompuTec.AppEngine.FirstPlugin.Models\CompuTec.AppEngine.FirstPlugin.Models.csproj">
+      <Project>{75C82B80-2457-4623-9176-A97C64B0591B}</Project>
+      <Name>CompuTec.AppEngine.FirstPlugin.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.11.20\build\CompuTec.ProcessForce.Scheduling.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.Scheduling.2.10.11.20\build\CompuTec.ProcessForce.Scheduling.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.11.20\build\CompuTec.ProcessForce.Scheduling.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.Scheduling.2.10.11.20\build\CompuTec.ProcessForce.Scheduling.targets'))" />
+    <Error Condition="!Exists('..\packages\PostSharp.6.3.9\build\PostSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.3.9\build\PostSharp.props'))" />
+    <Error Condition="!Exists('..\packages\PostSharp.6.3.9\build\PostSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PostSharp.6.3.9\build\PostSharp.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core.2.10.11.20\build\CompuTec.Core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core.2.10.11.20\build\CompuTec.Core.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core.2.10.11.20\build\CompuTec.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core.2.10.11.20\build\CompuTec.Core.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.targets'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.props'))" />
+    <Error Condition="!Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets'))" />
+    <Error Condition="!Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SAP.DI.2.10.0.4\build\SAP.DI.props'))" />
+    <Error Condition="!Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets'))" />
+  </Target>
+  <Import Project="..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets" Condition="Exists('..\packages\CompuTec.AppEngine.Base.Infrastructure.2.0.1.4\build\CompuTec.AppEngine.Base.Infrastructure.targets')" />
+  <Import Project="..\packages\CompuTec.ProcessForce.Scheduling.2.10.11.20\build\CompuTec.ProcessForce.Scheduling.targets" Condition="Exists('..\packages\CompuTec.ProcessForce.Scheduling.2.10.11.20\build\CompuTec.ProcessForce.Scheduling.targets')" />
+  <Import Project="..\packages\PostSharp.6.3.9\build\PostSharp.targets" Condition="Exists('..\packages\PostSharp.6.3.9\build\PostSharp.targets')" />
+  <Import Project="..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.targets" Condition="Exists('..\packages\CompuTec.BaseLayer.2.10.0.79\build\CompuTec.BaseLayer.targets')" />
+  <Import Project="..\packages\CompuTec.Core.2.10.11.20\build\CompuTec.Core.targets" Condition="Exists('..\packages\CompuTec.Core.2.10.11.20\build\CompuTec.Core.targets')" />
+  <Import Project="..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets" Condition="Exists('..\packages\CompuTec.Core2.2.10.0.79\build\CompuTec.Core2.targets')" />
+  <Import Project="..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.targets" Condition="Exists('..\packages\CompuTec.ProcessForce.API.2.10.11.20\build\CompuTec.ProcessForce.API.targets')" />
+  <Import Project="..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets" Condition="Exists('..\packages\CompuTec.SAP.2.10.0.79\build\CompuTec.SAP.targets')" />
+  <Import Project="..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets" Condition="Exists('..\packages\SAP.DI.2.10.0.4\build\SAP.DI.targets')" />
+</Project>

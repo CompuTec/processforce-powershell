@@ -1,0 +1,5 @@
+﻿This is a Setup Project
+It contains a definition for all User Defined Objects and User Defined TAbles in the plugin
+in this exampkle you can see :
+1) user defined object with a master child type ToDo
+2)User defined Field added to SAP ItemMasterData object

@@ -1,0 +1,13 @@
+<mvc:View
+    xmlns:f="sap.f"
+    xmlns:mvc="sap.ui.core.mvc"
+    controllerName="computec.appengine.firstplugin.controller.App"
+    displayBlock="true"
+    height="100%"
+    xmlns="sap.m">
+  <Shell appWidthLimited="false">
+    <App
+        id="app"
+        busyIndicatorDelay="{appView>/delay}" />
+  </Shell>
+</mvc:View>

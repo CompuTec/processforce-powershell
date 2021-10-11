@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<messageTranslations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Message id="appTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">CompuTec.AppEngine.FirstPlugin</translation>
+  </Message>
+
+
+
+  <Message id="homePageTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Home Page</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Home Page</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Strona domowa</translation>
+  </Message>
+
+  <Message id="SandboxButtonTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">SandBox</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">SandBox</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Piaskownica</translation>
+  </Message>
+
+  <Message id="todoTileHeader" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">ToDo List</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">ToDo List</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Lista rzeczy do zrobienia</translation>
+  </Message>
+
+  <Message id="todoTileSubheader" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Online</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Online</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Online</translation>
+  </Message>
+
+  <Message id="todoPageTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">ToDo List</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">ToDo List</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Lista rzeczy do zrobienia</translation>
+  </Message>
+
+  <Message id="todoTableTaskColumnTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Task</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Task</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zadanie</translation>
+  </Message>
+
+  <Message id="todoTableIsDoneColumnTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Done</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Done</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zakończone</translation>
+  </Message>
+
+  <Message id="todoTableTaskColumnDescription" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Description</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Description</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Opis</translation>
+  </Message>
+
+  <Message id="todoTableTaskColumnPriority" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Priority</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Priority</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Priorytet</translation>
+  </Message>
+
+  <Message id="todoListCancelButtonText" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Cancel</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Cancel</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zakończ</translation>
+  </Message>
+
+  <Message id="todoListSaveButtonText" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Save</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Save</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zapisz</translation>
+  </Message>
+
+  <Message id="todoListSaveResultSuccessText" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Changes have been saved</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Changes have been saved</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zmiany zostały zapisane</translation>
+  </Message>
+
+  <Message id="DeleteButton" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Delete Item</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Delete Item</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Usuń tą pozycję</translation>
+  </Message>
+
+  <Message id="AddButton" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Dodaj pozycję</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Dodaj pozycję</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Dodaj pozycję</translation>
+  </Message>
+
+  <Message id="DescriptionColumn" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Description</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Description</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Opis</translation>
+  </Message>
+
+  <Message id="TaskNameColumn" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Name</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Name</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Nazwa</translation>
+  </Message>
+
+  <Message id="PriorityColumn" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Priority</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Priority</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Priorytet</translation>
+  </Message>
+
+  <Message id="salesOrderTableTitle" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Sales Orders</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Sales Orders</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Zlecenia sprzedaży</translation>
+  </Message>
+  <Message id="salesOrderDocumentNumberColumnLabel" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Document Number</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Document Number</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Number dokumentu</translation>
+  </Message>
+  <Message id="salesOrderBusinessPartnerColumnLabel" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Business Partner</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Business Partner</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Business Partner</translation>
+  </Message>
+  <Message id="salesOrderAttachmentsColumnLabel" param="0">
+    <translation lang="Default" Date="2011-08-09T15:55:59">Attachments</translation>
+    <translation lang="ln_English" Date="2011-08-09T15:55:59">Attachments</translation>
+    <translation lang="ln_Polish" Date="2011-08-09T15:55:59">Załączniki</translation>
+  </Message>
+
+</messageTranslations>

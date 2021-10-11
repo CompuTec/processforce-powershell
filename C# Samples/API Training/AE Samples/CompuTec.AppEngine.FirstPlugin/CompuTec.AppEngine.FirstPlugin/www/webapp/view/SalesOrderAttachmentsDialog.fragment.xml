@@ -1,0 +1,49 @@
+<core:FragmentDefinition
+		xmlns="sap.m"
+		xmlns:core="sap.ui.core"
+		xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Dialog title="Attachments">
+		<customHeader>
+			<OverflowToolbar>
+				<Title text="Attachments"/>
+				<ToolbarSpacer/>
+				<Button
+						icon="sap-icon://add-document"
+						text="Add Attachment"
+						press=".onAttachmentDialogAddAttachment"></Button>
+			</OverflowToolbar>
+		</customHeader>
+		<Table
+				growing="true"
+				growingThreshold="10"
+				inset="false"
+				items="{AT>/Attachmnets}"
+				fixedLayout="false">
+			<columns>
+				<Column>
+					<Text text="Attachment Name"/>
+				</Column>
+				<Column>
+					<Text text="Download"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{path: 'AT>FileName'}"/>
+						<Button
+								icon="sap-icon://download"
+								press=".onAttachmentsDialogDownloadInNewTab"
+								app:AbsEntry="{path: 'AT>AbsEntry'}"
+								app:Line="{path: 'AT>Line'}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+		<endButton>
+			<Button
+					text="Close"
+					press=".onAttachmentsDialogCloseFragment"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

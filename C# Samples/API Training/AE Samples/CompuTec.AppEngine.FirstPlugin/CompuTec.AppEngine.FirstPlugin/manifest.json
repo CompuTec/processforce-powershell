@@ -1,0 +1,42 @@
+﻿{
+  "version": "1.0.0",
+  "id": "FirstPlugin",
+  "name": "FirstPlugin",
+  "icon": "sap-icon://activate",
+
+  "company": "",
+  "api": {
+    "routePrefix": "FirstPlugin",
+    "setupAssembly": "CompuTec.AppEngine.FirstPlugin",
+    "assemblies": [
+      "CompuTec.AppEngine.FirstPlugin",
+      "CompuTec.AppEngine.FirstPlugin.Models",
+      "CompuTec.AppEngine.FirstPlugin.Serializer",
+      "CompuTec.AppEngine.FirstPlugin.API",
+      "CompuTec.AppEngine.FirstPlugin.Setup"
+    ],  
+    "dependencies": {
+    }
+  },
+  "ui": {
+    "apps": [
+      {
+        "icon": "sap-icon://example",
+        "namespace": "computec.appengine.firstplugin",
+        "tile": "FirstPlugin",
+        "target": "home",
+        "type": "User",
+        "sapForms": [
+          {
+            "uniqueId": "firstplugin_salesorder",
+            "formMode": false,
+            "url": "salesorder",
+            "fatherUID": "2048",
+            "menuItem": true,
+            "menuCaption": "FP Sales Orders"
+          }
+        ]
+      }
+    ]
+  }
+}

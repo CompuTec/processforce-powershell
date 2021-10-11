@@ -1,0 +1,65 @@
+<mvc:View
+		controllerName="computec.appengine.firstplugin.controller.SalesOrder"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:ae="computec.appengine.ui.controls"
+		xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+		xmlns="sap.m">
+	<Table
+			id="salesOrdersTable"
+			inset="true"
+			items="{AE>/CustomViews/Views.Custom(Id='FirstPlugin%3ASalesOrderList')}">
+		<headerToolbar>
+			<Toolbar>
+				<Title text="{i18n>salesOrderTableTitle}"/>
+				<ToolbarSpacer/>
+				<SearchField
+						width="50%"
+						search=".onFilter"/>
+			</Toolbar>
+		</headerToolbar>
+		<columns>
+			<Column>
+				<Text text="{i18n>salesOrderDocumentNumberColumnLabel}"/>
+			</Column>
+			<Column>
+				<Text text="{i18n>salesOrderBusinessPartnerColumnLabel}"/>
+			</Column>
+			<Column>
+				<Text text="{i18n>salesOrderAttachmentsColumnLabel}"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<ae:Link
+							text="{path: 'AE>DocNum', type: 'sap.ui.model.odata.type.Int32'} ({path: 'AE>DocEntry', type: 'sap.ui.model.odata.type.Int32'})"
+							objectType="fo_Order"
+							objectSubType=""
+							key="{path: 'AE>DocEntry', type: 'sap.ui.model.odata.type.Int32'}"/>
+					<HBox>
+						<ae:Link
+								text=""
+								objectType="fo_BusinessPartner"
+								objectSubType=""
+								key="{path: 'AE>CardCode', type: 'sap.ui.model.odata.type.String'}"/>
+						<ObjectIdentifier
+								title="{path: 'AE>CardName', type: 'sap.ui.model.odata.type.String'}"
+								text="{path: 'AE>CardCode', type: 'sap.ui.model.odata.type.String'}"/>
+					</HBox>
+					<GenericTag
+							app:AtcEntry="{path: 'AE>AtcEntry', type: 'sap.ui.model.odata.type.Int32'}"
+							app:DocEntry="{path: 'AE>DocEntry', type: 'sap.ui.model.odata.type.Int32'}"
+							design="StatusIconHidden"
+							visible="{= %{path: 'AE>NumberOfAttachments', type: 'sap.ui.model.odata.type.Int32'} &gt; 0}"
+							press=".onAttachmentsButtonPress">
+						<ObjectNumber
+								state="Information"
+								emphasized="false"
+								number="{path: 'AE>NumberOfAttachments', type: 'sap.ui.model.odata.type.Int32'}"
+								unit=""/>
+					</GenericTag>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</mvc:View>

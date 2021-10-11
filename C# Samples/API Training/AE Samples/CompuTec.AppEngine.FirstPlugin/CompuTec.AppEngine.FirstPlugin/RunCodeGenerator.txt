@@ -1,0 +1,18 @@
+﻿                        
+                                                
+                                    /*
+            IToDo - 1, []
+  *Code  string
+  *Name  string
+  *U_Deadline  System.DateTime
+  *U_TaskName  string
+  *U_Description  string
+  *U_Priority  CompuTec.AppEngine.FirstPlugin.API.Enums.ToDoPriority
+  *U_Done  CompuTec.AppEngine.FirstPlugin.API.Enums.YesNoType
+	IToDoRequirement - 0, [IToDo]
+	  *U_Name  string
+	  *U_Quantity  int
+	  *U_LineNum  int
+            */
+            
+            
