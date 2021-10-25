@@ -241,6 +241,7 @@
     <Compile Include="AppStart\PluginSettings.cs" />
     <Compile Include="AppStart\Setup.cs" />
     <Compile Include="AppStart\Initializer.cs" />
+    <Compile Include="Controllers\Api\PF_Scheduling.cs" />
     <Compile Include="Controllers\Api\SalesOrderController.cs" />
     <Compile Include="Controllers\Api\ToDoController.generated.cs" />
     <Compile Include="Controllers\OData\ToDoController.generated.cs" />
@@ -308,7 +309,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controllers\Api\NewFolder1\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
