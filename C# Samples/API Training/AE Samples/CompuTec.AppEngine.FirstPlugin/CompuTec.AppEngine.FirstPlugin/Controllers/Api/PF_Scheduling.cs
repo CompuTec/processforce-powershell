@@ -24,7 +24,7 @@ namespace CompuTec.AppEngine.FirstPlugin.Controllers.Api
             bool saving = false;
             //iF YOU NEED pf COMPANY PLEASE USE THIS 
             var pfCompany = Session.GetCompany<IProcessForceCompany>();
-            var rsc= pfCompany.CreatePFObject(ObjectTypes.Resource);
+    
 
             // you are already connected
             List<IManufacturingOrder> listOfMorsToBeAdded = BulkUdoConverter.GetBulkObjects<IManufacturingOrder, int>(Session.Token, ObjectTypes.ManufacturingOrder, AllRelatedMorsDocEntries);
