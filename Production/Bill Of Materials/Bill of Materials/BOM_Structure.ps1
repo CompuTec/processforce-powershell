@@ -2,7 +2,7 @@
 ########################################################################
 # CompuTec PowerShell Script - Import Bill of Materials Structures
 ########################################################################
-$SCRIPT_VERSION = "3.5"
+$SCRIPT_VERSION = "3.6"
 # Last tested PF version: ProcessForce 9.3 (9.30.200) PL: MAIN (64-bit)
 # Description:
 #      Import Bill of Materials Structures. Script add new BOMs or will update existing BOMs.    
@@ -40,6 +40,7 @@ $csvBomFilePath = -join ($csvImportCatalog, "BOMs.csv")
 $csvBomItemsFilePath = -join ($csvImportCatalog, "BOM_Items.csv")
 $csvBomscrapsFilePath = -join ($csvImportCatalog, "BOM_Scraps.csv")
 $csvBomCoproductsFilePath = -join ($csvImportCatalog, "BOM_Coproducts.csv")
+$csvBomAttachmentsFilePath = -join ($csvImportCatalog, "BOM_Attachments.csv")
 
 #endregion
 
@@ -120,14 +121,22 @@ try {
     else {
         write-host "BOM Coproducts - csv not available."
     }
+    [array]$bomAttachments = $null;
+    if ((Test-Path -Path $csvBomAttachmentsFilePath -PathType leaf) -eq $true) {
+        [array]$bomAttachments = Import-Csv -Delimiter ';' -Path $csvBomAttachmentsFilePath 
+    }
+    else {
+        write-host "BOM Attachments - csv not available."
+    }
     write-Host 'Preparing data: '
-    $totalRows = $csvItems.Count + $bomItems.Count + $bomScraps.Count + $bomCoproducts.Count
+    $totalRows = $csvItems.Count + $bomItems.Count + $bomScraps.Count + $bomCoproducts.Count + $bomAttachments.Count;
 
     $bomList = New-Object 'System.Collections.Generic.List[array]'
 
     $dictionaryItems = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
     $dictionaryScraps = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
     $dictionaryCoproducts = New-Object 'System.Collections.Generic.Dictionary[string,System.Collections.Generic.List[array]]'
+	$dictionaryAttachments = New-Object 'System.Collections.Generic.Dictionary[String,System.Collections.Generic.List[array]]'
 
     $progressItterator = 0;
     $progres = 0;
@@ -209,6 +218,26 @@ try {
         else {
             $list = New-Object System.Collections.Generic.List[array];
             $dictionaryCoproducts[$key] = $list;
+        }
+    
+        $list.Add([array]$row);
+    }
+
+    foreach ($row in $bomAttachments) {
+        $key = $row.BOM_ItemCode + '___' + $row.Revision;
+        $progressItterator++;
+        $progres = [math]::Round(($progressItterator * 100) / $total);
+        if ($progres -gt $beforeProgress) {
+            Write-Host $progres"% " -NoNewline
+            $beforeProgress = $progres
+        }
+
+        if ($dictionaryAttachments.ContainsKey($key)) {
+            $list = $dictionaryAttachments[$key];
+        }
+        else {
+            $list = New-Object System.Collections.Generic.List[array];
+            $dictionaryAttachments[$key] = $list;
         }
     
         $list.Add([array]$row);
@@ -427,7 +456,30 @@ try {
             }
             $bom.U_BatchSize = $csvItem.BatchSize
     
-            #Adding or updating BOMs depends on exists in the database
+			#Adding attachments to Resources
+			[array]$bomAttachmentsData = $dictionaryAttachments[$dictionaryKey];
+			if ($bomAttachmentsData.count -gt 0) {
+				#Deleting all existing attachments
+				$count = $bom.Attachments.Count
+				for ($i = 0; $i -lt $count; $i++) {
+					$dummy = $bom.Attachments.DelRowAtPos(0);
+				}
+				$bom.Attachments.SetCurrentLine(0);
+				#Adding the new data
+				foreach ($att in $bomAttachmentsData) {
+					if ($bom.Attachments.IsRowFilled()) {
+						$dummy = $bom.Attachments.Add()
+					}
+					# $fileName = [System.IO.Path]::GetFileName($att.AttachmentPath)
+					# $bom.Attachments.U_AttFileName = $fileName
+					# $bom.Attachments.U_AttDate = [System.DateTime]::Today
+					# $bom.Attachments.U_AttPath = $att.AttachmentPath
+					$bom.Attachments.U_FullPath = $att.AttachmentPath
+				}
+			}
+
+
+            #Adding or updating BOMs depends if it already exists in the database
             $message = 0;
     
             if ($exists -eq $true) {
