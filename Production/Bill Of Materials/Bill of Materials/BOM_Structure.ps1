@@ -470,10 +470,10 @@ try {
 					if ($bom.Attachments.IsRowFilled()) {
 						$dummy = $bom.Attachments.Add()
 					}
-					$fileName = [System.IO.Path]::GetFileName($att.AttachmentPath)
-					$bom.Attachments.U_AttFileName = $fileName
-					$bom.Attachments.U_AttDate = [System.DateTime]::Today
-					$bom.Attachments.U_AttPath = $att.AttachmentPath
+					# $fileName = [System.IO.Path]::GetFileName($att.AttachmentPath)
+					# $bom.Attachments.U_AttFileName = $fileName
+					# $bom.Attachments.U_AttDate = [System.DateTime]::Today
+					# $bom.Attachments.U_AttPath = $att.AttachmentPath
 					$bom.Attachments.U_FullPath = $att.AttachmentPath
 				}
 			}
