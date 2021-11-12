@@ -1,3 +1,4 @@
-BOM_Header;Revision;RoutingCode;OperationCode;OperationSequence;ItemCode;ItemType;ItemSequence;Direction;TimeCalc
-Product-A;code00;01;01;10;Active-Item-01;IT;40;I;Y
-Product-A;code00;02;03;20;Coproduct-01;CP;10;O;
+BOM_Header;Revision;RoutingCode;OperationCode;OperationSequence;ItemCode;ItemType;ItemSequence;Direction;TimeCalc;Quantity;Ratio
+Product-A;code00;02;04;10;Active-Item-01;IT;10;I;Y;;0.4
+Product-A;code00;02;03;20;Active-Item-01;IT;10;I;Y;;0.6
+Product-A;code00;02;03;20;Coproduct-01;CP;10;O;;;1
