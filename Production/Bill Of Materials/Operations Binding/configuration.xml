@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configuration>
-  <connection
-    Database="PFDEMOGB"
-    SQLServer="NDB@hanaserver:30013"
-    LicenseServer="hanaserver:40000"
-    DbServerType="dst_HANADB"
-    UserName="manager"
-    Password="1234"
-  />
-  <!-- Database       = Database/schema name (check in SAP Company select form/window, or in Microsoft SQL Server Management Studio or in SAP HANA Studio) -->
-  <!-- SQLServer      = Database server name or IP address with port number; Should be the same as in the System Landscape Directory (check https://<Server>:<Port>/ControlCenter); Sometimes the best is to use an IP address to resolve connection problems -->
-  <!-- LicenseServer  = SAP Business One Licence Server name or IP address with a port number (check in SAP Business One client -> Administration -> License -> License Administration -> License Server) -->
-  <!-- DbServerType   =
+	<connection
+			Database="MRP25"
+			SQLServer="DEV@hanadev:30013"
+			LicenseServer="hanadev:40000"
+			DbServerType="dst_HANADB"
+			UserName="manager"
+			Password="1234"/>
+	/>
+	<!-- Database       = Database/schema name (check in SAP Company select form/window, or in Microsoft SQL Server Management Studio or in SAP HANA Studio) -->
+	<!-- SQLServer      = Database server name or IP address with port number; Should be the same as in the System Landscape Directory (check https://<Server>:<Port>/ControlCenter); Sometimes the best is to use an IP address to resolve connection problems -->
+	<!-- LicenseServer  = SAP Business One Licence Server name or IP address with a port number (check in SAP Business One client -> Administration -> License -> License Administration -> License Server) -->
+	<!-- DbServerType   =
                         [SAPbobsCOM.BoDataServerTypes]::"dst_HANADB"      # For SAP HANA
                         [SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2019"   # For Microsoft SQL Server 2019
                         [SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2016"   # For Microsoft SQL Server 2016
                         [SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2014"   # For Microsoft SQL Server 2014
                         [SAPbobsCOM.BoDataServerTypes]::"dst_MSSQL2012"   # For Microsoft SQL Server 2012
   -->
-  <!-- UserName       = SAP Business One username e.g., manager -->
-  <!-- Password       = SAP Business One user password -->
+	<!-- UserName       = SAP Business One username e.g., manager -->
+	<!-- Password       = SAP Business One user password -->
 </configuration>

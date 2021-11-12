@@ -3,7 +3,7 @@ Clear-Host
 ########################################################################
 # CompuTec PowerShell Script - Import BOM Bindings
 ########################################################################
-$SCRIPT_VERSION = "3.2"
+$SCRIPT_VERSION = "3.3"
 # Last tested PF version: ProcessForce 9.3 (9.30.150) PL: 05 R1 HF1 (64-bit)
 # Description:
 #      Import BOM Bindings. Script will update existing BOM Bindings.
@@ -157,16 +157,13 @@ try {
                                 LEFT OUTER JOIN ""@CT_PF_BOM3"" BS3 ON B.""Code"" = BS3.""Code"" AND 'CP' = N'{3}' AND BS3.""U_ItemCode"" =  N'{2}' AND BS3.""U_Sequence"" =  N'{4}'
                                 LEFT OUTER JOIN ""@CT_PF_BOM4"" BS4 ON B.""Code"" = BS4.""Code"" AND 'SC' = N'{3}' AND BS4.""U_ItemCode"" =  N'{2}' AND BS4.""U_Sequence"" =  N'{4}'
                                 WHERE B.""U_ItemCode"" =  N'{0}' AND B.""U_Revision"" =  N'{1}' AND ISNULL(BS4.""U_LineNum"",ISNULL(BS3.""U_LineNum"",ISNULL(BS.""U_LineNum"",-1))) != -1";
-	if ($pfcCompany.DbServerType -eq [SAPbobsCOM.BoDataServerTypes]::dst_HANADB) {
+	if ($pfcCompany.DbServerType -eq [string][SAPbobsCOM.BoDataServerTypes]::dst_HANADB) {
 		$SQL_QUERY_BASELINE = "SELECT IFNULL(BS4.""U_LineNum"",IFNULL(BS3.""U_LineNum"",BS.""U_LineNum"")) 
                                 FROM ""@CT_PF_OBOM"" B LEFT OUTER JOIN ""@CT_PF_BOM1"" BS ON B.""Code"" = BS.""Code"" AND 'IT' = N'{3}' AND BS.""U_ItemCode"" =  N'{2}' AND BS.""U_Sequence"" =  N'{4}'
                                 LEFT OUTER JOIN ""@CT_PF_BOM3"" BS3 ON B.""Code"" = BS3.""Code"" AND 'CP' = N'{3}' AND BS3.""U_ItemCode"" =  N'{2}' AND BS3.""U_Sequence"" =  N'{4}'
                                 LEFT OUTER JOIN ""@CT_PF_BOM4"" BS4 ON B.""Code"" = BS4.""Code"" AND 'SC' = N'{3}' AND BS4.""U_ItemCode"" =  N'{2}' AND BS4.""U_Sequence"" =  N'{4}'
                                 WHERE B.""U_ItemCode"" =  N'{0}' AND B.""U_Revision"" =  N'{1}' AND IFNULL(BS4.""U_LineNum"",IFNULL(BS3.""U_LineNum"",IFNULL(BS.""U_LineNum"",-1))) != -1";
 	};
-    
-
-
 
 	Write-Host 'Adding/updating data: ' -NoNewLine;
     
@@ -206,7 +203,9 @@ try {
 				$dummy = $bom.RoutingsOperationInputOutput.DelRowAtPos(0);
 			}            
 			$dummy = $bom.RoutingsOperationInputOutput.SetCurrentLine($bom.RoutingsOperationInputOutput.Count - 1);
-         
+
+			
+			
 			#Adding a new data - Bind
 			foreach ($bb in $bomBindings) {
 				$rs.DoQuery([string]::Format($SQL_QUERY_RTGCODE, $bb.RoutingCode, $bb.OperationCode, $bb.OperationSequence, $bb.BOM_Header, $bb.Revision));
@@ -245,8 +244,20 @@ try {
 					$bom.RoutingsOperationInputOutput.U_InTimeCalc = 'N'
 				}
 
+				if($bb.Quantity -gt 0){
+					$bom.RoutingsOperationInputOutput.U_Quantity = $bb.Quantity;
+
+
+				} elseif ($bb.Ratio -gt 0) {
+					if($bb.Ratio -gt 1){
+						$err = [System.String]::Format("Error adding binding Routing: {0}, Operation: {1}, OperationSequence: {2}
+						-RATIO CAN'T BE GREATER THAN 1", $bb.RoutingCode, $bb.OperationCode, $bb.OperationSequence);
+						Throw [System.Exception]($err);
+					}
+					$bom.RoutingsOperationInputOutput.U_Ratio = $bb.Ratio;
+				}
+
 				if ($rs.RecordCount -gt 0) {
-                
 					$bom.RoutingsOperationInputOutput.U_BaseLine = $rs.Fields.Item(0).Value
 				}
 				else {
@@ -254,7 +265,6 @@ try {
                 IemType: {3}, Sequence: {4} - RECORD NOT FOUND", $bb.BOM_Header, $bb.Revision, $bb.ItemCode, $bb.ItemType , $bb.ItemSequence);
 					Throw [System.Exception]($err);
 				}
-
 				$dummy = $bom.RoutingsOperationInputOutput.Add();
 			}
 
