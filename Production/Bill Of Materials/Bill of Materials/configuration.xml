@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configuration>
 	<connection
-			Database="PFDEMOGB"
+			Database="MRP25"
 			SQLServer="DEV@hanadev:30013"
 			LicenseServer="hanadev:40000"
 			DbServerType="dst_HANADB"
