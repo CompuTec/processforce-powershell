@@ -1,3 +1,4 @@
 BOM_ItemCode;Revision;Quantity;Factor;Yield;YieldFormula;YieldItemsFormula;YieldCoproductsFormula;YieldScrapsFormula;Warehouse;DistRule;DistRule2;DistRule3;DistRule4;DistRule5;Project;BatchSize;ProdType;Instructions
 Product-A;code00;1;1;90;;;;;01;01;;;;;;1;I;"Some Instructions`nNew Line"
+ST_BC;code00;1;1;90;;;;;01;01;;;;;;1;I;"Some Instructions`nNew Line"
 Product-B;code00;1;1;;;;;;01;01;;;;;;1;E
