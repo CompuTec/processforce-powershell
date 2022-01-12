@@ -1,0 +1,3 @@
+ImportKey1;ImportKey2;Revision;SItemCode;SRevision;Default;ValidFrom;ValidTo;Ratio;RplItm;RplCp;RplSc;Remarks
+1;1;code00;Active-Item-02;code00;N;2022-01-01;2023-09-01;1;Y;N;N;Remarks
+1;2;code00;Active-Item-03;code00;Y;;;1;Y;Y;Y;Remarks
