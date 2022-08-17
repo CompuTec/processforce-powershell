@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CT_CONFIG>
     <Connection
-            Database="PFDEMOBC"
-            SQLServer="NDB@hanadev:30013"
+            Database="PFDEMOGB_PT"
+            SQLServer="DEV@hanadev:30013"
             LicenseServer="hanadev:40000"
             DbServerType="dst_HANADB"
             UserName="manager"
