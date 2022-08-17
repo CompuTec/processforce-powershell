@@ -25,8 +25,10 @@
         <!-- NumberOfOperations - number of operations that will be added to routing (this number should be greater or equal to NumberOfOperations in element Operation -->
         <Routing Prefix="ACTPF_" NumberOfRoutings="10" NumberOfOperations="5"/>
         <!-- NumberOfBoms - this number should be lower or equal NumberOfBoms in element BOM -->
-        <!-- NumberOfRoutings - this number should be lowe or euqal NumberOfRoutings in element Routing-->
+		<!-- NumberOfProcesses- this number should be lowe or euqal NumberOfRoutings in element Routing-->
         <ProductionProcess NumberOfBoms="10" NumberOfRoutings="2"/>
+		<!-- NumberOfManufacturingOrdersToCreate - this number should be lower or equal NumberOfBoms in element BOM -->
+		<MOR NumberOfMors="10"/>
     </MasterData>
     <UI>
         <!-- recordsToGoThrough - number of records that test will go throught. First one will be searched then next action will be used. -->
@@ -43,5 +45,7 @@
         <Operation recordsToGoThrough="10" repeatOpenForm="10"/>
         <!-- recordsToGoThrough should be lower or equal NumberOfRoutings from Routing element -->
         <Routing recordsToGoThrough="10" repeatOpenForm="10"/>
+		<!-- recordsToGoThrough should be lower or equal NumberOfBoms from ProductionProcess element -->
+		<MOR recordsToGoThrough="10" repeatOpenForm="10"/>
     </UI>
 </CT_CONFIG>

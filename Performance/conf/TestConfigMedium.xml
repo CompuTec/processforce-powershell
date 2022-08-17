@@ -27,6 +27,8 @@
         <!-- NumberOfBoms - this number should be lower or equal NumberOfBoms in element BOM -->
         <!-- NumberOfRoutings - this number should be lowe or euqal NumberOfRoutings in element Routing-->
         <ProductionProcess NumberOfBoms="100" NumberOfRoutings="2"/>
+		<!-- NumberOfManufacturingOrdersToCreate - this number should be lower or equal NumberOfBoms in element BOM -->
+		<MOR NumberOfMors="100"/>
     </MasterData>
     <UI>
     <!-- recordsToGoThrough - number of records that test will go throught. First one will be searched then next action will be used. -->
@@ -44,5 +46,7 @@
         <Operation recordsToGoThrough="100" repeatOpenForm="100"/>
         <!-- recordsToGoThrough should be lower or equal NumberOfRoutings from Routing element -->
         <Routing recordsToGoThrough="100" repeatOpenForm="100"/>
+		<!-- recordsToGoThrough should be lower or equal NumberOfBoms from ProductionProcess element -->
+		<MOR recordsToGoThrough="100" repeatOpenForm="100"/>
     </UI>
 </CT_CONFIG>
