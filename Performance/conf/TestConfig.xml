@@ -25,7 +25,7 @@
         <!-- NumberOfOperations - number of operations that will be added to routing (this number should be greater or equal to NumberOfOperations in element Operation -->
         <Routing Prefix="ACTPF_" NumberOfRoutings="10" NumberOfOperations="5"/>
         <!-- NumberOfBoms - this number should be lower or equal NumberOfBoms in element BOM -->
-		<!-- NumberOfRoutings- this number should be lowe or euqal NumberOfRoutings in element Routing-->
+		<!-- NumberOfRoutings - this number should be lowe or euqal NumberOfRoutings in element Routing-->
         <ProductionProcess NumberOfBoms="10" NumberOfRoutings="2"/>
 		<!-- NumberOfManufacturingOrdersToCreate - this number should be lower or equal NumberOfBoms in element BOM -->
 		<MOR NumberOfMors="10"/>
