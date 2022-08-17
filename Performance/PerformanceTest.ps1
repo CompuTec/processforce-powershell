@@ -14,7 +14,7 @@ $OperationsList = New-Object 'System.Collections.Generic.List[string]';
 $RoutingsList = New-Object 'System.Collections.Generic.List[string]';
 $ItemsDictionary.Add('MAKE', (New-Object 'System.Collections.Generic.List[psobject]'));
 $ItemsDictionary.Add('BUY', (New-Object 'System.Collections.Generic.List[psobject]'));
-$CreatedMors = New-Object 'System.Collections.Generic.Dictionary[string, string]';
+$CreatedMors = New-Object 'System.Collections.Generic.List[psobject]';
 
 
 
@@ -65,7 +65,7 @@ function connectDI() {
 	[CTLogger] $logJobs = New-Object CTLogger ('DI', 'Connection', $RESULT_FILE)
 	$logJobs.startSubtask('Connection');
 	$pfcCompany = [CompuTec.ProcessForce.API.ProcessForceCompanyInitializator]::CreateCompany();
-	$pfcCompany.LicenseServer = $xmlConnection.LicenseServer;
+	$pfcCompany.SLDAddress = $xmlConnection.LicenseServer;
 	$pfcCompany.SQLServer = $xmlConnection.SQLServer;
 	$pfcCompany.DbServerType = [SAPbobsCOM.BoDataServerTypes]::[string]$xmlConnection.DbServerType;
 	$pfcCompany.Databasename = $xmlConnection.Database;
@@ -899,7 +899,6 @@ function Imports($pfcCompany) {
 				else {
 					$log.endSubtask('Add Production Process', 'S', '');
 				}
-                
 			}
 			catch {
 				$err = $_.Exception.Message;
@@ -950,7 +949,10 @@ function Imports($pfcCompany) {
 				}
 				RefreshHeader $mor;
 				$log.endSubtask('Add MOR', 'S', '');
-				$CreatedMors.Add($mor.Series, $mor.DocNum);
+				$CreatedMors.Add([psobject]@{
+					Series  = $mor.Series
+					DocNum = $mor.DocNum
+				});
 			}
 			catch {
 				$err = $_.Exception.Message;
@@ -1482,8 +1484,9 @@ function UITests() {
 				Write-Host 'Load Routings:';
 				$xmlOpenRouting = $UIConfigXml.SelectSingleNode([string]::Format("MOR"));
 				$recordsToGoThrough = [int] $xmlOpenRouting.recordsToGoThrough;
-				$firstMORSeries = $CreatedMors.Keys[0];
-				$firstMORDocNum = $CreatedMors.Values[0];
+				$firstMOR = $CreatedMors[0];
+				$firstMORSeries = $firstMOR.Series;
+				$firstMORDocNum = $firstMOR.DocNum;
 				$firstEntityKeyValues = New-Object 'System.Collections.Generic.Dictionary[string,string]'; 
 				$firstEntityKeyValues.Add("Series", $firstMORSeries);
 				$firstEntityKeyValues.Add("5", $firstMORDocNum);
@@ -1606,7 +1609,7 @@ $configurationTest = testChoosedDatabaseConfiguration -pfcCompany $pfcCompany;
 if ($configurationTest -eq $true) {
 	# saveTestConfiguration ;
 	Write-Host '';
-	Imports -pfcCompany $pfcCompany ;
+	#Imports -pfcCompany $pfcCompany ;
 	write-host '';
 	UITests ;
 }
