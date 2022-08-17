@@ -950,9 +950,9 @@ function Imports($pfcCompany) {
 				RefreshHeader $mor;
 				$log.endSubtask('Add MOR', 'S', '');
 				$CreatedMors.Add([psobject]@{
-					Series  = $mor.Series
-					DocNum = $mor.DocNum
-				});
+						Series = $mor.Series
+						DocNum = $mor.DocNum
+					});
 			}
 			catch {
 				$err = $_.Exception.Message;
@@ -1450,90 +1450,90 @@ function UITests() {
 			$msg = [string]::Format('Unexpected exception while running Load Production Process:{0}', [string]$err);
 			Write-Host $msg;
 		}
-
-		function openMORForm ($app) {
-			[CTLogger] $log = New-Object CTLogger ('UI', 'Open MOR', $RESULT_FILE)
-			Write-Host '';
-			Write-Host 'Open MOR:' -NoNewline;
-			$xmlOpenRouting = $UIConfigXml.SelectSingleNode([string]::Format("MOR"));
-			$repeatOpenForm = [int] $xmlOpenRouting.repeatOpenForm;
+	}
+	function openMORForm ($app) {
+		[CTLogger] $log = New-Object CTLogger ('UI', 'Open MOR', $RESULT_FILE)
+		Write-Host '';
+		Write-Host 'Open MOR:' -NoNewline;
+		$xmlOpenRouting = $UIConfigXml.SelectSingleNode([string]::Format("MOR"));
+		$repeatOpenForm = [int] $xmlOpenRouting.repeatOpenForm;
 			
-			[CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
-			for ($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++) {
-				try {
-					$progress.next();
-					$log.startSubtask('Open MOR Form');
-					$formOpenMenu = $app.Menus.Item('CT_PF_6'); 
-					$formOpenMenu.Activate();
-					$log.endSubtask('Open MOR Form', 'S', '');
-					$form = $app.Forms.ActiveForm()
-					$form.Close();
-				}
-				catch {
-					$err = $_.Exception.Message;
-					$log.endSubtask('Open MOR Form', 'F', $err);
-					continue;
-				}
-			}
-		}
-
-		function loadMORs ($app) {
+		[CTProgress] $progress = New-Object CTProgress ($repeatOpenForm);
+		for ($iRecord = 0; $iRecord -lt $repeatOpenForm; $iRecord++) {
 			try {
-				[CTLogger] $log = New-Object CTLogger ('UI', 'Load MOR', $RESULT_FILE)
-				Write-Host '';
-				Write-Host 'Load Routings:';
-				$xmlOpenRouting = $UIConfigXml.SelectSingleNode([string]::Format("MOR"));
-				$recordsToGoThrough = [int] $xmlOpenRouting.recordsToGoThrough;
-				$firstMOR = $CreatedMors[0];
-				$firstMORSeries = $firstMOR.Series;
-				$firstMORDocNum = $firstMOR.DocNum;
-				$firstEntityKeyValues = New-Object 'System.Collections.Generic.Dictionary[string,string]'; 
-				$firstEntityKeyValues.Add("Series", $firstMORSeries);
-				$firstEntityKeyValues.Add("5", $firstMORDocNum);
-				$menuItemName = 'CT_PF_6';
-				$subtaskNameOpen = "Open MOR Form";
-				$subtaskNameLoad = "Load MOR Data";
-				Write-Host '* Maximized:' -NoNewline;
-				setStateOfForm -app $app -menuItemName $menuItemName -maximized $true; 
-				_loadForm -app $app -stateName $FORM_STATE_MAXIMIZED -repeatOpenForm $recordsToGoThrough -menuItemName $menuItemName -log $log -subtaskNameOpen $subtaskNameOpen -subtaskNameLoad $subtaskNameLoad -firstEntityKeyValues $firstEntityKeyValues;
-	
-				Write-Host '';
-				Write-Host '* Regular:' -NoNewline;
-				setStateOfForm -app $app -menuItemName $menuItemName -maximized $false; 
-				_loadForm -app $app -stateName $FORM_STATE_REGULAR -repeatOpenForm $recordsToGoThrough -menuItemName $menuItemName -log $log -subtaskNameOpen $subtaskNameOpen -subtaskNameLoad $subtaskNameLoad -firstEntityKeyValues $firstEntityKeyValues;
+				$progress.next();
+				$log.startSubtask('Open MOR Form');
+				$formOpenMenu = $app.Menus.Item('CT_PF_6'); 
+				$formOpenMenu.Activate();
+				$log.endSubtask('Open MOR Form', 'S', '');
+				$form = $app.Forms.ActiveForm()
+				$form.Close();
 			}
 			catch {
 				$err = $_.Exception.Message;
-				$msg = [string]::Format('Unexpected exception while running Load MOR:{0}', [string]$err);
-				Write-Host $msg;
+				$log.endSubtask('Open MOR Form', 'F', $err);
+				continue;
 			}
 		}
 	}
 
+	function loadMORs ($app) {
+		try {
+			[CTLogger] $log = New-Object CTLogger ('UI', 'Load MOR', $RESULT_FILE)
+			Write-Host '';
+			Write-Host 'Load Routings:';
+			$xmlOpenRouting = $UIConfigXml.SelectSingleNode([string]::Format("MOR"));
+			$recordsToGoThrough = [int] $xmlOpenRouting.recordsToGoThrough;
+			$firstMOR = $CreatedMors[0];
+			$firstMORSeries = $firstMOR.Series;
+			$firstMORDocNum = $firstMOR.DocNum;
+			$firstEntityKeyValues = New-Object 'System.Collections.Generic.Dictionary[string,string]'; 
+			$firstEntityKeyValues.Add("Series", $firstMORSeries);
+			$firstEntityKeyValues.Add("5", $firstMORDocNum);
+			$menuItemName = 'CT_PF_6';
+			$subtaskNameOpen = "Open MOR Form";
+			$subtaskNameLoad = "Load MOR Data";
+			Write-Host '* Maximized:' -NoNewline;
+			setStateOfForm -app $app -menuItemName $menuItemName -maximized $true; 
+			_loadForm -app $app -stateName $FORM_STATE_MAXIMIZED -repeatOpenForm $recordsToGoThrough -menuItemName $menuItemName -log $log -subtaskNameOpen $subtaskNameOpen -subtaskNameLoad $subtaskNameLoad -firstEntityKeyValues $firstEntityKeyValues;
+	
+			Write-Host '';
+			Write-Host '* Regular:' -NoNewline;
+			setStateOfForm -app $app -menuItemName $menuItemName -maximized $false; 
+			_loadForm -app $app -stateName $FORM_STATE_REGULAR -repeatOpenForm $recordsToGoThrough -menuItemName $menuItemName -log $log -subtaskNameOpen $subtaskNameOpen -subtaskNameLoad $subtaskNameLoad -firstEntityKeyValues $firstEntityKeyValues;
+		}
+		catch {
+			$err = $_.Exception.Message;
+			$msg = [string]::Format('Unexpected exception while running Load MOR:{0}', [string]$err);
+			Write-Host $msg;
+		}
+	}
+	
+
 	openItemDetailsForm $app;
-
+	
 	loadItemDetails $app;
-
+	
 	openBOMForm $app;
-
+	
 	loadBOM $app;
-
+	
 	openProductionProcessForm $app;
-
+	
 	loadProductionProcess $app;
-
+	
 	openResourceForm $app;
-
+	
 	loadResources $app;
-
+	
 	openOperationForm $app;
-
+	
 	loadOperations $app;
-    
+	
 	openRoutingForm $app;
-
+	
 	loadRoutings $app;
-
+	
 	openMORForm $app;
 
 	loadMORs $app;
@@ -1607,9 +1607,9 @@ function saveTestConfiguration() {
 $pfcCompany = connectDI;
 $configurationTest = testChoosedDatabaseConfiguration -pfcCompany $pfcCompany;
 if ($configurationTest -eq $true) {
-	# saveTestConfiguration ;
+	saveTestConfiguration ;
 	Write-Host '';
-	#Imports -pfcCompany $pfcCompany ;
+	Imports -pfcCompany $pfcCompany ;
 	write-host '';
 	UITests ;
 }
