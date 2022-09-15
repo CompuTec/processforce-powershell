@@ -3,7 +3,7 @@
   <connection
     Database="PFDemoGB"
     SQLServer="sqldev"
-    LicenseServer="sqldev:40000"
+    LicenseServer="sqldev"
     DbServerType="dst_MSSQL2019"
     UserName="manager"
     Password="1234"
