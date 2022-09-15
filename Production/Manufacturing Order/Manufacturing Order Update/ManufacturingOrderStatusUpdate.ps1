@@ -87,6 +87,7 @@ if (-not $pfcCompany.IsConnected) {
     write-host -backgroundcolor yellow -foregroundcolor black "Company is not connected"
     return 
 }
+#endregion
 
 try {
     $SQLQuery = "SELECT ""DocEntry"", ""DocNum"", 'CL' AS ""StatusCode"" FROM ""@CT_PF_OMOR"" WHERE ""U_RequiredDate"" < '2018-07-01' AND ""U_Status"" = 'FI' ";
