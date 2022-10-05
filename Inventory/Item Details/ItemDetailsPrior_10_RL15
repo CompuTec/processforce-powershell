@@ -392,8 +392,17 @@ try {
 		$total = 1
 	}
 
- 
- 
+	#checking state of DirectAccess mode
+	$DirectAccessState = [CompuTec.Core.DI.Database.DataLayer]::GetLayerState($pfcCompany.Token);
+	if ($DirectAccessState -eq [CompuTec.Core.DI.Database.DataLayerState]::"Connected") {
+		$DIRECT_ACCESS_MODE = $true;
+		[CompuTec.ProcessForce.API.DynamicCosting.Restoration.ItemCostingRestorationManager]::SuspendItemCostingRestoration = $true
+	}
+	else {
+		$DIRECT_ACCESS_MODE = $false;
+		write-host -backgroundcolor yellow -foregroundcolor blue "Please enable Direct Access Mode to speed up import process";
+	}
+    
 	foreach ($csvItem in $itemDetailsList) {
 		try {
 			$key = $csvItem.ItemCode
@@ -1043,7 +1052,17 @@ Catch {
 	} 
 }
 Finally {
-	 
+	if ($DIRECT_ACCESS_MODE -eq $true) {
+		[CompuTec.ProcessForce.API.DynamicCosting.Restoration.ItemCostingRestorationManager]::SuspendItemCostingRestoration = $false
+		if ($atLeastOneSuccess -eq $true) { 
+			Write-Host '';
+			Write-Host 'Restoring cosing data'
+			$manager = New-Object  "CompuTec.ProcessForce.API.DynamicCosting.Restoration.ItemCostingRestorationManager" $pfcCompany.Token
+			$manager.Initialize();
+			$manager.Restore();
+		}
+	}
+
 	#region Close connection
     
 	if ($pfcCompany.IsConnected) {
